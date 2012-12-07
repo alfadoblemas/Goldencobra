@@ -3,6 +3,8 @@ ActiveAdmin.register Goldencobra::Upload, :as => "Upload"  do
   menu :priority => 4, :parent => "Content-Management", :if => proc{can?(:read, Goldencobra::Upload)}
 
   controller.authorize_resource :class => Goldencobra::Upload
+  # before_filter { @skip_sidebar = true }
+  batch_action :destroy, false
 
   if ActiveRecord::Base.connection.table_exists?("tags")
     Goldencobra::Upload.tag_counts_on(:tags).each do |utag|
@@ -33,40 +35,46 @@ ActiveAdmin.register Goldencobra::Upload, :as => "Upload"  do
     end
   end
 
-  index do
-    selectable_column
-    column "url" do |upload|
-      result = ""
-      result << upload.image.url
-    end
-    # column :source, sortable: :source do |upload|
-    # 	truncate(upload.source, length: 20)
-    # end
-    column t("preview") do |upload|
-      image_tag(upload.image(:mini))
-    end
-    column :created_at, sortable: :created_at do |upload|
-    	l(upload.created_at, format: :short)
-	  end
-    column :sorter_number
-    column "Tags" do |upload|
-      upload.tag_list
-    end
-	  column "zip" do |upload|
-	    if upload.image_file_name && upload.image_file_name.include?(".zip")
-	      link_to(raw("entpacken"), unzip_file_admin_upload_path(upload))
-      else
-        "-"
-	    end
-	  end
-    column "" do |upload|
-      result = ""
-      result += link_to(t(:view), admin_upload_path(upload), :class => "member_link edit_link view", :title => "Vorschau")
-      result += link_to(t(:edit), edit_admin_upload_path(upload), :class => "member_link edit_link edit", :title => "bearbeiten")
-      result += link_to(t(:delete), admin_upload_path(upload), :method => :DELETE, :confirm => t("delete_article", :scope => [:goldencobra, :flash_notice]), :class => "member_link delete_link delete", :title => "loeschen")
-      raw(result)
+  index :as => :block do |upload|
+    div :for => upload do
+      render partial: '/goldencobra/admin/uploads/upload', locals: { upload: upload }
     end
   end
+
+  # index do
+  #   selectable_column
+  #   column "url" do |upload|
+  #     result = ""
+  #     result << upload.image.url
+  #   end
+  #   # column :source, sortable: :source do |upload|
+  #   # 	truncate(upload.source, length: 20)
+  #   # end
+  #   column t("preview") do |upload|
+  #     image_tag(upload.image(:mini))
+  #   end
+  #   column :created_at, sortable: :created_at do |upload|
+  #   	l(upload.created_at, format: :short)
+	 #  end
+  #   column :sorter_number
+  #   column "Tags" do |upload|
+  #     upload.tag_list
+  #   end
+	 #  column "zip" do |upload|
+	 #    if upload.image_file_name && upload.image_file_name.include?(".zip")
+	 #      link_to(raw("entpacken"), unzip_file_admin_upload_path(upload))
+  #     else
+  #       "-"
+	 #    end
+	 #  end
+  #   column "" do |upload|
+  #     result = ""
+  #     result += link_to(t(:view), admin_upload_path(upload), :class => "member_link edit_link view", :title => "Vorschau")
+  #     result += link_to(t(:edit), edit_admin_upload_path(upload), :class => "member_link edit_link edit", :title => "bearbeiten")
+  #     result += link_to(t(:delete), admin_upload_path(upload), :method => :DELETE, :confirm => t("delete_article", :scope => [:goldencobra, :flash_notice]), :class => "member_link delete_link delete", :title => "loeschen")
+  #     raw(result)
+  #   end
+  # end
 
   show do
     attributes_table do
@@ -113,8 +121,6 @@ ActiveAdmin.register Goldencobra::Upload, :as => "Upload"  do
       li "mini => 50x50>"
     end
   end
-
-  #batch_action :destroy, false
 
   member_action :unzip_file do
     upload = Goldencobra::Upload.find(params[:id])

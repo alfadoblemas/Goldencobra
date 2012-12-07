@@ -362,3 +362,25 @@ body.active_admin form input[type="submit"]:hover:not(.disabled) {
     background: -webkit-gradient(linear, left top, left bottom, from(#76B347), to(#5E9E2E));
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0 #8DBF67 inset;
 }
+
+// Medienmanager
+div.upload {
+  float: left;
+  min-width: 270px;
+  min-height: 200px;
+  border: 1px solid #ccc;
+  margin: 5px;
+
+  img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+div#index_footer {
+  clear: both;
+}
+
+#collection_selection_toggle_panel {
+  display: none;
+}
