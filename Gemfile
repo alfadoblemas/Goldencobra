@@ -34,7 +34,7 @@ gem 'sidekiq'
 gem 'sinatra', :require => false
 gem 'slim'
 gem 'geokit'
-
+gem 'aa_associations'
 
 group :development do
   gem 'thin'

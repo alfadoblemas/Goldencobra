@@ -8,6 +8,19 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
     I18n.default_locale = :de
   end
 
+  association_actions
+
+  form :partial => "admin/shared/form"
+
+  form_columns :title, :content, :active_since, :active
+
+  form_associations do
+    # association :tags, [:name, :post_count]
+    association :frontend_tags do
+      fields :name#, :created_at, :update_at
+    end
+  end
+
   filter :parent_ids_in, :as => :select, :collection => proc { Goldencobra::Article.order("title") }, :label => I18n.t("filter_parent", :scope => [:goldencobra, :filter], :default => "Elternelement")
   filter :article_type, :as => :select, :collection => Goldencobra::Article.article_types_for_select.map{|s| [I18n.t("#{s.parameterize.downcase}", scope: [:article_types], default: "#{s}"),s]}, :label => I18n.t("filter_type", :scope => [:goldencobra, :filter], :default => "Artikeltyp")
   filter :title, :label => I18n.t("filter_titel", :scope => [:goldencobra, :filter], :default => "Titel")
@@ -29,87 +42,87 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
 
 
 
-  form :html => { :enctype => "multipart/form-data" }  do |f|
-    #render :partial => "/goldencobra/admin/articles/article_type", :locals => {:f => f}
-    if f.object.new_record?
-      render :partial => "/goldencobra/admin/articles/select_article_type", :locals => {:f => f}
-    else
-      f.actions
-      f.inputs "Allgemein", :class => "foldable inputs" do
-        f.input :title, :hint => "Der Titel der Seite, kann Leerzeichen und Sonderzeichen enthalten"
-        f.input :content, :input_html => { :class =>"tinymce"}
-        f.input :tag_list, :hint => "Tags sind komma-getrennte Werte, mit denen sich ein Artikel intern gruppiern l&auml;sst"
-        f.input :frontend_tag_list, hint: "Hier eingetragene Begriffe werden auf &Uuml;bersichtsseiten als Filteroption angeboten.", label: "Filterkriterium"
-        f.input :active_since, :hint => "Wenn der Artikel online ist, ab wann ist er Online? Bsp: 02.10.2011 15:35", as: :string, :input_html => { class: "", :size => "20", value: "#{f.object.active_since.strftime('%d.%m.%Y %H:%M') if f.object.active_since}" }
-        f.input :active, :hint => "Ist dieser Artikel online zu sehen?"
-      end
-      if f.object.article_type.present? && f.object.kind_of_article_type.downcase == "show"
-        if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/_edit_show.html.erb")
-          render :partial => "articletypes/#{f.object.article_type_form_file.downcase}/edit_show", :locals => {:f => f}
-        else
-          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/edit_show" do
-          end
-        end
-      elsif f.object.kind_of_article_type.downcase == "index"
-        if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/_edit_index.html.erb")
-          render :partial => "articletypes/#{f.object.article_type_form_file.downcase}/edit_index", :locals => {:f => f}
-        else
-          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/edit_index" do
-          end
-        end
-      else
-        #error
-      end
-      f.inputs "Metadescriptions", :class => "foldable closed inputs expert" do
-        f.input :hint_label, :as => :text, :label => "Metatags fuer Suchmaschinenoptimierung", :input_html => {:disabled => true, :resize => false, :value => "<b>Metatags k&ouml;nnen genutzt werden, um den Artikel f&uuml;r Suchmaschinen besser sichtbar zu machen.</b><br />
-                                                                                                               Sie haben folgende Werte zur Wahl:<br />
-                                                                                                               <ul>
-                                                                                                               <li><strong>Title Tag:</strong> Der Title der Seite. Wird nicht als Titel angezeigt. Ist nur f&uuml;r Google & Co. gedacht. </li>
-                                                                                                               <li><strong>Metadescription:</strong> Wird als Beschreibung des Artikels angezeigt, wenn Google ihn gefunden hat. <strong>Wichtig!</strong></li>
-                                                                                                               <li><strong>Keywords:</strong></li>
-                                                                                                               <li><strong>OpenGraph Title:</strong> Title, der bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
-                                                                                                               <li><strong>OpenGraph Description:</strong> Description, die bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
-                                                                                                               <li><strong>OpenGraph Type:</strong> Sie haben die Wahl zwischen Blog, Article oder Website</li>
-                                                                                                               <li><strong>OpenGraph URL:</strong> Die URL der Website. Standardm&auml;&szlig; wird die URL des Artikels genutzt. Muss nur ver&auml;ndert werden, wenn dort etwas anderes stehen soll.</li>
-                                                                                                               <li><strong>OpenGraph Image:</strong> Muss als URL &uuml;bergeben werden (http://www.mein.de/bild.jpg). Erscheint dann bei Facebook als Bild des Artikels.</li>
-                                                                                                               </ul>", :class => "metadescription_hint", :id => "metadescription-tinymce"}
-        f.has_many :metatags do |m|
-          m.input :name, :as => :select, :collection => Goldencobra::Article::MetatagNames, :input_html => { :class => 'metatag_names'}, :hint => "Hier k&ouml;nnen Sie die verschiedenen Metatags definieren, sowie alle Einstellungen f&uuml;r den OpenGraph vonehmen."
-          m.input :value, :input_html => { :class => 'metatag_values'}
-          m.input :_destroy, :as => :boolean
-        end
-      end
-      f.inputs "Einstellungen", :class => "foldable closed inputs expert" do
-        f.input :breadcrumb, :hint => "Kurzer Name fuer die Brotkrumennavigation"
-        f.input :url_name, :hint => "Nicht mehr als 64 Zeichen, sollte keine Umlaute, Sonderzeichen oder Leerzeichen enthalten. Wenn die Seite unter 'http://meine-seite.de/mein-artikel' erreichbar sein soll, tragen Sie hier 'mein-artikel' ein.", required: false
-        f.input :parent_id, :as => :select, :collection => Goldencobra::Article.all.map{|c| ["#{c.path.map(&:title).join(" / ")}", c.id]}.sort{|a,b| a[0] <=> b[0]}, :include_blank => true, :hint => "Auswahl des Artikels, der in der Seitenstruktur _oberhalb_ liegen soll. Beispiel: http://www.meine-seite.de/der-oberartikel/mein-artikel"
-        f.input :canonical_url, :hint => "Falls auf dieser Seite Inhalte erscheinen, die vorher schon auf einer anderen Seite erschienen sind, sollte hier die URL der Quellseite eingetragen werden, um von Google nicht f&uuml;r doppelten Inhalt abgestraft zu werden"
-        f.input :enable_social_sharing, :label => t("Display Social Sharing actions"), :hint => "Sollen Besucher die actions angezeigt bekommen, um diesen Artikel in den Sozialen Netzwerken zu verbreiten?"
-        f.input :robots_no_index, :hint => "Um bei Google nicht in Konkurrenz zu anderen wichtigen Einzelseiten der eigenen Webseite zu treten, kann hier Google mitgeteilt werden, diese Seite nicht zu indizieren"
-        f.input :cacheable, :as => :boolean, :hint => "Dieser Artikel darf im Cache liegen"
-        f.input :commentable, :as => :boolean, :hint => "Kommentarfunktion für diesen Artikel aktivieren?"
-        f.input :dynamic_redirection, :as => :select, :collection => Goldencobra::Article::DynamicRedirectOptions.map{|a| [a[1], a[0]]}, :include_blank => false
-        f.input :external_url_redirect
-        f.input :redirect_link_title
-        f.input :redirection_target_in_new_window
-        f.input :author, :hint => "Wer ist der Verfasser dieses Artikels"
-      end
-      f.inputs "Weiterer Inhalt", :class => "foldable closed inputs" do
-        f.input :subtitle
-        f.input :context_info, :input_html => { :class =>"tinymce"}, :hint => "Dieser Text ist f&uuml;r eine Sidebar gedacht"
-        f.input :summary, hint: "Dient der Einleitung in den Text und wird hervorgehoben dargestellt", :input_html=>{ :rows=>5 }
-        f.input :teaser, :hint => "Dieser Text wird auf &Uuml;bersichtsseiten angezeigt, um den Artikel zu bewerben", :input_html=>{ :rows=>5 }
-      end
-      f.inputs "Medien", :class => "foldable closed inputs"  do
-        f.has_many :article_images do |ai|
-          ai.input :image, :as => :select, :collection => Goldencobra::Upload.all.map{|c| [c.complete_list_name, c.id]}, :input_html => { :class => 'article_image_file chzn-select'}, :label => "Bild ausw&auml;hlen"
-          ai.input :position, :as => :select, :collection => Goldencobra::Setting.for_key("goldencobra.article.image_positions").split(","), :include_blank => false
-          ai.input :_destroy, :as => :boolean
-        end
-       end
-    end
-    f.actions
-  end
+  # form :html => { :enctype => "multipart/form-data" }  do |f|
+  #   #render :partial => "/goldencobra/admin/articles/article_type", :locals => {:f => f}
+  #   if f.object.new_record?
+  #     render :partial => "/goldencobra/admin/articles/select_article_type", :locals => {:f => f}
+  #   else
+  #     f.actions
+  #     f.inputs "Allgemein", :class => "foldable inputs" do
+  #       f.input :title, :hint => "Der Titel der Seite, kann Leerzeichen und Sonderzeichen enthalten"
+  #       f.input :content, :input_html => { :class =>"tinymce"}
+  #       f.input :tag_list, :hint => "Tags sind komma-getrennte Werte, mit denen sich ein Artikel intern gruppiern l&auml;sst"
+  #       f.input :frontend_tag_list, hint: "Hier eingetragene Begriffe werden auf &Uuml;bersichtsseiten als Filteroption angeboten.", label: "Filterkriterium"
+  #       f.input :active_since, :hint => "Wenn der Artikel online ist, ab wann ist er Online? Bsp: 02.10.2011 15:35", as: :string, :input_html => { class: "", :size => "20", value: "#{f.object.active_since.strftime('%d.%m.%Y %H:%M') if f.object.active_since}" }
+  #       f.input :active, :hint => "Ist dieser Artikel online zu sehen?"
+  #     end
+  #     if f.object.article_type.present? && f.object.kind_of_article_type.downcase == "show"
+  #       if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/_edit_show.html.erb")
+  #         render :partial => "articletypes/#{f.object.article_type_form_file.downcase}/edit_show", :locals => {:f => f}
+  #       else
+  #         f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/edit_show" do
+  #         end
+  #       end
+  #     elsif f.object.kind_of_article_type.downcase == "index"
+  #       if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/_edit_index.html.erb")
+  #         render :partial => "articletypes/#{f.object.article_type_form_file.downcase}/edit_index", :locals => {:f => f}
+  #       else
+  #         f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.downcase}/edit_index" do
+  #         end
+  #       end
+  #     else
+  #       #error
+  #     end
+  #     f.inputs "Metadescriptions", :class => "foldable closed inputs expert" do
+  #       f.input :hint_label, :as => :text, :label => "Metatags fuer Suchmaschinenoptimierung", :input_html => {:disabled => true, :resize => false, :value => "<b>Metatags k&ouml;nnen genutzt werden, um den Artikel f&uuml;r Suchmaschinen besser sichtbar zu machen.</b><br />
+  #                                                                                                              Sie haben folgende Werte zur Wahl:<br />
+  #                                                                                                              <ul>
+  #                                                                                                              <li><strong>Title Tag:</strong> Der Title der Seite. Wird nicht als Titel angezeigt. Ist nur f&uuml;r Google & Co. gedacht. </li>
+  #                                                                                                              <li><strong>Metadescription:</strong> Wird als Beschreibung des Artikels angezeigt, wenn Google ihn gefunden hat. <strong>Wichtig!</strong></li>
+  #                                                                                                              <li><strong>Keywords:</strong></li>
+  #                                                                                                              <li><strong>OpenGraph Title:</strong> Title, der bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
+  #                                                                                                              <li><strong>OpenGraph Description:</strong> Description, die bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
+  #                                                                                                              <li><strong>OpenGraph Type:</strong> Sie haben die Wahl zwischen Blog, Article oder Website</li>
+  #                                                                                                              <li><strong>OpenGraph URL:</strong> Die URL der Website. Standardm&auml;&szlig; wird die URL des Artikels genutzt. Muss nur ver&auml;ndert werden, wenn dort etwas anderes stehen soll.</li>
+  #                                                                                                              <li><strong>OpenGraph Image:</strong> Muss als URL &uuml;bergeben werden (http://www.mein.de/bild.jpg). Erscheint dann bei Facebook als Bild des Artikels.</li>
+  #                                                                                                              </ul>", :class => "metadescription_hint", :id => "metadescription-tinymce"}
+  #       f.has_many :metatags do |m|
+  #         m.input :name, :as => :select, :collection => Goldencobra::Article::MetatagNames, :input_html => { :class => 'metatag_names'}, :hint => "Hier k&ouml;nnen Sie die verschiedenen Metatags definieren, sowie alle Einstellungen f&uuml;r den OpenGraph vonehmen."
+  #         m.input :value, :input_html => { :class => 'metatag_values'}
+  #         m.input :_destroy, :as => :boolean
+  #       end
+  #     end
+  #     f.inputs "Einstellungen", :class => "foldable closed inputs expert" do
+  #       f.input :breadcrumb, :hint => "Kurzer Name fuer die Brotkrumennavigation"
+  #       f.input :url_name, :hint => "Nicht mehr als 64 Zeichen, sollte keine Umlaute, Sonderzeichen oder Leerzeichen enthalten. Wenn die Seite unter 'http://meine-seite.de/mein-artikel' erreichbar sein soll, tragen Sie hier 'mein-artikel' ein.", required: false
+  #       f.input :parent_id, :as => :select, :collection => Goldencobra::Article.all.map{|c| ["#{c.path.map(&:title).join(" / ")}", c.id]}.sort{|a,b| a[0] <=> b[0]}, :include_blank => true, :hint => "Auswahl des Artikels, der in der Seitenstruktur _oberhalb_ liegen soll. Beispiel: http://www.meine-seite.de/der-oberartikel/mein-artikel"
+  #       f.input :canonical_url, :hint => "Falls auf dieser Seite Inhalte erscheinen, die vorher schon auf einer anderen Seite erschienen sind, sollte hier die URL der Quellseite eingetragen werden, um von Google nicht f&uuml;r doppelten Inhalt abgestraft zu werden"
+  #       f.input :enable_social_sharing, :label => t("Display Social Sharing actions"), :hint => "Sollen Besucher die actions angezeigt bekommen, um diesen Artikel in den Sozialen Netzwerken zu verbreiten?"
+  #       f.input :robots_no_index, :hint => "Um bei Google nicht in Konkurrenz zu anderen wichtigen Einzelseiten der eigenen Webseite zu treten, kann hier Google mitgeteilt werden, diese Seite nicht zu indizieren"
+  #       f.input :cacheable, :as => :boolean, :hint => "Dieser Artikel darf im Cache liegen"
+  #       f.input :commentable, :as => :boolean, :hint => "Kommentarfunktion für diesen Artikel aktivieren?"
+  #       f.input :dynamic_redirection, :as => :select, :collection => Goldencobra::Article::DynamicRedirectOptions.map{|a| [a[1], a[0]]}, :include_blank => false
+  #       f.input :external_url_redirect
+  #       f.input :redirect_link_title
+  #       f.input :redirection_target_in_new_window
+  #       f.input :author, :hint => "Wer ist der Verfasser dieses Artikels"
+  #     end
+  #     f.inputs "Weiterer Inhalt", :class => "foldable closed inputs" do
+  #       f.input :subtitle
+  #       f.input :context_info, :input_html => { :class =>"tinymce"}, :hint => "Dieser Text ist f&uuml;r eine Sidebar gedacht"
+  #       f.input :summary, hint: "Dient der Einleitung in den Text und wird hervorgehoben dargestellt", :input_html=>{ :rows=>5 }
+  #       f.input :teaser, :hint => "Dieser Text wird auf &Uuml;bersichtsseiten angezeigt, um den Artikel zu bewerben", :input_html=>{ :rows=>5 }
+  #     end
+  #     f.inputs "Medien", :class => "foldable closed inputs"  do
+  #       f.has_many :article_images do |ai|
+  #         ai.input :image, :as => :select, :collection => Goldencobra::Upload.all.map{|c| [c.complete_list_name, c.id]}, :input_html => { :class => 'article_image_file chzn-select'}, :label => "Bild ausw&auml;hlen"
+  #         ai.input :position, :as => :select, :collection => Goldencobra::Setting.for_key("goldencobra.article.image_positions").split(","), :include_blank => false
+  #         ai.input :_destroy, :as => :boolean
+  #       end
+  #      end
+  #   end
+  #   f.actions
+  # end
 
 
   index do

@@ -25,6 +25,8 @@ module Dummy
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     config.time_zone = 'Europe/Berlin'
 
+    config.aa_associations.autocomplete = false
+
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
      config.i18n.default_locale = :en
@@ -53,7 +55,7 @@ module Dummy
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-    
+
     config.after_initialize do |app|
       if defined?(ActiveAdmin) and ActiveAdmin.application
         # Try enforce reloading after app bootup
@@ -63,7 +65,7 @@ module Dummy
         self.reload_routes!
       end
     end
-    
+
   end
 end
 
