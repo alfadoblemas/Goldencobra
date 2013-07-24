@@ -9,10 +9,11 @@ gemspec
 # jquery-rails is used by the dummy application
 gem "jquery-rails"
 
-
-gem 'devise', :git => "git://github.com/plataformatec/devise.git"
+gem 'multi_json', "~> 1.3"
+gem 'devise', "~> 2.2.4"#, :git => "git://github.com/plataformatec/devise.git"
 gem 'activeadmin', :git => "git://github.com/ikusei/active_admin.git", :require => "activeadmin"
 gem 'acts-as-taggable-on', :git => 'git://github.com/mbleigh/acts-as-taggable-on.git'
+gem 'i18n-active_record', :git => 'git://github.com/svenfuchs/i18n-active_record.git', :require => 'i18n/active_record'
 gem 'execjs'
 gem 'therubyracer' #, '~> 0.10.2'
 gem "friendly_id"
@@ -42,11 +43,14 @@ gem 'sinatra', :require => false
 gem 'slim'
 gem 'geokit'
 
+gem 'pdfkit'
+gem 'wkhtmltopdf-binary'
+
+gem "better_errors", :group => "development"
+gem "binding_of_caller", :group => "development"
 
 group :development do
   gem 'thin'
-  gem "better_errors"
-  gem "binding_of_caller"
   gem 'guard-annotate'
   gem 'pry'
   gem 'pry-nav'
@@ -62,9 +66,9 @@ group :test do
   gem 'factory_girl'
   gem "factory_girl_rails"
   gem 'database_cleaner'
-  gem 'capybara'
-  gem 'capybara-webkit'
-  gem 'guard', '~> 1.1.1'
+  #gem 'capybara'
+  #gem 'capybara-webkit', "0.14.2"
+  gem 'guard'
   gem 'guard-rspec'
   gem 'guard-cucumber'
   gem 'guard-livereload'

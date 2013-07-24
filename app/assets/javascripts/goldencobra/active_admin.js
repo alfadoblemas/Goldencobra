@@ -21,6 +21,25 @@ $(function() {
 		paste_auto_cleanup_on_paste : true
 	});
 
+	$('textarea.tinymce_extended').tinymce({
+		script_url: "/assets/goldencobra/tiny_mce.js",
+  		mode : "textareas",
+  		theme : "advanced",
+  		theme_advanced_buttons1 : "formatselect, bold, italic, underline, strikethrough,|, bullist, numlist, blockquote, |, pastetext,pasteword, |, undo, redo, |, link, unlink, code, fullscreen",
+  		theme_advanced_buttons2 : "removeformat, fontsizeselect, forecolor, backcolor, forecolorpicker, backcolorpicker",
+  		theme_advanced_buttons3 : "tablecontrols",
+  		theme_advanced_toolbar_location : "top",
+  		theme_advanced_toolbar_align : "left",
+  		theme_advanced_resizing : false,
+		relative_urls : true,
+    	convert_urls : false,
+		theme_advanced_blockformats : "p,h1,h2,h3,div",
+		plugins : "fullscreen,autolink,paste,table",
+		dialog_type : "modal",
+		paste_auto_cleanup_on_paste : true,
+		verify_html : false
+	});
+
 
   //Foldable overview in sidebar
   $("div.overview-sidebar div.folder").bind("click", function(){
@@ -88,6 +107,10 @@ $(function() {
 
 	$(".chzn-select").chosen();
   $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+  $('a.button').live("click", function(){
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+  })
 
   //Menuepunkte bekommen eine funktion zum auf und zu klappen
   $('div#overview_sidebar div.title a').bind("click", function(){

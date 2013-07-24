@@ -9,7 +9,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   end
 
   filter :parent_ids_in, :as => :select, :collection => proc { Goldencobra::Article.order("title") }, :label => I18n.t("filter_parent", :scope => [:goldencobra, :filter], :default => "Elternelement")
-  filter :article_type, :as => :select, :collection => Goldencobra::Article.article_types_for_select.map{|s| [I18n.t("#{s.parameterize.downcase}", scope: [:article_types], default: "#{s}"),s]}, :label => I18n.t("filter_type", :scope => [:goldencobra, :filter], :default => "Artikeltyp")
+  filter :article_type, :as => :select, :collection => Goldencobra::Article.article_types_for_select.map{|s| [I18n.t("#{s.parameterize.downcase}", scope: [:goldencobra, :article_types], default: "#{s}"),s]}, :label => I18n.t("filter_type", :scope => [:goldencobra, :filter], :default => "Artikeltyp")
   filter :title, :label => I18n.t("filter_titel", :scope => [:goldencobra, :filter], :default => "Titel")
   filter :frontend_tag_name, :as => :string, :label => I18n.t("frontend_tags", :scope => [:goldencobra, :filter], :default => "Filterkriterium")
   filter :tag_name, :as => :string, :label => I18n.t("tags", :scope => [:goldencobra, :filter], :default => "Interne Tags")
@@ -21,15 +21,13 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   filter :updated_at, :label =>  I18n.t("filter_updated", :scope => [:goldencobra, :filter], :default => "bearbeitet")
 
   scope "Alle", :scoped, :default => true
-  scope "online", :active
-  scope "offline", :inactive
+  scope "Online", :active
+  scope "Offline", :inactive
 
   Goldencobra::Article.article_types_for_select.each do |article_type|
     next if article_type.include?("index")
     scope(I18n.t(article_type.split(' ').first.to_s.strip, :scope => [:goldencobra, :article_types], :default => article_type.split(' ').first)){ |t| t.where("article_type LIKE '%#{article_type.split(' ').first}%'") }
   end
-
-
 
   form :html => { :enctype => "multipart/form-data" }  do |f|
     if f.object.new_record?
@@ -169,6 +167,10 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
     end
   end
 
+  action_item :only => [:index] do
+    link_to('SEO-Ansicht', admin_seo_articles_path())
+  end
+
   sidebar :overview, label: "Ueberblick", only: [:index] do
     render :partial => "/goldencobra/admin/shared/overview", :object => Goldencobra::Article.order(:url_name).roots, :locals => {:link_name => "url_name", :url_path => "article", :order_by => "url_name" }
   end
@@ -189,12 +191,6 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   sidebar :layout, only: [:edit] do
     render "/goldencobra/admin/articles/layout_sidebar", :locals => { :current_article => resource }
   end
-
-  # Wird derzeit nicht benötigt, da es den Artikeltyp Default Index gibt,
-  # der über Tags den Index gewünschter Artikel erstellt
-  #sidebar :index_of_articles, only: [:edit] do
-    #render "/goldencobra/admin/articles/index_of_articles_sidebar"
-  #end
 
 
   sidebar :image_module, :only => [:edit] do

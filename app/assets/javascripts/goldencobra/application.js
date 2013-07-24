@@ -11,13 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery-ui
 //= require jquery_ujs
 //= require goldencobra/jquery.tools.min.js
 //= require goldencobra/moment
 //= require goldencobra/notifications
 
-$(function(){
+$(function() {
   moment.weekdaysMin = ["su", "mo", "tu", "we", "th", "fr", "sa"];
 
   /* Trigger display of widgets. If widget has offline_times set, show
@@ -47,7 +46,9 @@ $(function(){
         if (!isDataDateStart && !isDataDateEnd) {
           // Widget muss ausgeblendet werden
           $(element).addClass("hidden");
-          $(element).next("[data-id=" + $(element).attr("data-id") + "]").removeClass("hidden");
+          offlineElement = $(element).next("[data-id=" + $(element).attr("data-id") + "]");
+          offlineElement.attr('id',$(element).attr('id'));
+          offlineElement.removeClass("hidden");
         }
         /* Wenn Start- und Enddatum gesetzt sind,
            muss geprüft werden, ob der aktuelle Tag
@@ -63,20 +64,21 @@ $(function(){
           if (isCurrentDate) {
             // Widget muss ausgeblendet werden
             $(element).addClass("hidden");
-            $(element).next("[data-id=" + $(element).attr("data-id") + "]").removeClass("hidden");
+            offlineElement = $(element).next("[data-id=" + $(element).attr("data-id") + "]");
+            offlineElement.attr('id',$(element).attr('id'));
+            offlineElement.removeClass("hidden");
           }
         }
       }
     }
   });
-
-  //console.log($(".goldencobra_widget.hidden").length);
   $(".goldencobra_widget.hidden").remove();
-  //console.log($(".goldencobra_widget.hidden").length);
 });
 
-$(document).ready(function(){
-  $('#_frontend_tags').live('change', function() {
-    $('#index-filter-search').submit()
-  });
+$(function() {
+  if($('#_frontend_tags').length) {
+    $('#_frontend_tags').live('change', function() {
+      $('#index-filter-search').submit();
+    });
+  }
 });

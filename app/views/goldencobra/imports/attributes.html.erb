@@ -1,25 +1,90 @@
+<% if @importer.analyze_csv.blank? %>
+	<h1>Es ist ein Fehler aufgetreten</h1>
+	<h2>Es sind keine Daten erkannt worden. Ist das Trennzeichen korrekt?</h2>
+<% end %>
+
 <%= form_for @importer, :url => admin_import_path(@importer) do |f|%>
 	<table class="importer_assoziations">
-	<% f.object.get_model_attributes.each do |model_attr| %>	
-		<tr>
-			<td><%= model_attr.humanize %></td>
-			<td><%= f.select "assignment[#{model_attr}]", options_for_select(f.object.analyze_csv, @importer.assignment[model_attr]), :include_blank => true %></td>
-		</tr>
-	<%end%>
-	
-	<% f.object.get_association_names.each do |ass_name|%>
-		<tr>
-			<td class="nested_model_header"><%= ass_name %></td>
-			<td></td>
-		</tr>
-			<% f.object.target_model.constantize.new.send(ass_name).new.attributes.delete_if{|a| Goldencobra::Import::BlockedAttributes.include?(a) }.keys.each do |ass_attr| %>
+		<thead>
+			<tr>
+				<th>Datenbankzuweisung</th>
+				<th>Funktion</th>
+				<th>Optionen für Function</th>
+				<th>Spalte im CSV</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @importer.assignment_groups ||= {} %>
+			<% @importer.assignment_groups[@importer.target_model] ||= "create" %>
+			<tr>
+				<td class="nested_model_header"><%= @importer.target_model %></td>
+				<td><%= f.select "assignment_groups[#{@importer.target_model}]", options_for_select(Goldencobra::Import::DataHandling, @importer.assignment_groups[@importer.target_model]), :include_blank => false %></td>
+			</tr>
+			<% f.object.get_model_attributes.each do |model_attr| %>
+				<% @importer.assignment[@importer.target_model] ||= {} %>
+				<% @importer.assignment[@importer.target_model][model_attr] ||= {} %>
 				<tr>
-					<td><%= ass_attr.humanize %></td>
-					<% current_ass_attr = @importer.assignment[ass_name] ? @importer.assignment[ass_name][ass_attr] : ""%>
-					<td><%= f.select "assignment[#{ass_name}][#{ass_attr}]", options_for_select(f.object.analyze_csv, current_ass_attr ), :include_blank => true %>	</td>
+					<td><%= model_attr.humanize %></td>
+					<td><%= f.select "assignment[#{@importer.target_model}][#{model_attr}][data_function]", options_for_select(Goldencobra::Import::DataFunctions, @importer.assignment[@importer.target_model][model_attr]["data_function"]), :include_blank => false %></td>
+					<td><%= text_field_tag "import[assignment[#{@importer.target_model}][#{model_attr}][option]]", @importer.assignment[@importer.target_model][model_attr]["option"] %></td>
+					<td><%= f.select "assignment[#{@importer.target_model}][#{model_attr}][csv]", options_for_select(f.object.analyze_csv, @importer.assignment[@importer.target_model][model_attr]["csv"]), :include_blank => true %></td>
+				</tr>
+			<%end%>
+			<tr>
+				<td colspan="4"><hr></td>
+			</tr>
+			<% f.object.get_association_names.each do |string_ass_name| %>
+				<% next if f.object.target_model.constantize.new.send(string_ass_name).nil? %>
+				<% ass_class = f.object.target_model.constantize.new.send(string_ass_name).new.class %>
+				<% @importer.assignment_groups[ass_class.to_s] ||= "create" %>
+				<tr>
+					<td class="nested_model_header"><%= t(ass_class.to_s, :scope => [:activerecord, :models]) %></td>
+					<td><%= f.select "assignment_groups[#{ass_class.to_s}]", options_for_select(Goldencobra::Import::DataHandling, @importer.assignment_groups[ass_class.to_s]), :include_blank => false %></td>
+				</tr>
+				<% ass_class.new.attributes.delete_if{|a| Goldencobra::Import::BlockedAttributes.include?(a.to_s) }.keys.each do |ass_attr| %>
+					<tr>
+						<td><%= t(ass_attr, :scope => [:activerecord, :attributes, ass_class.to_s.to_sym]) %></td>
+						<% @importer.assignment[ass_class.to_s] ||= {} %>
+						<% @importer.assignment[ass_class.to_s][ass_attr] ||= {} %>
+						<% @importer.assignment[ass_class.to_s][ass_attr]["data_function"] ||= "" %>
+						<% @importer.assignment[ass_class.to_s][ass_attr]["option"] ||= "" %>
+						<td><%= f.select "assignment[#{ass_class.to_s}][#{ass_attr}][data_function]", options_for_select(Goldencobra::Import::DataFunctions, @importer.assignment[ass_class.to_s][ass_attr]["data_function"]), :include_blank => false %></td>
+						<td><%= text_field_tag "import[assignment[#{ass_class.to_s}][#{ass_attr}][option]]", @importer.assignment[ass_class.to_s][ass_attr]["option"] %></td>
+						<td><%= f.select "assignment[#{ass_class.to_s}][#{ass_attr}][csv]", options_for_select(f.object.analyze_csv, @importer.assignment[ass_class.to_s][ass_attr]['csv'] ), :include_blank => true %>	</td>
+				<% end%>
+				<tr>
+					<td colspan="4"><hr></td>
 				</tr>
 			<% end%>
-	<% end%>
+		</tbody>
 	</table>
-	<%= f.submit "speichern"%>
+	<%= f.submit "speichern" %>
 <% end %>
+
+<br><br>
+
+<div style="width:1000px;overflow:scroll;border:1px solid grey;padding:15px">
+	<h2>Erkannte Daten</h2>
+	<h3>Bitte prüfen Sie auch die ausgewählte Zeichencodierung! Nach dem Import ist diese nicht mehr Änderbar.</h3>
+	<% conv = Iconv.new("UTF-8", @importer.encoding_type) %>
+	<table>
+		<thead>
+			<tr>
+					<th>Zeile</th>
+				<% @importer.analyze_csv.each do |a| %>
+				  <th><%= a[0] %></th>
+				<% end %>
+			</tr>
+		</thead>
+		<tbody>
+			<% @importer.data_rows.each_with_index do |a,index| %>
+			<tr>
+					<td><%= index %></td>
+				<% a.each do |column| %>
+					<td><%= conv.iconv(column) %></td>
+				<% end %>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

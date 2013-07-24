@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 ActiveAdmin.register Goldencobra::Import, :as => "Import" do
   menu :parent => "Einstellungen", :if => proc{can?(:update, Goldencobra::Import)}
 
@@ -18,11 +20,19 @@ ActiveAdmin.register Goldencobra::Import, :as => "Import" do
     end
   end
 
-  form :html => { :enctype => "multipart/form-data" }  do |f|  
+  form :html => { :enctype => "multipart/form-data" } do |f|
+    f.actions
     f.inputs "Select File for #{f.object.target_model}" do
-      f.input :target_model
-      f.input :upload
+      f.input :target_model, as: :select, collection: ActiveRecord::Base.descendants.map(&:name), include_blank: false
+      f.inputs "Upload", :class=> "inputs" do
+        f.fields_for :upload do |u|
+          u.inputs "" do
+            u.input :image, :as => :file, :label => "CSV Datei", :hint => "Aktuell ausgewählte Datei: #{u.object.try(:image_file_name)}"
+          end
+        end
+      end
       f.input :separator
+      f.input :encoding_type, :as => :select, :collection => Goldencobra::Import::EncodingTypes
     end
     f.actions
   end
@@ -33,7 +43,7 @@ ActiveAdmin.register Goldencobra::Import, :as => "Import" do
     flash[:notice] = "Dieser Import wurde gestartet"
     redirect_to :action => :index
   end
-  
+
   member_action :assignment do
     @importer = Goldencobra::Import.find(params[:id])
     if @importer
@@ -42,20 +52,26 @@ ActiveAdmin.register Goldencobra::Import, :as => "Import" do
       render nothing: true
     end
   end
-  
+
+  action_item :only => [:show, :edit, :assignment] do
+    link_to('Starte Import', run_admin_import_path(resource.id))
+  end
+
+  action_item :only => [:assignment] do
+    link_to("Import Bearbeiten", edit_admin_import_path(resource.id))
+  end
 
   controller do
-    
     def new
       @import = Goldencobra::Import.new(:target_model => params[:target_model])
     end
-    
+
     def show
       show! do |format|
          format.html { redirect_to assignment_admin_import_path(@import), :flash => flash }
       end
     end
-    
+
     def edit
       @import = Goldencobra::Import.find(params[:id])
       @import.analyze_csv

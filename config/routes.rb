@@ -8,6 +8,8 @@ Goldencobra::Engine.routes.draw do
   match "frontend_login/:usermodel" => "sessions#login", :as => :frontend_login
   match "frontend_logout/:usermodel" => "sessions#logout", :as => :frontend_logout
   match "frontend_register/:usermodel" => "sessions#register", :as => :frontend_register
+  match "manage/render_admin_menue" => "manage#render_admin_menue"
+  match "manage/article_visibility/:id" => "manage#article_visibility"
 
   if RUBY_VERSION.include?("1.9.")
     mount Sidekiq::Web => '/admin/background'
@@ -27,7 +29,7 @@ Goldencobra::Engine.routes.draw do
     get '/visitors/auth/:provider' => 'omniauth_callbacks#passthru'
   end
 
-  match "/*article_id.pdf", :to => "articles#convert_to_pdf"
+  #match "/*article_id.pdf", :to => "articles#convert_to_pdf"
   match "/*article_id", :to => "articles#show"
 
   # The priority is based upon order of creation:

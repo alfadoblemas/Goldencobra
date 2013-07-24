@@ -28,8 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'capistrano-maintenance'
   s.add_dependency "rails", "~> 3.2.11"
   s.add_dependency "jquery-rails", "2.1.4"
-  s.add_dependency "jqueryui_rails"
-  s.add_dependency 'devise'
+  s.add_dependency 'devise', "~> 2.2.4"
   s.add_dependency 'activeadmin-cancan'
   s.add_dependency "activeadmin"
   s.add_dependency 'sunspot_rails'
@@ -67,8 +66,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'whenever'
   s.add_dependency 'inherited_resources'
   s.add_dependency 'geokit'
-  # s.add_dependency "pdfkit"
-  # s.add_dependency 'wkhtmltopdf-binary'
+  s.add_dependency 'i18n-active_record'
+  s.add_dependency "pdfkit"
+  s.add_dependency 'wkhtmltopdf-binary'
   # s.add_dependency "wicked_pdf"
   s.add_development_dependency "mysql2"
   s.add_development_dependency 'annotate'

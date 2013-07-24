@@ -9,6 +9,12 @@
 <body>
 
 
+  <%= session['flash'].inspect %>
+  <%= session['flash'].present? %>
+
+  <%#= request.inspect %>
+
+
   <%= I18n.locale %>
   <%= link_to "Deutsch", switch_language_path("de") %>
   <%= link_to "Englisch", switch_language_path("en") %>
@@ -24,6 +30,8 @@
 	<%= yield(:social_sharing_buttons) %>
 </div>
 
+
+<h2><%= t('welcome') %></h2>
 
 <div id="article_content">
 <%= yield %>
@@ -42,8 +50,6 @@
 
 <%= navigation_menu(2) %>
 
-
-
 <h2>Login:</h2>
 <h3>Visitor</h3>
 <%= render_login_widget(Visitor) %>
@@ -57,6 +63,10 @@
 <hr />
 <h3>AdminUser</h3>
 <%= render_registration_widget(User) %>
+
+<h3>AdminUser with associated_model Visitor</h3>
+<%= render_registration_widget(User,Visitor) %>
+
 
 </body>
 </html>

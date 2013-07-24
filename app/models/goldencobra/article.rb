@@ -1,5 +1,4 @@
 #encoding: utf-8
-
 # == Schema Information
 #
 # Table name: goldencobra_articles
@@ -34,7 +33,7 @@
 #  index_of_articles_tagged_with    :string(255)
 #  sort_order                       :string(255)
 #  reverse_sort                     :boolean
-#  author                           :string(255)
+#  author_backup                    :string(255)
 #  sorter_limit                     :integer
 #  not_tagged_with                  :string(255)
 #  use_frontend_tags                :boolean          default(FALSE)
@@ -43,6 +42,8 @@
 #  commentable                      :boolean          default(FALSE)
 #  active_since                     :datetime         default(2012-09-30 12:53:13 UTC)
 #  redirect_link_title              :string(255)
+#  display_index_types              :string(255)      default("show")
+#  author_id                        :integer
 #
 
 
@@ -68,6 +69,8 @@ module Goldencobra
     has_many :comments, :class_name => Goldencobra::Comment
     has_many :permissions, :class_name => Goldencobra::Permission, :foreign_key => "subject_id", :conditions => {:subject_class => "Goldencobra::Article"}
 
+    belongs_to :author
+
     accepts_nested_attributes_for :metatags, :allow_destroy => true, :reject_if => proc { |attributes| attributes['value'].blank? }
     accepts_nested_attributes_for :article_images, :allow_destroy => true
     accepts_nested_attributes_for :permissions, :allow_destroy => true
@@ -83,12 +86,13 @@ module Goldencobra
     validates_format_of :url_name, :with => /\A[\w\d-]+\Z/, allow_blank: true
 
     after_create :set_active_since
+    after_create :notification_event_create
     before_save :parse_image_gallery_tags
+    before_save :set_url_name_if_blank
     after_save :verify_existence_of_opengraph_image
     after_save :set_default_opengraph_values
-    after_create :notification_event_create
     after_update :notification_event_update
-    before_save :set_url_name_if_blank
+    before_destroy :update_parent_article_etag
 
     attr_protected :startpage
 
@@ -105,7 +109,6 @@ module Goldencobra
     scope :for_sitemap, where('dynamic_redirection = "false" AND ( external_url_redirect IS NULL OR external_url_redirect = "") AND active = 1 AND robots_no_index =  0')
     scope :frontend_tag_name_contains, lambda{|tag_name| tagged_with(tag_name.split(","), :on => :frontend_tags)}
     scope :tag_name_contains, lambda{|tag_name| tagged_with(tag_name.split(","), :on => :tags)}
-
 
     search_methods :frontend_tag_name_contains
     search_methods :tag_name_contains
@@ -127,6 +130,8 @@ module Goldencobra
         end
       end
     end
+
+
 
     # Instance Methods
     # **************************
@@ -336,12 +341,6 @@ module Goldencobra
       end
     end
 
-    def set_url_name_if_blank
-      if self.url_name.blank?
-        self.url_name = self.friendly_id.split("--")[0]
-      end
-    end
-
     def date_of_last_modified_child
       if self.children.length > 0
         if self.children.order("updated_at DESC").first.updated_at.utc > self.updated_at.utc
@@ -362,50 +361,6 @@ module Goldencobra
       end
     end
 
-    def parse_image_gallery_tags
-      if self.respond_to?(:image_gallery_tags)
-        self.image_gallery_tags = self.image_gallery_tags.compact.delete_if{|a| a.blank?}.join(",") if self.image_gallery_tags.class == Array
-      end
-    end
-
-    def verify_existence_of_opengraph_image
-      if Goldencobra::Metatag.where("article_id = ? AND name = 'OpenGraph Image'", self.id).count == 0
-        Goldencobra::Metatag.create(article_id: self.id,
-                                    name: "OpenGraph Image",
-                                    value: Goldencobra::Setting.for_key("goldencobra.facebook.opengraph_default_image"))
-      end
-
-      if self.article_images.any? && self.article_images.first.present? && self.article_images.first.image.present? && self.article_images.first.image.image.present?
-        meta_tag = Goldencobra::Metatag.where(article_id: self.id, name: "OpenGraph Image").first
-        meta_tag.value = "http://#{Goldencobra::Setting.for_key('goldencobra.url')}#{self.article_images.first.image.image.url}"
-        meta_tag.save
-      end
-    end
-
-    def set_default_opengraph_values
-      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph Title').none?
-        Goldencobra::Metatag.create(name: 'OpenGraph Title',
-                                    article_id: self.id,
-                                    value: self.title)
-      end
-
-      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph URL').none?
-        Goldencobra::Metatag.create(name: 'OpenGraph URL',
-                                    article_id: self.id,
-                                    value: self.absolute_public_url)
-      end
-
-      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph Description').none?
-        if self.teaser.present?
-          value = self.teaser
-        else
-          value = self.content.present? ? self.content.truncate(200) : self.title
-        end
-        Goldencobra::Metatag.create(name: 'OpenGraph Description',
-                                    article_id: self.id,
-                                    value: value)
-      end
-    end
 
     def for_friendly_name
       if self.url_name.present?
@@ -506,8 +461,65 @@ module Goldencobra
 
     end
 
+
+
+    #Callback Methods
+    ###########################
+
+    #Nachdem ein Artikel gelöscht wurde soll sein Elternelement aktualisiert werden, damit ein rss feed oder ähnliches mitbekommt wenn ein kindeintrag gelöscht wurde
+    def update_parent_article_etag
+      if self.parent.present?
+        self.parent.update_attributes(:updated_at => Time.now)
+      end
+    end
+
     def set_active_since
       self.active_since = self.created_at
+    end
+
+    def parse_image_gallery_tags
+      if self.respond_to?(:image_gallery_tags)
+        self.image_gallery_tags = self.image_gallery_tags.compact.delete_if{|a| a.blank?}.join(",") if self.image_gallery_tags.class == Array
+      end
+    end
+
+    def verify_existence_of_opengraph_image
+      if Goldencobra::Metatag.where("article_id = ? AND name = 'OpenGraph Image'", self.id).count == 0
+        Goldencobra::Metatag.create(article_id: self.id,
+                                    name: "OpenGraph Image",
+                                    value: Goldencobra::Setting.for_key("goldencobra.facebook.opengraph_default_image"))
+      end
+
+      if self.article_images.any? && self.article_images.first.present? && self.article_images.first.image.present? && self.article_images.first.image.image.present?
+        meta_tag = Goldencobra::Metatag.where(article_id: self.id, name: "OpenGraph Image").first
+        meta_tag.value = "http://#{Goldencobra::Setting.for_key('goldencobra.url')}#{self.article_images.first.image.image.url}"
+        meta_tag.save
+      end
+    end
+
+    def set_default_opengraph_values
+      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph Title').none?
+        Goldencobra::Metatag.create(name: 'OpenGraph Title',
+                                    article_id: self.id,
+                                    value: self.title)
+      end
+
+      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph URL').none?
+        Goldencobra::Metatag.create(name: 'OpenGraph URL',
+                                    article_id: self.id,
+                                    value: self.absolute_public_url)
+      end
+
+      if Goldencobra::Metatag.where(article_id: self.id, name: 'OpenGraph Description').none?
+        if self.teaser.present?
+          value = self.teaser
+        else
+          value = self.content.present? ? self.content.truncate(200) : self.title
+        end
+        Goldencobra::Metatag.create(name: 'OpenGraph Description',
+                                    article_id: self.id,
+                                    value: value)
+      end
     end
 
     def notification_event_create
@@ -518,11 +530,23 @@ module Goldencobra
       ActiveSupport::Notifications.instrument("goldencobra.article.updated", :article_id => self.id)
     end
 
+    def set_url_name_if_blank
+      if self.url_name.blank?
+        self.url_name = self.friendly_id.split("--")[0]
+      end
+    end
+
+
+
     # Class Methods
     #**************************
 
     def self.active
-      Goldencobra::Article.where("active = 1 AND active_since < '#{Time.now.utc}'")
+      Goldencobra::Article.where("active = 1 AND active_since < '#{Time.now.strftime('%Y-%m-%d %H:%M:%S ')}'")
+    end
+
+    def active?
+      self.active && self.active_since < Time.now.utc
     end
 
     def self.search_by_url(url)
@@ -540,7 +564,7 @@ module Goldencobra
     end
 
     def self.recent(count)
-      Goldencobra::Article.where('title IS NOT NULL').order('updated_at DESC').limit(count)
+      Goldencobra::Article.where('title IS NOT NULL').order('created_at DESC').limit(count)
     end
 
     def self.recreate_cache

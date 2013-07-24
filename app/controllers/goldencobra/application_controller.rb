@@ -32,10 +32,11 @@ module Goldencobra
     end
 
     def initialize_article(current_article)
-      Goldencobra::Article::LiquidParser["current_article"] = @article
-      set_meta_tags :site => "#{@article.metatag("Title Tag") || @article.title} | #{s('goldencobra.page.default_title_tag')}",
-                    :title => current_article.metatag("Title Tag"),
-                    :description => current_article.metatag("Meta Description"),
+      Goldencobra::Article::LiquidParser["current_article"] = current_article
+      set_meta_tags :site => s('goldencobra.page.default_title_tag'),
+                    :title => current_article.metatag("Title Tag").present? ? current_article.metatag("Title Tag") : current_article.title,
+                    :reverse => true,
+                    :description => current_article.metatag("Meta Description") || s('goldencobra.page.default_meta_description_tag'),
                     :keywords => current_article.metatag("Keywords"),
                     :canonical => current_article.canonical_url,
                     :noindex => current_article.robots_no_index,
@@ -53,5 +54,6 @@ module Goldencobra
         super
       end
     end
+
   end
 end

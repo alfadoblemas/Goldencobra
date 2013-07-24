@@ -24,6 +24,9 @@ module Goldencobra
     # navigation_menu("Hauptmenue", :depth => 1, :class => "top", :id => "menue1", :offset => 1 )
     # depth: 0 = unlimited, 1 = self, 2 = self and children 1. grades, 3 = self and up to children 2.grades
     # offset: number of levels to skip, 0 = none
+
+    #<%= navigation_menu("Top-Menu", :current_article => @article, :class => "ul_main_nav", :depth => 1, :offset => 1 %>
+
     #TODO: offset implementieren
     def navigation_menu(menue_id, options={})
       return "id can't be blank" if menue_id.blank?
@@ -31,13 +34,27 @@ module Goldencobra
       offset = options[:offset] || 0
       class_name = options[:class] || ""
       id_name = options[:id] || ""
+      submenue_of_article = options[:submenue_of_article] || ""
+      current_article = options[:current_article] || ""
+
       if menue_id.class == String
-        master_menue = Goldencobra::Menue.active.find_by_pathname(menue_id)
+        if current_article.present? && current_article.public_url.present?
+          current_menue = Goldencobra::Menue.active.where(:target => current_article.public_url).select{|a| a.path.map(&:title).join("/").include?(menue_id)}.first
+          if current_menue
+            master_menue = Goldencobra::Menue.find_by_id(current_menue.path_ids[offset])
+          else
+            return ""
+          end
+        elsif submenue_of_article.present? && submenue_of_article.public_url.present?
+          master_menue = Goldencobra::Menue.active.where(:target => submenue_of_article.public_url).select{|a| a.path.map(&:title).join("/").include?(menue_id)}.first
+        else
+          master_menue = Goldencobra::Menue.active.find_by_pathname(menue_id)
+        end
       else
         master_menue = Goldencobra::Menue.active.find_by_id(menue_id)
       end
       #Check for Permission
-      if params[:frontend_tags] && params[:frontend_tags][:format] && params[:frontend_tags][:format] == "email"
+      if params[:frontend_tags] && params[:frontend_tags].class != String && params[:frontend_tags][:format] && params[:frontend_tags][:format] == "email"
         #Wenn format email, dann gibt es keinen realen webseit besucher
         ability = Ability.new()
       else
@@ -67,7 +84,7 @@ module Goldencobra
     private
 
     def navigation_menu_helper(child, depth, current_depth, options)
-      if params[:frontend_tags] && params[:frontend_tags][:format] && params[:frontend_tags][:format] == "email"
+      if params[:frontend_tags] && params[:frontend_tags].class != String && params[:frontend_tags][:format] && params[:frontend_tags][:format] == "email"
         ability = Ability.new()
       else
         operator = current_user || current_visitor

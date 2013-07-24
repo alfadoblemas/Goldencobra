@@ -1,15 +1,11 @@
 module Goldencobra
   class ArticlesController < Goldencobra::ApplicationController
-    #require ::Rails.root + "app" + "controllers" + "application_controller"
-    #load_and_authorize_resource :class => "Goldencobra::Article"
-    #load_and_authorize_resource
-    #authorize_resource
-
     layout "application"
     before_filter :check_format
     before_filter :get_article, :only => [:show, :convert_to_pdf]
     before_filter :verify_token, :only => [:show]
     before_filter :geocode_ip_address, only: [:show]
+    after_filter :analytics, :only => [:show]
 
     if Goldencobra::Setting.for_key("goldencobra.article.cache_articles") == "true"
       caches_action :show, :cache_path => :show_cache_path.to_proc, :if => proc {@article && @article.present? && is_cachable?  }
@@ -20,14 +16,16 @@ module Goldencobra
       date_cache = Goldencobra::Setting.for_key("goldencobra.article.max_cache_24h") == "true" ? Date.today.strftime("%Y%m%d") : "no_date"
       art_cache = @article ? @article.cache_key : "no_art"
       user_cache = current_user.present? ? current_user.id : "no_user"
-
-      "g/#{I18n.locale.to_s}/#{geo_cache}/#{user_cache}/#{date_cache}/#{params[:article_id]}/#{art_cache}_#{params[:pdf]}_#{params[:frontend_tags]}__#{params[:iframe]}"
+      flash_message = session.present? && session['flash'].present? ? Time.now.to_i : ""
+      auth_code = params[:auth_token].present? ? 'with_auth' : ''
+      "g/#{I18n.locale.to_s}/#{geo_cache}/#{user_cache}/#{date_cache}/#{params[:article_id]}/#{art_cache}_#{params[:pdf]}_#{params[:frontend_tags]}__#{params[:iframe]}#{flash_message}_#{auth_code}"
     end
 
 
     def show
-      ActiveSupport::Notifications.instrument("goldencobra.article.show", :params => params)
-      before_init()
+      #flash[:confirmation] = "test"
+      ActiveSupport::Notifications.instrument("goldencobra.article.show", :params => params)  #Possible Callbacks on start
+      before_init() #Possible Callbacks on start
       if serve_iframe?
         respond_to do |format|
           format.html { render layout: "/goldencobra/bare_layout" }
@@ -59,7 +57,7 @@ module Goldencobra
           end
         end
       elsif should_statically_redirect?
-          redirect_to @article.external_url_redirect
+        redirect_to @article.external_url_redirect
       elsif should_dynamically_redirect?
         redirect_dynamically()
       else
@@ -81,23 +79,23 @@ module Goldencobra
       end
     end
 
-    def convert_to_pdf
-      if @article
-        require 'net/http'
-        require "uri"
-        uid = Goldencobra::Setting.for_key("goldencobra.html2pdf_uid")
-        uri = URI.parse("http://html2pdf.ikusei.de/converter/new.xml?&print_layout=true&uid=#{uid}&url=#{@article.absolute_public_url}#{CGI::escape('?pdf=1')}")
-        logger.debug(uri)
-        http = Net::HTTP.new(uri.host, uri.port)
-        request = Net::HTTP::Get.new(uri.request_uri)
-        response = http.request(request)
-        doc = Nokogiri::HTML(response.body)
-        file = doc.at_xpath("//file-name").text
-        redirect_to "http://html2pdf.ikusei.de#{file}"
-      else
-        render :text => "404", :status => 404
-      end
-    end
+    # def convert_to_pdf
+    #   if @article
+    #     require 'net/http'
+    #     require "uri"
+    #     uid = Goldencobra::Setting.for_key("goldencobra.html2pdf_uid")
+    #     uri = URI.parse("http://html2pdf.ikusei.de/converter/new.xml?&print_layout=true&uid=#{uid}&url=#{@article.absolute_public_url}#{CGI::escape('?pdf=1')}")
+    #     logger.debug(uri)
+    #     http = Net::HTTP.new(uri.host, uri.port)
+    #     request = Net::HTTP::Get.new(uri.request_uri)
+    #     response = http.request(request)
+    #     doc = Nokogiri::HTML(response.body)
+    #     file = doc.at_xpath("//file-name").text
+    #     redirect_to "http://html2pdf.ikusei.de#{file}"
+    #   else
+    #     render :text => "404", :status => 404
+    #   end
+    # end
 
 
     def sitemap
@@ -126,6 +124,7 @@ module Goldencobra
 
     def get_article
       if is_startpage?
+        I18n.locale = :de
         @article = Goldencobra::Article.active.startpage.first
       else
         begin
@@ -209,9 +208,9 @@ module Goldencobra
 
     def serve_fresh_page?
       if request.format == 'application/rss+xml'
-        stale?(last_modified: @article.date_of_last_modified_child, etag: @article.id)
+        stale?(last_modified: @article.date_of_last_modified_child, etag: @article)
       else
-        !is_cachable? || stale?(last_modified: @article.date_of_last_modified_child, etag: @article.id)
+        !is_cachable? || stale?(last_modified: @article.date_of_last_modified_child, etag: @article)
       end
       # If the request is stale according to the given timestamp and etag value
       # (i.e. it needs to be processed again) then execute this block
@@ -322,6 +321,9 @@ module Goldencobra
     end
 
     def is_cachable?
+      if session.present? && session['flash'].present?
+        return false
+      end
       if Goldencobra::Setting.for_key("goldencobra.article.cache_articles") == "true" && @article.cacheable
         #Wenn es einen current_user gibt, dann kein caching
         Devise.mappings.keys.each do |key|
@@ -334,5 +336,11 @@ module Goldencobra
         return false
       end
     end
+
+    def analytics
+      Goldencobra::Tracking.analytics(request, session[:user_location])
+    end
+
+
   end
 end

@@ -1,9 +1,18 @@
 de:
     activerecord:
         models:
+            analytic:
+                one: "Analytic"
+                other: "Analytics"
             article_comment:
                 one: "Kommentar"
                 other: "Kommentare"
+            author:
+                one: "Autor"
+                other: "Autoren"
+            goldencobra/author:
+                one: "Autor"
+                other: "Autoren"
             goldencobra/comment:
                 one: "Kommentar"
                 other: "Kommentare"
@@ -16,6 +25,9 @@ de:
             goldencobra/location:
                 one: "Adresse"
                 other: "Adressen"
+            seo-article:
+                one: "SEO-Artikel"
+                other: "SEO-Artikel"
             article:
                 one: "Artikel"
                 other: "Artikel"
@@ -196,3 +208,8 @@ de:
                 created_at: "Erstellt am"
                 updated_at: "Bearbeitet am"
                 sign_in_count: "Wie oft eingeloggt"
+            goldencobra/author:
+                firstname: "Vorname"
+                lastname: "Nachname"
+                email: "E-Mail"
+                googleplus: "Google Plus URL"
