@@ -2,7 +2,7 @@ User.delete_all
 Goldencobra::Role.delete_all
 admin = Goldencobra::Role.find_or_create_by_name("admin")
 guest = Goldencobra::Role.find_or_create_by_name("guest")
-user = User.create!(:email => "admin@goldencobra.de", :password => "12345", :password_confirmation => "12345", :firstname => "Admin", :lastname => "Goldencobra")
+user = User.create!(:email => "admin@goldencobra.de", :password => "123456789", :password_confirmation => "123456789", :firstname => "Admin", :lastname => "Goldencobra")
 user.roles << admin
 
 Goldencobra::Help.delete_all
