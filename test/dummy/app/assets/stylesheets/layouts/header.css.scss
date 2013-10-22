@@ -1,0 +1,105 @@
+/* Navigation */
+
+nav {
+  max-width: $wrapper-max-width;
+  margin: $wrapper-margin;
+  background-color: $nav_background;
+  border: $nav_border;
+	@include box-shadow($nav-box-shadow);
+
+  &.navbar-inverse {
+    background-color: $nav_background_i;
+  }
+}
+
+.navbar {
+  border-radius: $nav_border_radius;
+  margin-bottom: $nav_margin_bottom;
+}
+
+.navbar-inverse .nav,
+.nav  {
+
+	li a {
+	  color: $nav_a_color;
+	  text-transform: $nav_a_text_transform;
+	  font-weight: $nav_a_font_weight;
+	  letter-spacing: $nav_a_letter_spacing;
+	  font-size: $nav_a_font_size;
+	}
+
+	> li > a {
+		display: block;
+	  height: $nav_height;
+	  padding: $nav_a_padding;
+	  line-height: $nav_line_height;
+	  @include transition($nav_a_transition);
+	}
+
+	li a:hover,
+	li a:focus {
+	  color: $nav_a_hover_color;
+	  text-transform: $nav_a_text_transform;
+	  font-weight: $nav_a_font_weight;
+	}
+
+} // end .nav
+
+
+/* Nav Mobile */
+.navbar-toggle {
+  background-color: $navbar_toggle_background;
+  @include border-radius($navbar_toggle_radius);
+}
+
+.navbar-toggle .icon-bar {
+  background: $icon-bar_background;
+}
+
+/* Logo */
+.navbar-brand {
+  padding: $brand_padding;
+}
+
+
+/* Slider or Stage */
+.carousel {
+  height: $slider_height;
+  max-width: $slider_max_width;
+  margin: $slider_margin;
+  @include box-shadow($slider_box_shadow);
+}
+
+.item,
+.active,
+.carousel-inner {
+  height: 100%;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.carousel-indicators {
+    bottom: $slider_indicators_bottom;
+}
+
+.carousel-caption {
+  left: $slider_caption_left;
+  right: $slider_caption_right;
+  background-color: $slider_caption_background;
+  padding: $slider_caption_padding;
+  text-align: $slider_caption_align;
+  display: inline-block;
+}
+
+.carousel-caption h1{
+  color: #4CB058;
+  text-shadow: none;
+  font-size: 2.0em;
+  text-transform: uppercase;
+  margin: 15px 0 10px;
+}

@@ -1,0 +1,106 @@
+/* Aside */
+
+aside {
+
+  h3 {
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $aside_list_h_a_color;
+
+  }
+
+  /* Default */
+  > section {
+    margin: $aside_section_margin;
+  }
+
+  .aside-list,
+  .search {
+    @include box-shadow($aside_list_shadow);
+  }
+
+  /* Avertising */
+  .content-ad img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 1023px) {
+      .content-ad {
+        display:none;
+      }
+    }
+
+  .aside-list h3 {
+    display: block;
+    height: $aside_list_h_height;
+    margin: $aside_list_h_margin;
+    font-size: $aside_list_h_font_size;
+    font-weight: $aside_list_h_font_weight;
+    text-transform: $aside_list_h_text_transform;
+    letter-spacing: $aside_list_h_letter_spacing;
+
+    a {
+      display: block;
+      height: $aside_list_h_height;
+      padding: $aside_list_h_a_padding;
+      background-color: $aside_list_h_a_background;
+      color: $aside_list_h_a_color;
+      line-height: $aside_list_h_height;
+      @include transition($aside_list_h_a_transition);
+
+      &:hover{
+        background-color: $aside_list_h_a_background_hover;
+        text-decoration: none;
+        color: $aside_list_h_a_hover_color;
+      }
+    }
+
+  }// ..aside-list h3
+}
+
+aside .search .form-control,
+aside .search .btn {
+  height: $aside_search_height;
+}
+
+aside .search .form-control {
+  padding-top: 10px;
+}
+
+aside .search .btn {
+  width: $aside_search_btn;
+  border-bottom: none;
+  font-size: 1.3em;
+  color: rgba(0,0,0,0.2);
+  line-height: 1em;
+
+  &:hover { border-bottom: none;}
+
+  &:after {
+    width: 0; 
+    height: 0; 
+    position: absolute;
+    display: block;
+    content: "";
+    left: -$aside_search_btn_arrow_size;
+    border-top: $aside_search_btn_arrow_size solid transparent;
+    border-bottom: $aside_search_btn_arrow_size solid transparent; 
+    border-right: $aside_search_btn_arrow_size solid $btn_primary_background;
+    @include transition(border-color $transition_default_time);
+    margin-top: -20px;
+  }
+
+  &:hover:after {
+    border-right: $aside_search_btn_arrow_size solid $btn_primary_background_hover;
+  }
+}
+
+.ul-list h4 {
+  font-size: $aside_list_li_h_font_size;
+  margin: $aside_list_li_h_margin;
+  color: $list_h_color_default;
+}

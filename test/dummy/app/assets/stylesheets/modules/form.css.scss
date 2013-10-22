@@ -1,0 +1,18 @@
+/* Forms */
+.form-control,
+.btn {
+  @include border-radius($input_border_radius);
+  border: $input_border;
+}
+
+.form-control {
+  font-size: $input_font_size;
+  //padding-top: 10px;
+  //@include transition($input_transition);
+}
+
+.form-control:focus {
+  box-shadow: none;
+  background-color: $white;
+  color: $darkgrey;
+}

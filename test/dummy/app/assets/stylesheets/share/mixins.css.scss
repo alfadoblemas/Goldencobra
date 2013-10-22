@@ -1,0 +1,35 @@
+/* Mixins
+**********************************
+**********************************
+**********************************/
+
+/* Defaults
+**********************************
+**********************************/
+@mixin clear {
+	content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+  
+
+@mixin arrow {
+	width: 0; 
+  height: 0; 
+}
+
+@mixin arrow-right($size, $color) {
+	@include arrow();
+	border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-left: $size solid $color;
+}
+
+@mixin arrow-left($size, $color) {
+	@include arrow();
+	border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-right: $size solid $color;
+}

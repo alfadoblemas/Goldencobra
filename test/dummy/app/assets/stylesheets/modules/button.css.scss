@@ -1,0 +1,36 @@
+/* Default */
+.btn,
+.btn-primary {
+  background-color: $btn_primary_background;
+  color: $btn_color;
+  font-weight: $btn_font_weight;
+  text-transform: $btn_text_transform;
+  border-bottom: 2px solid darken($btn_primary_background,8%);
+  @include transition($btn_transition);
+  @include box-shadow($btn_shadow);
+  @include border-radius($btn_border_radius);
+  padding: $btn_default_padding;
+
+  &:hover {
+    background-color: $btn_primary_background_hover;
+    color: $btn_color;
+    border-bottom: 2px solid darken($btn_primary_background_hover,8%);
+  }
+}
+
+.input-group .btn {
+  @include box-shadow(none);
+}
+
+.btn-secondary {
+  background-color: $btn_secondary_background;
+  border-bottom: 2px solid darken($btn_secondary_background,8%);;
+
+  &:hover {
+    background-color: $btn_secondary_background_hover;
+    border-bottom: 2px solid darken($btn_secondary_background_hover,8%);
+  }
+}
+
+.btn-lg { padding: $btn_large_padding}
+.btn-sm { padding: $btn_samll_padding}
