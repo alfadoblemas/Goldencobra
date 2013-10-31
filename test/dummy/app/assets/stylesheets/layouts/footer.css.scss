@@ -2,9 +2,65 @@ footer {
   background-color: $footer_background;
   margin: $footer_margin;
   padding: $footer_padding;
+  padding-top: 0;
+  color: #46505c;
+
 }
 
-.sponsor {
-	text-align: center;
+.footer-first {
+	background-color: $footer_first_background;
+	color: $white;
+	padding: 30px 0 25px;
+
+	.row { text-align: center;}
+
+	a { 
+		color: $white;
+		//text-decoration: none;
+		display: inline-block;
+		font-family: $font_text_default;
+		font-weight: 300;
+
+
+		&:hover span {
+			text-decoration: none !important;
+		}
+	}
+
+	.icon-facebook,
+	.icon-googleplus {
+    padding: 0 20px;
+	}
+
+	.icon-facebook:before,
+	.icon-googleplus:before {
+    font-size: 1.6em;
+    margin-right: 5px;
+    width: 50px;
+    height: 50px;
+    @include border-radius(25px);
+    background-color: $white;
+     display: inline-block;
+    font-size: 1.6em;
+    height: 50px;
+    line-height: 53px;
+    margin-right: 5px;
+    width: 50px;
+    color: $red;
+
+	}
+}
+
+.footer-second {
+	background-color: $footer_second_background;
+	.row { text-align: center;}
+	padding: 20px 0;
+	font-weight: 300;
+
+}
+
+.footer-logo {
+	width: 170px;
+	height: auto;
 	margin-bottom: 10px;
 }

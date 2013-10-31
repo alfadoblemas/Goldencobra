@@ -11,3 +11,44 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require bootstrap
+//= require masonry.pkgd.min
+
+
+$(function(){
+
+  // Slider
+  $('.carousel').carousel({
+    interval: 5000
+  });
+
+  // Timeline
+  // *********************************
+  // *********************************
+
+  // for timeline the right position for items
+  var $container = $('.timeline-list');
+  
+  // initialize
+  $container.masonry({
+    itemSelector: '.tmi'
+  });
+  timelineLeftRight($container);
+
+  // activates tooltips for social links
+  $('.tooltip-social').tooltip({
+    selector: 'a[data-toggle=tooltip]'
+  });
+
+});
+
+function timelineLeftRight($container) {
+  $.when($container.masonry()).done(function(x) { 
+    $.each($(x).children(), function() {
+      if($(this).css('left').split('px')[0] == 0) {
+        $(this).addClass('tmi-left');
+      } else {
+        $(this).addClass('tmi-right');
+      }
+    });
+  });
+}

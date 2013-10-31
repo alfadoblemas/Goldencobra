@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/header_meta" %>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <%= render partial: "/layouts/header" %>
+
+
+  <!-- 
+    CONTENT PAGE
+  -->
+  <div class="wrapper">
+    <div class="container content-page">
+      <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Library</a></li>
+          <li class="active">Data</li>
+        </ol>
+
+        <!-- 
+          Content
+        -->
+        <div class="content col-md-8">
+          <div class="container">
+            <!-- 
+              Content Startseite Title, Summary, Text
+            -->
+            <div class="row">
+              <h1 class="page-header"><%= yield(:article_title) %></h1>
+              <% if yield(:article_summary).present? %>
+              <div class="summary"><%= yield(:article_summary) %></div>
+              <% end %>
+              <% if yield(:article_content).present? %>
+                <p><%= yield(:article_content) %></p>
+              <% end %>
+            </div><!-- /.row -->
+
+            <!-- 
+              Headings
+            -->
+            <div class="row">
+              <h3>Headings</h3><br />
+              <table class="table table-headings">
+                <tbody>
+                  <tr>
+                    <td><h1>h1. Bootstrap heading</h1></td>
+                    <td>Semibold 36px</td>
+                  </tr>
+                  <tr>
+                    <td><h2>h2. Bootstrap heading</h2></td>
+                    <td>Semibold 30px</td>
+                  </tr>
+                  <tr>
+                    <td><h3>h3. Bootstrap heading</h3></td>
+                    <td>Semibold 24px</td>
+                  </tr>
+                  <tr>
+                    <td><h4>h4. Bootstrap heading</h4></td>
+                    <td>Semibold 18px</td>
+                  </tr>
+                  <tr>
+                    <td><h5>h5. Bootstrap heading</h5></td>
+                    <td>Semibold 14px</td>
+                  </tr>
+                  <tr>
+                    <td><h6>h6. Bootstrap heading</h6></td>
+                    <td>Semibold 12px</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div><!-- /.row -->
+
+            <!-- 
+              Tables
+            -->
+            <div class="row">
+              <h3>Tables</h3>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+              <br />
+              <h4>Table Striped (.table-striped)</h4>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table><br />
+              <h4>Table Hover (.table-hover)</h4>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 
+              Buttons
+            -->
+            <div class="row">
+              <h3>Buttons</h3>
+              <button type="button" class="btn btn-default">Default</button>
+              <button type="button" class="btn btn-primary">Primary</button>
+              <button type="button" class="btn btn-success">Success</button>
+              <button type="button" class="btn btn-info">Info</button>
+              <button type="button" class="btn btn-warning">Danger</button>
+              <button type="button" class="btn btn-danger">Warning</button>
+              <button type="button" class="btn btn-link">Link Button</button>
+            </div><!-- /.row -->
+            <br />
+            <div class="row">
+              <h4>Button Size</h4>
+              <p>
+                <button type="button" class="btn btn-primary btn-huge">
+                  huge button
+                </button>
+                <button type="button" class="btn btn-default btn-huge">
+                  huge button
+                </button>
+              </p>
+               <p>
+                <button type="button" class="btn btn-primary btn-lg">
+                  Large button
+                </button>
+                <button type="button" class="btn btn-default btn-lg">
+                  Large button
+                </button>
+              </p>
+              <p>
+                <button type="button" class="btn btn-primary">
+                  Default button
+                </button>
+                <button type="button" class="btn btn-default">
+                  Default button
+                </button>
+              </p>
+              <p>
+                <button type="button" class="btn btn-primary btn-sm">
+                  Small button
+                </button>
+                <button type="button" class="btn btn-default btn-sm">
+                  Small button
+                </button>
+              </p>
+            </div>
+            <br />    
+
+            <div class="row">
+              <h3>Tabbed Content</h3><br />              
+              <ul id="myTab" class="nav nav-tabs">
+                <li class="active">
+                  <a href="#service-one" data-toggle="tab">Service One</a>
+                </li>
+                <li>
+                  <a href="#service-two" data-toggle="tab">Service Two</a>
+                </li>
+                <li>
+                  <a href="#service-three" data-toggle="tab">Service Three</a>
+                </li>
+                <li>
+                  <a href="#service-four" data-toggle="tab">Service Four</a>
+                </li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="service-one">
+                  <i class="icon-gear pull-left icon-4x"></i>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc placerat diam quis nisl vestibulum dignissim. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam placerat nunc ut tellus tristique, non posuere neque iaculis. Fusce aliquet dui ut felis rhoncus, vitae molestie mauris auctor. Donec pellentesque feugiat leo a adipiscing. Pellentesque quis tristique eros, sed rutrum mauris.</p>
+                </div>
+                <div class="tab-pane fade" id="service-two">
+                  <i class="icon-gears pull-left icon-4x"></i>
+                  <p>Nam fringilla quis enim in eleifend. Suspendisse sed lectus mauris. Nam commodo, arcu et posuere placerat, tellus tortor dignissim eros, sit amet eleifend urna lorem sit amet nulla. Praesent sem nibh, vulputate nec congue eu, dapibus vitae augue. Suspendisse cursus urna sit amet metus porttitor, in pharetra quam feugiat. Etiam tempus euismod nulla eget pellentesque.</p>
+                </div>
+                <div class="tab-pane fade" id="service-three">
+                  <i class="icon-magic pull-left icon-4x"></i>
+                  <p>Vestibulum laoreet molestie urna ac vehicula. Phasellus laoreet semper ipsum ac gravida. Sed in varius tortor. Nullam blandit in neque quis aliquet. Fusce volutpat pellentesque sem non convallis. Suspendisse sit amet magna pulvinar, gravida mauris eu, tincidunt massa. Nam lectus mi, viverra non quam nec, mollis malesuada dolor. Vivamus hendrerit nunc interdum turpis egestas, a lobortis odio consequat. Fusce posuere purus quis ligula faucibus lacinia. Curabitur sit amet congue dolor. Duis dapibus hendrerit nunc et gravida. Phasellus mollis, lectus quis ornare aliquam, arcu orci posuere lectus, vehicula bibendum sem ante quis lacus.</p>
+                </div>
+                <div class="tab-pane fade" id="service-four">
+                  <i class="icon-beaker pull-left icon-4x"></i>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc placerat diam quis nisl vestibulum dignissim. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam placerat nunc ut tellus tristique, non posuere neque iaculis. Fusce aliquet dui ut felis rhoncus, vitae molestie mauris auctor. Donec pellentesque feugiat leo a adipiscing. Pellentesque quis tristique eros, sed rutrum mauris.</p>
+                </div>
+              </div>
+            </div><!-- /.row -->
+            <br />
+
+            <div class="row">
+              <h3>Timeline</h3><br />
+              <%= render partial: "/layouts/partials/timeline" %>
+            </div>
+
+            <div class="row">
+              <h3>Alerts</h3><br />
+              <div class="alert alert-default"><strong>Hinweis: </strong> Rabattaktion nur bis Mitternacht. <a href="#" class="alert-link">Auf zum Sale!</a></div>
+              <div class="alert alert-success"><strong>Vielen Dank.</strong>Ihre Anmeldung war erfolgreich.</div>
+              <div class="alert alert-info"><strong>Neu!</strong> Neues Update für Golden Cobra</div>
+              <div class="alert alert-warning"><strong>Warnung!</strong> Sie haben zu viele Zeichen eingegeben</div>
+              <div class="alert alert-danger"><strong>Achtung!</strong> Etwas ist schief gelaufen </div>
+              <h4>Alert mit Schließen-Button</h4>
+              <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>Achtung!</strong> Lorem Ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </div>
+              <h4>Alert mit Link</h4>
+              <div class="alert alert-success">
+                <strong>Achtung!</strong> Lorem Ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                <a href="#" class="alert-link">Lorem Ipsum Lorem</a>
+              </div>
+            </div>
+
+            <div class="row">
+              <nav class="navbar navbar-default" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Brand</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+          <li class="divider"></li>
+          <li><a href="#">One more separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">Link</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+            </div>
+          </div><!-- /.container -->  
+        </div><!-- /.col-md-8 -->
+
+        <!-- 
+          Aside
+        -->
+        <aside class="col-md-4">
+          <!-- 
+            Aside List with thumbnail
+          -->
+          <section class="aside-list">
+            <div class="head">
+              <h3><a href="">News with Thumbnails</a></h3>
+            </div>
+            <ul class="ul-list with-thumb">
+              <li>
+                <a>
+                  <img src="http://www.placehold.it/100x66/C1CFD9/E9F0F4" class="img-thumb">
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr...</p>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <img src="http://www.placehold.it/100x66/C1CFD9/E9F0F4" class="img-thumb">
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr...</p>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <img src="http://www.placehold.it/100x66/C1CFD9/E9F0F4" class="img-thumb">
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr...</p>
+                </a>
+              </li>
+            </ul>
+          </section>
+          
+          <!-- Aside List -->
+          <section class="aside-list">
+            <div class="head">
+              <h3><a href="">News</a></h3>
+            </div>
+            <ul class="ul-list">
+              <li>
+                <a>
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ...</p>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ...</p>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <h4>Headline</h4>
+                  <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ...</p>
+                </a>
+              </li>
+            </ul>
+          </section>
+          <section>
+          	<ul class="nav nav-tabs" id="myTab">
+            	<li class="active">
+            		<a data-toggle="tab" href="#service-one">Service One</a>
+            	</li>
+            	<li class="">
+            		<a data-toggle="tab" href="#service-two">Service Two</a>
+            	</li>
+          	</ul>
+	          <div class="tab-content" id="myTabContent">
+	            <div id="service-one" class="tab-pane fade active in">
+	              <i class="icon-gear pull-left icon-4x"></i>
+	              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc placerat diam quis nisl vestibulum dignissim. In hac habitasse platea dictumst. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam placerat nunc ut tellus tristique, non posuere neque iaculis. Fusce aliquet dui ut felis rhoncus, vitae molestie mauris auctor. Donec pellentesque feugiat leo a adipiscing. Pellentesque quis tristique eros, sed rutrum mauris.</p>
+	            </div>
+	            <div id="service-two" class="tab-pane fade">
+	              <i class="icon-gears pull-left icon-4x"></i>
+	              <p>Nam fringilla quis enim in eleifend. Suspendisse sed lectus mauris. Nam commodo, arcu et posuere placerat, tellus tortor dignissim eros, sit amet eleifend urna lorem sit amet nulla. Praesent sem nibh, vulputate nec congue eu, dapibus vitae augue. Suspendisse cursus urna sit amet metus porttitor, in pharetra quam feugiat.<p>
+	            </div>
+	          </div>
+          </section>
+          
+
+          <!-- 
+            Aside only text
+          -->
+          <%= yield(:sidebar) %>
+          <%= render_article_widgets(tagged_with: "sidebar", default: true) %>
+          <%= render_article_widgets(tagged_with: "sidebar") %>
+        </aside>
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+  </div><!-- /#wrapper -->
+
+  <%= render partial: "/layouts/footer" %>
+</body>
+</html>

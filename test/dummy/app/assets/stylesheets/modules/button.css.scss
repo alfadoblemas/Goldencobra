@@ -1,20 +1,20 @@
-/* Default */
 .btn,
-.btn-primary {
-  background-color: $btn_primary_background;
-  color: $btn_color;
+button .btn {
+  letter-spacing: $btn_letter_spacing;
   font-weight: $btn_font_weight;
   text-transform: $btn_text_transform;
-  border-bottom: 2px solid darken($btn_primary_background,8%);
-  @include transition($btn_transition);
-  @include box-shadow($btn_shadow);
-  @include border-radius($btn_border_radius);
   padding: $btn_default_padding;
-
+  @include transition($btn_transition);
+  @include border-radius($btn_border_radius);
+  
   &:hover {
-    background-color: $btn_primary_background_hover;
-    color: $btn_color;
-    border-bottom: 2px solid darken($btn_primary_background_hover,8%);
+    margin-top: -5px;
+    @include box-shadow($btn_shadow);
+  }
+
+  &:focus {
+    margin-top: 0;
+    @include box-shadow(none);
   }
 }
 
@@ -22,15 +22,36 @@
   @include box-shadow(none);
 }
 
-.btn-secondary {
-  background-color: $btn_secondary_background;
-  border-bottom: 2px solid darken($btn_secondary_background,8%);;
+.btn-link{
+  background-color: transparent;
+  color: $red;
+  border-bottom: none;
 
   &:hover {
-    background-color: $btn_secondary_background_hover;
-    border-bottom: 2px solid darken($btn_secondary_background_hover,8%);
+    margin-top: 0;
+    border-bottom: none;
+    background-color: transparent;
+    color: $link_color_hover;
+    text-decoration: underline;
+    @include box-shadow(none);
   }
 }
 
-.btn-lg { padding: $btn_large_padding}
-.btn-sm { padding: $btn_samll_padding}
+
+.btn-secondary,
+.btn-success  { @include btn($btn_success_background, $btn_success_color);}
+.btn-default  { @include btn($btn_default_background,$btn_default_color);}
+.btn-primary  { @include btn($btn_primary_background,$btn_primary_color);}
+.btn-info     { @include btn($btn_info_background, $btn_info_color);}
+.btn-warning  { @include btn($btn_warning_background, $btn_warning_color);}
+.btn-danger   { @include btn($btn_danger_background, $btn_danger_color);}
+
+.btn-huge { font-size: 1.5em; padding: $btn_large_padding}
+.btn-lg   { padding: $btn_large_padding}
+.btn-sm   { padding: $btn_samll_padding}
+
+
+
+
+
+

@@ -1,3 +1,11 @@
+.breadcrumb {
+  background-color: transparent;
+  @include border-radius(0);
+  font-size: 0.9em;
+  margin-top: -10px;
+}
+
+
 .ul-list {
   background-color: $list_background_default;
   margin: $list_margin_default;

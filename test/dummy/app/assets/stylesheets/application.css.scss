@@ -1,3 +1,5 @@
+@charset "UTF-8"; 
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -43,3 +45,6 @@
 @import "modules/slider";
 @import "modules/teaser";
 @import "modules/list";
+@import "modules/table";
+@import "modules/nav";
+@import "modules/alerts";

@@ -33,3 +33,15 @@
   border-bottom: $size solid transparent;
   border-right: $size solid $color;
 }
+
+@mixin btn($bg, $color) {
+  background-color: $bg;
+  border-bottom: 2px solid darken($bg,5%);
+  color: $color;
+
+  &:hover {
+    background-color: darken($bg,5%);
+    border-bottom: 2px solid darken($bg,10%);
+    color: $color;
+  }
+}

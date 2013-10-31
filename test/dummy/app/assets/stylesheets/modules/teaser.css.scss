@@ -1,189 +1,107 @@
-/* Teaser Default */
-.teaser-list .thumbnail,
-.timeline-list .thumbnail {
-  margin-bottom: $teaser_margin_bottom;
-  padding: $teaser_padding;
-  border: $teaser_border;
-  @include border-radius($teaser_radius);
-  @include box-shadow($teaser_box_shadow);
-
-  > img {
-    width: 100%;
-  }
-}
-
-.thumbnail .caption {
-  color: $teaser_caption_color;
-  padding: $teaser_caption_padding;
+/* Portfolio Item */
+.portfolio-item {
+  margin-bottom: $portfolio_item_margin_bottom;
 
   h3 {
-    margin-top: $teaser_caption_h_margin_top;
-    text-transform: $teaser_caption_h_text_tranform;
-    color: $teaser_caption_h_color;
-    font-size: $teaser_caption_h_font_size;
-    font-weight: $teaser_caption_h_font_weight;
-  }
+		color: $portfolio_item_h_color;
+	}
 
-  p {
-    margin: $teaser_caption_p_margin;
-    letter-spacing: $teaser_caption_p_letter_spacing;
-    line-height: $teaser_caption_p_line_height;
+  a,
+  a:hover { text-decoration: none}
+  > a:hover { 
+  	
+  	margin-top: 10px;
   }
 }
 
+.portfolio-inner {
+	background-color: $portfolio_item_inner_background;
+	padding: $portfolio_item_inner_padding;
+	@include transition(all $transition_default_time);
 
-/* Teaser Timeline */
-.timeline-list {
-  margin-top: $timeline_list_margin_top;
-  padding-top: $timeline_list_padding_top;
-  background: $timeline_img_line; 
+	h3 {
+		margin: $portfolio_item_h_margin;
+	}
 
-  .col-md-6 {
-    &:first-child{ margin-top: $timeline_first_element_margin_top;}
-  } // Alle ungeraden Elemnte nach rechts
- 
-  
+	p { margin: $portfolio_item_p_margin;}
+}
 
-  .thumbnail .head {
-    padding: $timeline_head_padding;
-    border-bottom: $timeline_head_border_bottom;
+.portfolio-item:hover {
+	.portfolio-inner {
+		@include box-shadow($shadow_default);
+	}
+}
 
-    &:after { @include clear();}
+.related-item {
+	margin-bottom: 30px;
+}
 
-    span { display: block;}
+.thumbnail {
+	padding: 0;
+	@include border-radius(0);
+	border: none;
+	margin-bottom: 30px;
 
-    .profile-image {
-      float: $timeline_pi_float;
-      margin-right: 10px;
+	.caption {
+		background-color: $blue;
+		color: $white;
+		margin-top: -1px;
 
-      img {
-        width: $timeline_pi_img_size;
-        height: $timeline_pi_img_size;
-        @include border-radius($timeline_pi_border_radius);
-      }
-    }
+		.kicker {
+			color: $darkgrey;
+			opacity: 0.3;
+		}
+		h3,p { color: $white}
+		h3 { margin: 0 0 10px;}
 
-    .profile-name {
-      margin: $timeline_pn_margin;
-      color: $timeline_pn_color;
-      font-size: $timeline_pn_font_size;
-      text-transform: $timeline_pn_text_transform;
-      font-weight: $timeline_pn_text_weight;
-      letter-spacing: $timeline_pn_text_letter_spacing;
-    }
+		p { 
+			line-height: 1.2em;
+			margin-bottom: 0px;
+		}
 
-    .post-time {
-      margin: $timeline_pt_margin;
-      color: $timeline_pt_color;
-      font-size: $timeline_pt_font_size;
-    }
+	}
 
-  }// .thumbnail .head
+	&.important .caption {
+		background-color: lighten($red, 5%);
 
+		.arrow { border-color: $red;}
+	}
 
-  .thumbnail h3.status {
-    color: $timeline_status_color;
-    font-size: $timeline_status_font_size;
-    font-weight: $timeline_status_font_weight;
-    text-transform: $timeline_status_text_transform;
-    line-height: $timeline_status_line_height;
-    letter-spacing: normal;
-  }
+	&.nice .caption {
+		background-color: lighten(#7bc1a1, 5%);
+		.arrow { border-color: lighten(#7bc1a1, 5%)}
+	}
 
-  .stat { 
-    border-top: 1px solid $lightgreen;
-    text-align: center;
-    padding: 5px;
-    color: $superlightgrey;
-
-    [class*="icon-"] {
-      font-size: 0.8em;
-      margin-right: 5px;
-    }
-  }
-
-}// timeline-list
+	&.start .caption {
+		background-color: $darkgrey;
+		text-align: center;
+	}
+}
 
 
 /* Arrows in timline */
 .timeline-list {
-
   .time-pos {
     width: 15px;
     height: 7px;
     display: block;
     position: absolute;
     margin-top: 27px;
+    display: none;
   }
 
-  .arrow-right,
-  .arrow-left {
+  .arrow {
     position: absolute;
   }
 
-  .arrow-right { 
-    @include arrow-right($timeline_arrow_size, $timeline_arrow_timeline_color);
+  .arrow { 
     left: 0;
     margin-top: 1px;
+    @include arrow-right(10px, $darkgrey);
   }
 
-  .arrow-left { 
-    @include arrow-left($timeline_arrow_size, $timeline_arrow_teaser_color);
-    right: 0;
-  }
-  .col-md-6:nth-child(even) .time-pos{ left: 0;}
-  .col-md-6:nth-child(odd) .time-pos{ right: 0;}
-  .col-md-6:nth-child(odd) .time-pos .arrow-right { border-left: $timeline_arrow_size solid $timeline_arrow_teaser_color;}
-  .col-md-6:nth-child(odd) .time-pos .arrow-left {border-right: $timeline_arrow_size solid $timeline_arrow_timeline_color;}
+  .col-md-6.tmi-right .time-pos { left: -5px; }
+  .col-md-6.tmi-left .time-pos { right: 0; }
+  .col-md-6.tmi-right .time-pos .arrow { @include arrow-left(10px, $darkgrey); border-left-color: transparent; }
+ 
 }
-
-.load-timeline {
-  > div { text-align: center;}
-
-  a { 
-    text-decoration: underline;
-    color: $lightgrey;
-
-    &:hover {
-      color: $green;
-    }
-  }
-}
-
-
-/* Responsive Styles */
-@media (max-width: 1023px) {
-
-  .timeline-list {
-    background-position: left top;
-  }
-
-}
-
-/* Responsive Styles */
-@media (max-width: 767px) {
-
-  .timeline-list {
-    background-position: 15px top;
-  }
-
-  .timeline-list .col-md-6{
-    margin-left: 15px;
-  }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

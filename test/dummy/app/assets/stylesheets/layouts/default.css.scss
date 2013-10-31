@@ -17,9 +17,10 @@ body {
   letter-spacing: $letter_spacing_default;
 }
 
-a {
-  color: $green;
-}
+
+/* Links */
+a { color: $link_color_default;}
+a:hover { color: $link_color_hover;}
 
 a:focus {
   outline: none !important;
@@ -32,7 +33,11 @@ h1, h2, h3, h4 {
   color: $darkgrey;
 }
 
-#wrapper {
+hr { border-color: $border_color_default;}
+
+p { color: $article_color_default;}
+
+.wrapper {
   max-width: $wrapper_max_width;
   margin: $wrapper_margin;
   min-width: $wrapper_min_width;
@@ -50,6 +55,9 @@ h1, h2, h3, h4 {
 .kicker {
   font-weight: 600;
   font-size: 0.9em;
+  color: $darkblue;
+
+  &:after { content: " »";}
 }
 
 
@@ -154,7 +162,9 @@ h1, h2, h3, h4 {
 
 
 
-
+.summary {
+  color: $darkgrey;
+}
 
 
 
@@ -164,12 +174,15 @@ h1, h2, h3, h4 {
 
 
 
-p {
-  color: $lightgrey;
-}
+
 
 
 #test { max-width: 1170px; }
     .itemx { width: 40%; height: 230px; background: #00ff00; border: 1px solid #fff; }
     .itemx.w2 { background: #ff0000; height: 510px; }
 
+
+.related-projects {
+  background-color:$white;
+  padding: 30px 0;
+}

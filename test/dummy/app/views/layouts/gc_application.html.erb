@@ -9,54 +9,37 @@
   <!-- HEADER -->
   <%= render partial: "/layouts/header" %>
 
-  <!-- STAGE -->
-  <%= render partial: "/layouts/header_slider" %>
 
- 	
-<div class="wrapper section start-article">
-
-  <div class="container">
-
-    <div class="row">
-      <div class="col-lg-4 col-md-4">
-        <h3><i class="icon-ok-circle"></i>Bootstrap 3 Built</h3>
-        <p>The 'goldencobra' website template by <a href="http://www.ikusei.de">ikusei GmbH</a> is built with <a href="http://getbootstrap.com">Bootstrap 3</a>. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes.</p>
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <h3>Goldencobra</h3>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <h3>Many Page Options</h3>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-      </div>
-    </div><!-- /.row -->
-
-  </div><!-- /.container -->
-
-</div>
-
-<!-- 
+  <!-- 
     CONTENT PAGE
   -->
   <div class="wrapper">
     <div class="container content-page">
       <div class="row">
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Library</a></li>
+          <li class="active">Data</li>
+        </ol>
+
         <!-- 
           Content
         -->
         <div class="content col-md-8">
-
-          <!-- 
-            Content Startseite Title, Summary, Text
-          -->
-          <h1 class="page-header"><%= yield(:article_title) %></h1>
-          <% if yield(:article_summary).present? %>
-            <div class="summary"><%= yield(:article_summary) %></div>
-          <% end %>
-          <% if yield(:article_content).present? %>
-            <p><%= yield(:article_content) %></p>
-          <% end %>          
+          <div class="container">
+            <!-- 
+              Content Startseite Title, Summary, Text
+            -->
+            <div class="row">
+              <h1 class="page-header"><%= yield(:article_title) %></h1>
+              <% if yield(:article_summary).present? %>
+              <div class="summary"><%= yield(:article_summary) %></div>
+              <% end %>
+              <% if yield(:article_content).present? %>
+                <p><%= yield(:article_content) %></p>
+              <% end %>
+            </div><!-- /.row -->
+          </div><!-- /.container -->  
         </div><!-- /.col-md-8 -->
 
         <!-- 
@@ -66,7 +49,7 @@
           <!-- 
             Aside List with thumbnail
           -->
-          <!--<section class="aside-list">
+          <section class="aside-list">
             <div class="head">
               <h3><a href="">News with Thumbnails</a></h3>
             </div>
@@ -93,7 +76,7 @@
                 </a>
               </li>
             </ul>
-          </section>-->
+          </section>
           
           <!-- Aside List -->
           <section class="aside-list">
@@ -155,6 +138,5 @@
   </div><!-- /#wrapper -->
 
   <%= render partial: "/layouts/footer" %>
-
 </body>
 </html>

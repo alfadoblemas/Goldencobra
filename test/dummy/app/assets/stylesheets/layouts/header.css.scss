@@ -43,6 +43,20 @@ nav {
 	  font-weight: $nav_a_font_weight;
 	}
 
+  .dropdown-menu {
+    left: 0;
+    //background-color: $darkgrey;
+    border: none;
+    @include border-radius(0);
+    @include box-shadow(0 6px 12px rgba(38,45,53,0.3));
+    padding: 0;
+
+    li a {
+      padding: 7px 10px;
+      &:hover { background-color: $red;}
+    }
+  }
+
 } // end .nav
 
 
@@ -54,6 +68,13 @@ nav {
 
 .navbar-toggle .icon-bar {
   background: $icon-bar_background;
+}
+
+.navbar-inverse .navbar-nav > .open > a, 
+.navbar-inverse .navbar-nav > .open > a:hover, 
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: $nav_a_focus_background;
+    color: #FFFFFF;
 }
 
 /* Logo */

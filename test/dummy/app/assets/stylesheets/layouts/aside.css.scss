@@ -95,7 +95,7 @@ aside .search .btn {
   }
 
   &:hover:after {
-    border-right: $aside_search_btn_arrow_size solid $btn_primary_background_hover;
+    border-right: $aside_search_btn_arrow_size solid $red;
   }
 }
 

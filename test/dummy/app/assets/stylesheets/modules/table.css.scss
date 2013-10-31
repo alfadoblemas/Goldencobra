@@ -1,0 +1,29 @@
+/* Tables */
+thead > tr > th {
+	color: $red;
+	border-bottom-color: lighten($border_color_default,5%) !important;
+}
+
+.table thead > tr > th, 
+.table tbody > tr > th, 
+.table tfoot > tr > th, 
+.table thead > tr > td, 
+.table tbody > tr > td, 
+.table tfoot > tr > td {
+	border-top-color: lighten($border_color_default,5%) !important;
+}
+
+
+.table-headings {
+	td { vertical-align: middle !important;}
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, 
+.table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: darken($bodycolor,2%);
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+	background-color: darken($bodycolor,4%)
+}

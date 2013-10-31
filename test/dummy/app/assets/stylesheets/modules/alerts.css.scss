@@ -1,0 +1,37 @@
+@mixin alert-v($bg,$color) {
+  border-left-color: $bg;
+  background: lighten($bg, 10%);
+  color: $color;
+}
+
+.alert,
+.alert-default {
+  border: none;
+  border-left: 5px solid $lightgrey;
+  background: $white;
+  @include border-radius(0);
+
+  .close {
+    color: $white;
+    opacity: 1;
+    @include text-shadow(none);
+    @include transition(all $transition_default_time);
+    top: 2px;
+
+    &:hover {
+      @include transform(scale(1.5));
+    }
+  }
+
+  .alert-link {
+    color: rgba(0,0,0,0.5);
+  }
+  
+}
+
+.alert-default .alert-link { color: $red;}
+
+.alert-success { @include alert-v($green, $white);}
+.alert-warning { @include alert-v($yellow, $white);}
+.alert-info { @include alert-v($blue, $white);}
+.alert-danger { @include alert-v($red, $white);}

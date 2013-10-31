@@ -1,73 +1,18 @@
 .content {
 
-	.ul-list {
-		margin-bottom: 30px;
-		box-shadow: 0 13px 8px -10px rgba(0, 0, 0, 0.1);
-
-		h4 {
-			text-transform: uppercase;
-		}
-
-	}
-
-
-	.profile-context {
-		background: #fff;
-		@include box-shadow (0 13px 8px -10px rgba(0, 0, 0, 0.1));
-		margin-bottom: 30px;
-
-		.profile-img {
-			border-right: 1px solid $lightgreen;
-			padding: 0 0 0 15px;
-		}
-
-		.summary {
-			padding: 0  15px 0 0;
-			color: $lightgrey;
-		}
-
-		h1 { color: $green; font-size: 1.5em; margin-bottom: 0;}
-	}
-
-	.content-ad {
-		text-align: center;
-		background: darken($bodycolor, 4%);
-		margin: 30px 0;
-		display: none;
-
-		/* Responsive Styles */
-		@media (max-width: 1023px) {
-			display: block;
-		}
-
-		img { 
-			width: 100%;
-			max-width: 360px;
-		}
-	}
+	
 
 }
 
 .page-header {
-  margin: 0 0 10px;
+  margin: $h_page_header_margin;
   border-bottom: none;
 }
 
 .start-article {
-	background: $white;
-	padding: 50px 0 40px;
-
-		.col-lg-4,
-		.col-md-4 {
-			border-right: 1px solid $bodycolor;
-			min-height: 176px;
-			&:last-child {border-right: none;}
-			padding: 0 20px;
-		}
-
-		h3 { 
-			margin-top: 10px; 
-		}
-
+	background: $start-article_background;
+	padding: $start-article_padding;
+	
+	h3 { margin: $start-article_h_margin;}
 }
 
