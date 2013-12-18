@@ -15,6 +15,6 @@
 <%#= airbrake_javascript_notifier unless options[:exclude] && options[:exclude].include?("airbrake") %>
 <%# Geht nicht. %>
 
-<% if @current_user.present? %>
+<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
 	<%= javascript_include_tag "rest_in_place" unless options[:exclude] && options[:exclude].include?("editor") %>
 <% end %>

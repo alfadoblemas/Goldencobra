@@ -31,6 +31,7 @@ goldencobra:
         edit_link:
             user: "current_user"
             role: "admin"
+        frontend_inline_editor: "false"
         image_positions: "standard"
         cache_articles: "false"
         max_cache_24h: "false"

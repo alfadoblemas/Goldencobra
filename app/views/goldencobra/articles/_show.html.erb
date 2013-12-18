@@ -1,48 +1,72 @@
 <% content_for :article_title do %>
-	<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="title">
+	<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+		<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="title">
+			<%= article.title if article %>
+		</span>
+	<% else %>
 		<%= article.title if article %>
-	</div>
+	<% end %>
 <% end %>
 
 <% content_for :article_subtitle do %>
-	<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="subtitle">
+	<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+		<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="subtitle">
+			<%= article.subtitle if article %>
+		</span>
+	<% else %>
 		<%= article.subtitle if article %>
-	</span>
+	<% end %>
 <% end %>
 
 <% content_for :article_summary do %>
 	<% if article%>
 		<% template = Liquid::Template.parse(article.summary) %>
-		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="summary" data-formtype="textarea">
+		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+			<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="summary" data-formtype="textarea">
+				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+			</span>
+		<% else %>
 			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
-		</span>
+		<% end %>
 	<% end %>
 <% end %>
 
 <% content_for :article_content do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.content) %>
-		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="content" data-formtype="textarea">
+		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+			<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="content" data-formtype="textarea">
+				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+			</span>
+		<% else %>
 			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
-		</span>
+		<% end %>
 	<% end %>
 <% end %>
 
 <% content_for :article_context_info do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.context_info) %>
-		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="context_info" data-formtype="textarea">
+		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+			<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="context_info" data-formtype="textarea">
+				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+			</span>
+		<% else %>
 			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
-		</span>
+		<% end %>
 	<% end %>
 <% end %>
 
 <% content_for :article_teaser do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.teaser) %>
-		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="teaser" data-formtype="textarea">
+		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+			<span class="rest-in-place-admin" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="teaser" data-formtype="textarea">
+				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+			</span>
+		<% else %>
 			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
-		</span>
+		<% end %>
 	<% end %>
 <% end %>
 

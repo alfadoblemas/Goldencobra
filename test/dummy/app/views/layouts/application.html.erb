@@ -37,14 +37,18 @@
 <h2><%= t('welcome') %></h2>
 
 <div id="article_content">
-<%= yield %>
-  <%= render_article_type_content() %>
+  <article>
+    <%= yield %>
+    <%= render_article_type_content() %>
+  </article>
+
 	<%= render_article_image_gallery %>
   <div id="widgets">
   	<%= render_article_widgets(:default => true, :tagged_with => "sidebar") %>
   </div>
     <%= index_of_articles(:wrapper => :article) %>
 </div>
+
 <div id="social_sharing_buttons" class="bottom_buttons">
 	<%= yield(:social_sharing_buttons) %>
 </div>
