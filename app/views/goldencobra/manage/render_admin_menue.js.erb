@@ -10,7 +10,14 @@
 	  });
 	  $('.rest-in-place-admin').bind('activate.rest-in-place', function(event, data){
 	  	$('#rest_in_place_status').fadeOut();
+	  	$(this).ckeditor();
 	  });
-	  $('.rest-in-place-admin').restInPlace()
+	  $('.rest-in-place-admin textarea').live("click",function(){
+	  	console.log($(this));
+	  	//var editor = CKEDITOR.inline( $(this).attr('class') );
+
+	  })
+	  $('.rest-in-place-admin').restInPlace();
+	  //$('.ckeditor').ckeditor();
 	 <% end %>
 <% end %>

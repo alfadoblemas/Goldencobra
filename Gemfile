@@ -51,6 +51,7 @@ gem 'wkhtmltopdf-binary'
 gem "better_errors", :group => "development"
 gem "binding_of_caller", :group => "development"
 gem 'rest_in_place'
+gem 'ckeditor_rails'
 
 group :development do
   gem 'thin'
