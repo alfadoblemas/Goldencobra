@@ -11,9 +11,9 @@
  *= require_self
 */
 
-.navigtion_link_imgage_wrapper, 
-.navigtion_link_description, 
-.navigtion_link_description_title, 
+.navigtion_link_imgage_wrapper,
+.navigtion_link_description,
+.navigtion_link_description_title,
 .navigtion_link_call_to_action_name {
 	display: none;
 }
@@ -36,6 +36,14 @@
   box-shadow: 2px 2px 5px #636e2a;
   height: 20px;
   padding-top: 3px;
+}
+
+#admin_article_manager #rest_in_place_status {
+  display:inline-block;
+  float:left;
+  margin-left:20px;
+  margin-top:5px;
+  color:yellow;
 }
 
 #admin_article_manager .left a {

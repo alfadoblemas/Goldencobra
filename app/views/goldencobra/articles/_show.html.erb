@@ -1,36 +1,48 @@
 <% content_for :article_title do %>
-	<%= article.title if article %>
+	<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="title">
+		<%= article.title if article %>
+	</div>
 <% end %>
 
 <% content_for :article_subtitle do %>
-	<%= article.subtitle if article %>
+	<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="subtitle">
+		<%= article.subtitle if article %>
+	</span>
 <% end %>
 
 <% content_for :article_summary do %>
 	<% if article%>
 		<% template = Liquid::Template.parse(article.summary) %>
-		<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="summary" data-formtype="textarea">
+			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		</span>
 	<% end %>
 <% end %>
 
 <% content_for :article_content do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.content) %>
-		<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="content" data-formtype="textarea">
+			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		</span>
 	<% end %>
 <% end %>
 
 <% content_for :article_context_info do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.context_info) %>
-		<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="context_info" data-formtype="textarea">
+			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		</span>
 	<% end %>
 <% end %>
 
 <% content_for :article_teaser do %>
 	<% if article %>
 		<% template = Liquid::Template.parse(article.teaser) %>
-		<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		<span class="rest-in-place" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="teaser" data-formtype="textarea">
+			<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
+		</span>
 	<% end %>
 <% end %>
 

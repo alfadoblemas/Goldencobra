@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
@@ -68,6 +70,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'i18n-active_record'
   s.add_dependency "pdfkit"
   s.add_dependency 'wkhtmltopdf-binary'
+  s.add_dependency 'rest_in_place'
   # s.add_dependency "wicked_pdf"
   s.add_development_dependency "mysql2"
   s.add_development_dependency 'annotate'

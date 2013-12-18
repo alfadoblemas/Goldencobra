@@ -12,4 +12,9 @@
 
 <%= edit_article_link unless options[:exclude] && options[:exclude].include?("article_administration") %>
 
-<%#= airbrake_javascript_notifier unless options[:exclude] && options[:exclude].include?("airbrake") %> <% # Geht nicht. %>
+<%#= airbrake_javascript_notifier unless options[:exclude] && options[:exclude].include?("airbrake") %>
+<%# Geht nicht. %>
+
+<% if @current_user.present? %>
+	<%= javascript_include_tag "rest_in_place" unless options[:exclude] && options[:exclude].include?("editor") %>
+<% end %>
