@@ -2,6 +2,39 @@
   $('body').prepend("<%= escape_javascript(render :partial => '/goldencobra/manage/admin_article_management') %>");
   $('#admin_article_manager').slideDown("fast");
   <% if Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
+      $("div.rest-in-place-admin.textarea" ).each(function( index ) {
+      		var content_id = $(this).attr('id');
+          var data_url = $(this).attr('data-url');
+          var data_attribute = $(this).attr('data-attribute');
+          var data_object = $(this).attr('data-object');
+
+          console.log(data_url,data_object,data_attribute);
+          CKEDITOR.inline( content_id, {
+              on: {
+              		focus: function(){
+              			$('#rest_in_place_status').fadeOut();
+              		},
+                  blur: function( event ) {
+                      var data = event.editor.getData();
+                      var has_to_send = {}
+                      var attr_hash = {}
+                      attr_hash[data_attribute] = data
+                      has_to_send[data_object] = attr_hash
+                      var request = jQuery.ajax({
+                          url: data_url,
+                          type: "PUT",
+                          data: has_to_send,
+                          dataType: "json",
+                          success: function(){
+                          	$('#rest_in_place_status').fadeIn("fast").html("Änderungen gespeichert!");
+                          }
+                      });
+
+                  }
+              }
+          } );
+      });
+
 	  $('#rest_in_place_status').bind("click",function(){
 	  	$(this).fadeOut("fast");
 	  })
@@ -12,6 +45,6 @@
 	  	$('#rest_in_place_status').fadeOut();
 	  });
 
-	  $('.rest-in-place-admin').restInPlace();
+	  $('.rest-in-place-admin.textfield').restInPlace();
 	 <% end %>
 <% end %>
