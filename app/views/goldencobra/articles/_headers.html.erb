@@ -17,11 +17,4 @@
 
 <% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
 	<%= javascript_include_tag "rest_in_place" unless options[:exclude] && options[:exclude].include?("editor") %>
-	<script src="/assets/ckeditor/basepath.js?body=1" type="text/javascript"></script>
-	<script src="/assets/ckeditor/ckeditor.js?body=1" type="text/javascript"></script>
-	<script src="/assets/ckeditor/jquery.js?body=1" type="text/javascript"></script>
-	<script src="/assets/ckeditor-jquery.js?body=1" type="text/javascript"></script>
-	<script src="/assets/goldencobra/ckeditor/config.js?body=1" type="text/javascript"></script>
-	<script src="/assets/goldencobra/ckeditor/plugins/wordcount/lang/de.js?body=1" type="text/javascript"></script>
-	<script src="/assets/goldencobra/ckeditor/plugins/wordcount/plugin.js?body=1" type="text/javascript"></script>
 <% end %>
