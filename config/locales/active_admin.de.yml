@@ -60,6 +60,7 @@ de:
     main_content: "Bitte implementieren Sie %{model}#main_content, um Inhalte anzuzeigen."
     logout: "Abmelden"
     sidebars:
+      submit_article_type: "Artikeltyp ändern"
       submit_widget: "Auswahl speichern"
       submit_layout: "Layout zuweisen"
       widgets_options: "Schnipsel-Optionen"

@@ -52,6 +52,7 @@ en:
     main_content: "Please implement %{model}#main_content to display content."
     logout: "Logout"
     sidebars:
+      submit_article_type: "Artikeltyp ändern"
       submit_widget: "Save Widgets"
       submit_layout: "allocate Layout"
       widgets_options: "Widget Options"

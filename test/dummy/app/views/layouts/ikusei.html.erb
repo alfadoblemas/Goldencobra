@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <%# define meta tags and include css %>
+    <%= basic_goldencobra_headers(exclude: ['airbrake']) %>
+      <%= stylesheet_link_tag "application", :media => "all" %>
+      <%= javascript_include_tag "application" %>
+      <%= csrf_meta_tags %>
+  </head>
+
+	<body class="default">
+    <div id="wrapper">
+      <%# HEADER %>
+
+      <div class="container-fluid article">
+
+        <%# Title Einzelseite %>
+        <div class="row-fluid article-header">
+          <div class="span12">
+            <h1>
+              <%= yield(:article_title) %>
+              <% if @article.subtitle %>
+              	<span class="subtitle"><%= yield(:article_subtitle) %></span>
+              <% end %>
+            </h1>
+          </div>
+        </div>
+
+        <%# article content %>
+        <div class="row-fluid article-content">
+          <div class="span9">
+            <%= render_article_type_content() %>
+          </div>
+          <div class="span3">
+            <% if @article.ancestor_ids.any? || @article.children.any? %>
+              <section class="sidebar-nav">
+                <h4><%= @article.root.title %></h4>
+                <%= navigation_menu("Main", class: "nav", :current_article => @article, :offset => 1, :show_image => false, :show_description_title => false, :show_call_to_action_name => false, :show_description => false) %>
+              </section>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+
+      <%# MarketingLink fuer ikusei Projektplaner %>
+      <%#= render partial: "/layouts/partials/banner_marketing" %>
+
+      <%# Footer %>
+      <%#= render partial: "/layouts/partials/footer" %>
+    </div><%# end wrapper %>
+
+    <%# Include JavaScripts at the end for increasing page performance. %>
+    <%#= render partial: "/layouts/shared/js_includes" %>
+  </body>
+</html>
