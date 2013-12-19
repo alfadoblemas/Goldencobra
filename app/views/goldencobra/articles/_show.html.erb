@@ -22,7 +22,7 @@
 	<% if article%>
 		<% template = Liquid::Template.parse(article.summary) %>
 		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
-			<div class="rest-in-place-admin textarea" contenteditable="true" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="summary" data-formtype="textarea" id="edit-article-summary">
+			<div class="rest-in-place-admin textfield" contenteditable="true" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="summary" data-formtype="textarea" id="edit-article-summary">
 				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
 			</div>
 		<% else %>
@@ -61,7 +61,7 @@
 	<% if article %>
 		<% template = Liquid::Template.parse(article.teaser) %>
 		<% if @current_user.present? && Goldencobra::Setting.for_key("goldencobra.article.frontend_inline_editor") == "true" %>
-			<div class="rest-in-place-admin textarea" contenteditable="true" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="teaser" data-formtype="textarea" id="edit-article-teaser">
+			<div class="rest-in-place-admin textfield" contenteditable="true" data-object="article" data-url="/admin/articles/<%= article.id %>" data-attribute="teaser" data-formtype="textarea" id="edit-article-teaser">
 				<%= raw(template.render(Goldencobra::Article::LiquidParser)) %>
 			</div>
 		<% else %>
