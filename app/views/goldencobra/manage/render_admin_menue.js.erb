@@ -7,9 +7,12 @@
           var data_url = $(this).attr('data-url');
           var data_attribute = $(this).attr('data-attribute');
           var data_object = $(this).attr('data-object');
-
-          console.log(data_url,data_object,data_attribute);
           CKEDITOR.inline( content_id, {
+          	toolbar: [
+          			['Format'],
+          			['Bold','Italic','-','Subscript','Superscript','-','Table','NumberedList','BulletedList','-','Outdent','Indent','Blockquote', 'HorizontalRule'],
+          			[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ]
+          		],
               on: {
               		focus: function(){
               			$('#rest_in_place_status').fadeOut();
