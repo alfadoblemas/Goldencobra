@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/boa/header_meta" %>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <%= render partial: "/layouts/boa/header" %>
+
+  <!-- Article Title -->    
+  <div class="container content-header">
+    <div class="row">
+      <h1><%= yield(:article_title) %></h1>
+      <hr />
+      <% if yield(:article_teaser).present? %>
+        <p class="teaser"><%= yield(:article_teaser) %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="content-txt">
+    <div class="container">
+      <div class="row">
+        <div class="aside col-sm-5 col-md-5">
+          <section>
+            <h4>Lorem ipsum dolor sit amet.</h4>
+            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+          </section>
+          <section>
+            <h4>Hire Us</h4>
+             <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+          </section>
+        </div>  
+        <!-- Article -->    
+        <div class="article col-sm-offset-1 col-sm-6 col-md-offset-1 col-md-6">
+          <!-- Form -->    
+          <form role="form">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Check me out
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+        </div>
+      </div>  
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <%= render partial: "/layouts/boa/footer" %>
+  <!-- Script to Activate the Carousel -->
+
+  </body>
+</html>

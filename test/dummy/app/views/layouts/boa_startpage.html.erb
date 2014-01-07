@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/boa/header_meta" %>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <%= render partial: "/layouts/boa/header" %>
+  <% if params[:stage] == "show" %>
+    <%= render partial: "/layouts/boa/header_stage" %>
+  <% end %>
+  <% if params[:slider] == "show" %>
+    <%= render partial: "/layouts/boa/header_slider" %>
+  <% end %>
+
+  <!-- Article -->    
+  <div class="container content-header">
+    <div class="row">
+      <h1><%= yield(:article_title) %></h1>
+      <hr />
+      <% if yield(:article_summary).present? %>
+        <p class="summary"><%= yield(:article_summary) %></p>
+      <% end %>
+      <% if yield(:article_content).present? %>
+        <p><%= yield(:article_content) %></p>
+      <% end %>    
+    </div>  
+  </div>
+
+  <!-- Bildergalerie -->    
+  <div class="container">
+    <%= render partial: "/layouts/boa/masonry_list" %>
+  </div>
+
+  <!-- Footer -->
+  <%= render partial: "/layouts/boa/footer" %>
+  
+  </body>
+</html>

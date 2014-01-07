@@ -12,6 +12,8 @@
 //
 //= require bootstrap
 //= require masonry.pkgd.min
+//= require jquery.jcarousel.min
+//= require jcarousel.skeleton
 
 
 $(function(){
@@ -26,13 +28,12 @@ $(function(){
   // *********************************
 
   // for timeline the right position for items
-  var $container = $('.timeline-list');
+  var $container = $('.mansonry-list');
   
   // initialize
   $container.masonry({
     itemSelector: '.tmi'
   });
-  timelineLeftRight($container);
 
   // activates tooltips for social links
   $('.tooltip-social').tooltip({
@@ -40,15 +41,3 @@ $(function(){
   });
 
 });
-
-function timelineLeftRight($container) {
-  $.when($container.masonry()).done(function(x) { 
-    $.each($(x).children(), function() {
-      if($(this).css('left').split('px')[0] == 0) {
-        $(this).addClass('tmi-left');
-      } else {
-        $(this).addClass('tmi-right');
-      }
-    });
-  });
-}

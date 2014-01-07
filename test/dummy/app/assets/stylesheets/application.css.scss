@@ -21,30 +21,15 @@
 @import "share/bootstrap";
 
 /* Variables */
-@import "share/variables";
+@import "share/config";
 @import "share/mixins";
 
-
-/* Default Elements */
+/* Layouts */
+@import "layouts/admin";
 @import "layouts/default";
 
-/* Header Elements */
-@import "layouts/header";
 
-/* Main Elements */
-@import "layouts/content";
-@import "layouts/aside";
-
-/* Footer Elements */
-@import "layouts/footer";
-
-/* Module Elements */
-@import "modules/icon/style.css";
-@import "modules/form";
-@import "modules/button";
-@import "modules/slider";
-@import "modules/teaser";
-@import "modules/list";
-@import "modules/table";
+/* Modules */
+@import "modules/style";
 @import "modules/nav";
-@import "modules/alerts";
+@import "modules/carousel";

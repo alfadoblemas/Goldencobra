@@ -1,0 +1,39 @@
+/* BOA TEMPLATE */
+
+/* Imports */
+/*********************************/
+@import "../../application";
+
+
+/* Variables */
+@import "share/config";
+@import "share/mixins";
+
+
+/* Default Elements */
+@import "layouts/default";
+
+/* Header Elements */
+@import "layouts/header";
+
+/* Main Elements */
+@import "layouts/content";
+@import "layouts/aside";
+
+/* Footer Elements */
+@import "layouts/footer";
+
+/* Module Elements */
+@import "modules/icon/style.css";
+@import "modules/form";
+@import "modules/button";
+@import "modules/slider";
+@import "modules/teaser";
+@import "modules/list";
+@import "modules/table";
+@import "modules/nav";
+@import "modules/alerts";
+
+
+
+

@@ -1,0 +1,37 @@
+/* Colors */
+/*********************************************************************************/
+$color_0: #FFF; 	 // white
+$color_1: #F7505A; // primarycolor red
+$color_2: #0082ad; // secondary color bluegreen
+$color_3: #181818; // darkgrey // rgba(38,45,53)
+$color_4: #F3F7F9; // bodycolor lightgrey
+$color_5: #676B77; // grey
+$color_6: #E5E5E5; // lightgrey
+
+$color_shadow: rgba(38,45,53,0.3); // darkgrey rgba
+$border-color: $color_6;
+
+/* Text and Fonts */
+/*********************************************************************************/
+$font_text_default: 'Source Sans Pro', Arial, sans-serif;
+$font_size_default: 16px;
+$line_height_default: 1.5em;
+
+/* Navigation */
+/*********************************************************************************/
+$navbar_default_background: $color_0;
+$navbar_inverse_background: $color_3;
+
+
+/* Navigation Mobile */
+/*********************************************************************************/
+$carousel_inner_height: 100%;
+
+/* Carousel */
+/*********************************************************************************/
+$carousel_inner_height: 100%;
+$carousel_fill_width: 100%;
+$carousel_fill_height: 100%;
+$carousel_fill_position: center;
+$carousel_fill_size: cover;
+

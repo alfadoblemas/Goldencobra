@@ -1,0 +1,201 @@
+/* Navigation Mainmenü */
+/*********************************************************************************/
+nav {
+  max-width: $wrapper-max-width;
+  margin: $wrapper-margin;
+  background-color: $nav_background;
+  border: $nav_border;
+  @include box-shadow($nav-box-shadow);
+
+  &.navbar-inverse {
+    background-color: $nav_background_i;
+  }
+}
+
+.navbar {
+  margin-bottom: $nav_margin_bottom;
+  @include border-radius($nav_border_radius);
+}
+
+.navbar-inverse .nav,
+.nav  {
+
+  li a {
+    color: $nav_a_color;
+    font-weight: $nav_a_font_weight;
+    font-size: $nav_a_font_size;
+    text-transform: $nav_a_text_transform;
+    letter-spacing: $nav_a_letter_spacing;
+  }
+
+  > li > a {
+    display: block;
+    height: $nav_height;
+    padding: $nav_a_padding;
+    line-height: $nav_line_height;
+    @include transition($nav_a_transition);
+  }
+
+  li a:hover,
+  li a:focus {
+    color: $nav_a_hover_color;
+    font-weight: $nav_a_font_weight;
+    text-transform: $nav_a_text_transform;
+  }
+
+  .dropdown-menu {
+    left: $dropdown_menu_left;
+    padding: $dropdown_menu_padding;
+    border: $dropdown_menu_border;
+    @include border-radius($dropdown_menu_border_radius);
+    @include box-shadow($dropdown_menu_box_shadow);
+    
+    li a {
+      padding: $dropdown_menu_a_padding;
+
+      &:hover { 
+        background-color: $dropdown_menu_a_bg_hover;
+      }
+    }
+
+  }// navbar-inverse .nav
+
+} // end .nav
+
+
+/* Nav Mobile */
+.navbar-toggle.btn {
+  @include border-radius($navbar_toggle_radius);
+  margin: $navbar_toggle_margin;
+  background-color: $navbar_toggle_background_hover !important;
+  
+
+  &:hover {background-color: $navbar_toggle_background !important;}
+  
+}
+
+.navbar-toggle .icon-bar {
+  background: $icon-bar_background;
+}
+
+.navbar-inverse .navbar-nav > .open > a, 
+.navbar-inverse .navbar-nav > .open > a:hover, 
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: $nav_a_focus_background;
+    color: #FFFFFF;
+}
+
+/* Responsive Styles */
+@media (max-width: $breakpoint_pad) {
+  .navbar > .container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: $breakpoint_phone) {
+  .navbar-header {
+    min-height: $nav_height;
+  }
+
+  .navbar-nav {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .navbar-inverse .nav > li > a,
+  .nav > li > a {
+    padding: 0 15px;
+  }
+
+  .navbar-collapse {
+    margin: $navbar_mobile_margin;
+    border-top: $navbar_mobile_border-top !important;
+    @include box-shadow($navbar_mobile_shadow);
+
+    > ul > li {
+      border-top: $navbar_mobile_li_border;
+      @include box-shadow($navbar_mobile_li_shadow);
+
+      &:first-child {
+        border-top: none;
+        @include box-shadow(none);
+      } 
+    } 
+  }
+
+  .navbar-inverse .nav .dropdown-menu li a, 
+  .nav .dropdown-menu li a {
+    padding: $dropdown_mobile_a_padding; 
+  }
+
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+    color: $dropdown_mobile_a_color;
+  }
+  
+  .navbar-inverse .nav .dropdown-menu, 
+  .nav .dropdown-menu {
+    background-color: $dropdown_menu_bg;
+  }
+
+  .navbar-collapse.in {
+    overflow-y: inherit !important;
+  }
+}
+
+
+/* Breadcrumb */
+/*********************************************************************************/
+.breadcrumb {
+  background-color: $breadcrumb_bg;
+  @include border-radius($breadcrumb_border_radius);
+  font-size: $breadcrumb_font-size;
+  margin: $breadcrumb_margin;
+  padding: $breadcrumb_padding;
+
+
+  > li + li:before {
+    color: $breadcrumb_color;
+    content: $breadcrumb_seperator;
+  }
+
+  > .active {
+      color: $breadcrumb_color
+  }  
+}
+
+
+/* Pagination*/
+/*********************************************************************************/
+.pagination {
+  @include border-radius($pagination_border_radius);
+  margin: $pagination_margin;
+
+  > li > a, 
+  > li > span {
+    border-color: $pagination_border_color;
+  }
+
+  > li:first-child > a, 
+  > li:first-child > span {
+    @include border-radius($pagination_border_radius_lc);
+  }
+
+  > li:last-child > a, 
+  > li:last-child > span {
+    @include border-radius($pagination_border_radius_fc);
+  }
+
+  > li > a:hover {
+    background-color: $pagination_hover_background;
+  }
+
+  > .active > a,
+  > .active > span, 
+  > .active > a:hover, 
+  > .active > span:hover, 
+  > .active > a:focus, 
+  > .active > span:focus {
+      background-color: $pagination_active_background;
+      border-color: $pagination_active_border_color;
+  }
+}

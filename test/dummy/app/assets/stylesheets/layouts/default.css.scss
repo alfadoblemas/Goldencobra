@@ -1,7 +1,3 @@
-/* Default Styles for Laufportal */
-
-/* Global Styles */
-
 html, body {
   height:100%;
 }
@@ -9,180 +5,19 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  background-color: $body_background;
   font-family: $font_text_default;
   font-size: $font_size_default;
-  color: $txt_color_default;
   line-height: $line_height_default;
-  letter-spacing: $letter_spacing_default;
 }
 
-
-/* Links */
-a { color: $link_color_default;}
-a:hover { color: $link_color_hover;}
-
-a:focus {
-  outline: none !important;
-  border: none;
+h1,h2,h3,h4,h5,p {
+	font-family: $font_text_default;
 }
 
-h1, h2, h3, h4 {
-  font-family: $font_text_default;
-  letter-spacing: $letter_spacing_headline;
-  color: $darkgrey;
+a:active, a:hover {
+    outline: none !important;
 }
 
-hr { border-color: $border_color_default;}
-
-p { color: $article_color_default;}
-
-.wrapper {
-  max-width: $wrapper_max_width;
-  margin: $wrapper_margin;
-  min-width: $wrapper_min_width;
-}
-
-#admin_article_manager {
-    height: 37px !important;
-}
-
-
-.content-page {
-  margin-top: 30px;
-}
-
-.kicker {
-  font-weight: 600;
-  font-size: 0.9em;
-  color: $darkblue;
-
-  &:after { content: " »";}
-}
-
-
-/* Social Icons Styles */
-.list-social-icons {
-  margin-bottom: 45px;
-}
-
-.tooltip-social a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.facebook-link a:hover {
-  color: #3b5998;
-}
-
-.linkedin-link a:hover {
-  color: #007fb1;
-}
-
-.twitter-link a:hover {
-  color: #39a9e0;
-}
-
-.google-plus-link a:hover {
-  color: #d14836;
-}
-
-/* Service Page Styles */
-.service-icon {
-  font-size: 50px;
-}
-
-/* 404 Page Styles */
-.error-404 {
-  font-size: 8em;
-}
-
-/* Pricing Page Styles */
-.price {
-  font-size: 4em;
-}
-
-.price-cents {
-  vertical-align: super;
-  font-size: 50%;
-}
-
-.price-month {
-  font-size: 35%;
-  font-style: italic;
-}
-
-
-#accordion {
-  background: #FFF;
-  @include box-shadow(0 13px 8px -10px rgba(0, 0, 0, 0.3));
-}
-
-.panel-default > .panel-heading {
-    background-color: transparent;
-    border: none !important;
-    padding: 0 15px;
-    height: 45px;
-    line-height: 45px;
-
-    h4 {
-  height: 45px;
-    line-height: 47px;
-}
-}
-
-.navbar-collapse {
-    max-height: 1000px;
-}
-
-.navbar-toggle.btn {
-  box-shadow: none;
-  padding: 15px;
-  margin-top: 10px;
-}
-
-
-.panel-default {
-    border: none;
-    box-shadow: none;
-
-    .btn {
-      float: right;
-      font-size: 0.5em;
-      box-shadow: none;
-      margin-top: 12px;
-    }
-}
-
-.panel-default:nth-child(2n) {
-    background-color: #F8F8F7;
-}
-
-
-
-
-
-.summary {
-  color: $darkgrey;
-}
-
-
-
-
-
-/* Content */
-
-
-
-
-
-
-#test { max-width: 1170px; }
-    .itemx { width: 40%; height: 230px; background: #00ff00; border: 1px solid #fff; }
-    .itemx.w2 { background: #ff0000; height: 510px; }
-
-
-.related-projects {
-  background-color:$white;
-  padding: 30px 0;
+.jcarousel-control-prev {
+    left: 0;
 }

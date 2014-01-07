@@ -1,0 +1,113 @@
+/* Slider or Stage */
+.carousel {
+  height: $slider_height;
+  max-width: $slider_max_width;
+  min-width: $slider_min_width;
+  margin: $slider_margin;
+  @include box-shadow($slider_box_shadow);
+}
+
+.item,
+.active,
+.carousel-inner {
+  height: 100%;
+}
+
+.fill {
+  width: $slider_img_fill_width;
+  height: $slider_img_fill_height;
+  background-position: $slider_img_fill_bg_position;
+  background-size: $slider_img_fill_bg_size;
+}
+
+.carousel-indicators {
+    bottom: $slider_indicators_bottom;
+
+    li, li.active {
+      width: $slider_indicators_size;
+      height: $slider_indicators_size;
+      border: $slider_indicators_border;
+      margin: 0 5px;
+      @include border-radius($slider_indicators_phone_size);
+    }
+
+    li.active { 
+      background-color: $slider_indicators_ative;
+    }
+}
+
+.carousel-caption {
+  display: inline-block;
+  left: $slider_caption_left;
+  right: $slider_caption_right;
+  bottom: $slider_caption_bottom;
+  top: $slider_caption_top;
+  padding: $slider_caption_padding;
+  background-color: $slider_caption_background;
+  text-align: $slider_caption_align;
+}
+
+.carousel-caption h1{
+  margin: $slider_caption_h_margin;
+  color: $slider_caption_h_color;
+  font-size: $slider_caption_h_size;
+  text-transform: $slider_caption_h_txt_transform;
+  @include text-shadow($slider_caption_h_txt_shadow);
+}
+
+
+.carousel-control  {
+  text-shadow: none;
+  color: $slider_control_color;
+  opacity: $slider_control_opacity;
+  @include transition($slider_control_transition);
+
+  &:hover {
+    color: $slider_control_hover_color;
+    opacity: 1;
+  }
+
+  &.left, 
+  &.right {
+    @include background(none);
+  }
+
+  .icon-arrow-left2,
+  .icon-arrow-right2 {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: $slider_control_size;
+    margin-left: $slider_control_offset;
+    margin-top: $slider_control_offset;
+    font-size: $slider_control_size;
+    z-index: 5;
+  }
+}// end .carousel-control
+
+/* Responsive Styles */
+@media (max-width: $breakpoint_phone) {
+
+  .carousel-control {
+    display: none;
+  }
+  
+  .carousel {
+    margin-top: -80px;
+    height: $slider_phone_height;
+  }
+
+  .carousel-caption {
+    bottom: 0;
+  }
+
+  .carousel-indicators li,
+  .carousel-indicators li.active {
+    width: $slider_indicators_phone_size;
+    height: $slider_indicators_phone_size;
+    margin: 0 10px 10px;
+    @include border-radius($slider_indicators_phone_size);
+  }
+
+}

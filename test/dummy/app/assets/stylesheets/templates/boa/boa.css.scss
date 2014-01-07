@@ -1,0 +1,240 @@
+/* BOA TEMPLATE */
+
+/* Imports */
+/*********************************/
+@import "../../application";
+@import "share/config";
+
+
+
+/* DEFAULTS */
+/*********************************/
+html, body {
+	color: $color_5;
+	background: $body-background;
+}
+
+h1, h2,h3,h4,h5 {
+	color: $color_3;
+}
+
+p {
+	font-weight: $font_weight_default;
+}
+
+label {
+	color: $color_3;
+}
+
+/* Navigation */
+/*********************************/
+.navbar {
+	border: none;
+	margin-bottom: $nav_margin_bottom;
+	@include border-radius($nav_border_radius);
+}
+
+.navbar-brand {
+	color: $brand_color;
+	font-size: $brand_font_size;
+	font-weight: $brand_font_weight;
+	text-transform: $brand_txt_tranform;
+}
+
+.navbar-collapse {
+	float: $nav_link_float;
+
+	ul > li > a {
+    color: $nav_link_color;
+    text-transform: $nav_txt_tranform;
+    font-size: $nav_link_font_size;
+    letter-spacing: $nav_link_letterspacing;
+	}
+}
+
+.nav .caret {
+  border-bottom-color: $color_3;
+  border-top-color: $color_3;
+  margin-top: $nav_caret_margin_top;
+}
+
+/* Header */
+/*********************************/
+.content-header {
+	text-align: $ch_txt_align;
+	margin-top: $ch_margin_top;
+	padding: $ch_padding;
+
+	h1 {
+		font-size: $ch_h_font_size;
+		text-transform: $ch_h_txt_transform;
+	}
+
+	hr {
+		width: $ch_hr_width;
+		min-width: $ch_hr_min_width;
+		border: $ch_hr_border;
+	}
+
+	p {
+		font-size: $ch_p_font_size;
+		text-transform: $ch_p_txt_transform;
+		font-weight: $ch_p_font_weight;
+		line-height: $ch_p_line_height;
+		color: $ch_p_color;
+	}
+}
+
+/* Content */
+/*********************************/
+.content-txt {
+	background: $content_txt_background;
+	padding: $content_txt_padding;
+
+	figure {
+		margin: $content_figure_margin;
+
+		figcaption {
+			color: $content_figcaption_color;
+			font-size: $content_figcaption_font_size;
+		}
+	}
+}
+
+
+.article {
+	margin-bottom: $article_margin_bottom;
+
+	.summary,
+	.teaser {
+		font-weight: $summary_font_weight;
+	}
+}
+
+/* Aside */
+/*********************************/
+.aside section {
+	padding-bottom: $aside_section_padding_bottom;
+	border-bottom: $aside_section_border_bottom;
+	margin-bottom: $aside_section_margin_bottom;
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	h3, h4 {
+		font-size: $aside_h_font_size;
+		font-weight: $aside_h_font_weight;
+		margin-top: $aside_h_margin_top;
+	}	
+}
+
+
+/* Thumbnail */
+/*********************************/
+.thumbnail {
+	border: $thumb_border;
+	padding: $thumb_padding;
+	@include border-radius($thumb_border_radius);
+	margin-bottom: $thumb_margin_bottom;
+	cursor: pointer;
+	
+	&:hover {
+		@include box-shadow($thumb_hover_box_shadow);
+	}
+
+	a { cursor: $thumb_cursor;}
+	img { width: $thumb_img_width;}
+
+	h3 {
+		margin: $thumb_h_margin;
+		text-transform: $thumb_txt_transform;
+		text-align: $thumb_txt_align;
+		font-size: $thumb_h_font_size;
+		letter-spacing: $thumb_h_letter_spacing;
+	}
+}
+
+/* Footer */
+/*********************************/
+footer {
+	background: $footer_background;
+	font-size: $footer_font_size;
+
+	p {
+		margin: $footer_p_margin;
+	}
+}
+
+
+
+/* Slider */
+/*********************************/
+.carousel {
+	height: $carousel_height;
+	@media (max-width: 768px) {
+		height: $carousel_response_height;
+	}
+}
+
+.item,
+.active,
+.carousel-inner {
+	height: $carousel_inner_height;
+}
+
+.fill {
+	width: $carousel_background_width;
+	height: $carousel_background_height;
+	background-position: $carousel_background_position;
+	background-size: $carousel_background_size;
+}
+
+.carousel-caption {
+	margin: $carousel_caption_margin;
+	padding: $carousel_caption_padding;
+	top: $carousel_caption_top;
+	left: $carousel_caption_left;
+	right: $carousel_caption_right;
+
+	h1 { 
+		color: $carousel_caption_h_color; 
+		text-shadow: $carousel_caption_h_text_shadow;
+		text-transform: $carousel_caption_h_text_transform;
+		font-size: $carousel_caption_h_font_size;
+
+		@media (max-width: 1200px) {
+			font-size: $carousel_desk_caption_h_font_size;
+		}
+
+		@media (max-width: 768px) {
+			font-size: $carousel_tablet_caption_h_font_size;
+		}
+	}
+}
+
+.carousel-control  { 
+
+  &.left, 
+  &.right {
+    @include background($carousel_control_background);
+    text-align: $carousel_control_text_align;
+  }
+
+  .icon-arrow-left2,
+  .icon-arrow-right2 {
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    margin-top: -10px;
+    font-size: 3em;
+    z-index: 5;
+    @include text-shadow(none);
+  }
+}// end .carousel-control
+
+
+
+
+
+

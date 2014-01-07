@@ -1,0 +1,15 @@
+.carousel {
+
+  .item,
+  .active,
+  .carousel-inner {
+    height: $carousel_inner_height;
+  }
+
+  .fill {
+    width: $carousel_fill_width;
+    height: $carousel_fill_height;
+    background-position: $carousel_fill_position;
+    background-size: $carousel_fill_size;
+  }
+}

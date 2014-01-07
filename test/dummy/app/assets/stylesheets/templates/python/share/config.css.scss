@@ -1,0 +1,151 @@
+/* Colors */
+/*********************************************************************************/
+$color_0: #FFF; 	 // white
+$color_1: #F7505A; // primarycolor red
+$color_2: #0082ad; // secondary color bluegreen
+$color_3: #272727; // darkgrey // rgba(38,45,53)
+$color_4: #F3F7F9; // bodycolor lightgrey
+$color_5: #777777; // grey
+$color_6: #E0E0E0; // lightgrey
+
+
+/* Defaults */
+/*********************************************************************************/
+$shadow: 0 6px 1px -3px darken(#E0E0E0,5%); // darkgrey rgba
+$letter_spacing_default: 0.05em;
+$txt_transform: uppercase;
+$font_weight_default: 300;
+
+$body-background: $color_0;
+
+/* Navigation */
+/*********************************************************************************/
+$brand_margin: 100px auto 70px;
+$brand_color: $color_3;
+$brand_font_size:  4em;
+$brand_font_weight: 700;
+$brand_txt_tranform: $txt_transform;
+$brand_letter_spacing: 0.05em;
+
+$brand_txt_blur_shadow: 0 0 5px $brand_color;
+$brand_txt_blur_transition: color 500ms ease, text-shadow 500ms ease;
+
+$navbar_margin: 0 auto;
+$navbar_display: inline-block !important;
+
+$nav_margin_bottom: 50px;
+$nav_padding_bottom: 30px;
+$nav_border_radius: 0;
+$nav_link_float: none;
+$nav_link_color: $color_3;
+$nav_link_font_size: 0.9em;
+$nav_link_letterspacing: $letter_spacing_default;
+$nav_txt_tranform: $txt_transform;
+$nav_caret_margin_top: -3px;
+$nav_text_align: center;
+
+
+/* Content-Header */
+/*********************************************************************************/
+$ch_txt_align: center;
+$ch_margin_top: 0;
+$ch_padding: 60px 5%;
+/* Content-Header Headline */
+$ch_h_font_size: 4em;
+$ch_h_txt_transform: $txt_transform;
+/* Content-Header Horizontal Line */
+$ch_hr_width: 30%;
+$ch_hr_min_width: 300px;
+$ch_hr_border: 3px solid $color_3;
+/* Content-Header Text */
+$ch_p_font_size: 1.2em;
+$ch_p_font_weight: 400;
+$ch_p_line_height: 1.4em;
+$ch_p_txt_transform: $txt_transform;
+$ch_p_color: $color_3;
+
+/* Content-Text */
+/*********************************************************************************/
+$content_txt_background: $color_0;
+$content_txt_padding: 50px 0;
+$content_txt_border_top: 1px solid #E5E5E5 !important;
+$content_txt_margin_top: -50px;
+
+$content_figure_margin: 30px 0;
+$content_figcaption_color: $color_3;
+$content_figcaption_font_size: 0.8em;
+
+$article_margin: 50px auto;
+$article_width: 90%;
+$article_h_text_align: center;
+$article_h_margin-bottom: 30px;
+
+$article_margin_bottom: 30px;
+$summary_font_weight: 400;
+$teaser_font_weight: 400;
+
+/* Aside */
+/*********************************************************************************/
+$aside_section_padding_bottom: 30px;
+$aside_section_border_bottom: 1px solid #E5E5E5;
+$aside_section_margin_bottom: 30px;
+
+$aside_h_font_size: 1.2em;
+$aside_h_font_weight: 600;
+$aside_h_margin_top: 5px;
+
+/* Thumbnail */
+/*********************************************************************************/
+$thumb_border: none;
+$thumb_border_radius: 0;
+$thumb_padding: 0;
+$thumb_margin_bottom: 30px;
+$thumb_cursor: pointer;
+$thumb_img_width: 100%;
+$thumb_hover_opacity: 0.7;
+$thumb_txt_align: center;
+$thumb_txt_transform: $txt_transform;
+$thumb_h_font_size: 0.9em;
+$thumb_h_margin: 10px 0;
+$thumb_h_letter_spacing: $letter_spacing_default;
+
+
+/* Footer */
+/*********************************************************************************/
+$footer_background: darken($color_6,10%);
+$footer_font_size: 0.9em;
+$footer_p_margin: 10px 0;
+
+/* Slider */
+/*********************************************************************************/
+$carousel_height: 100%;
+$carousel_response_height: 100%;
+$carousel_item_height: 100%;
+$carousel_active_height: $carousel_item_height;
+$carousel_inner_height: $carousel_item_height;
+$carousel_background_width: 100%;
+$carousel_background_height: 100%;
+$carousel_background_position: center;
+$carousel_background_size: cover;
+
+$carousel_caption_margin: 0;
+$carousel_caption_padding: 0;
+$carousel_caption_top: 35%;
+$carousel_caption_left: 5%;
+$carousel_caption_right: $carousel_caption_left;
+
+$carousel_caption_h_color: $color_0;
+$carousel_caption_h_text_shadow: none;
+$carousel_caption_h_text_transform: uppercase;
+$carousel_caption_h_font_size: 7em;
+$carousel_desk_caption_h_font_size: 6em;
+$carousel_tablet_caption_h_font_size: 4em;
+
+$carousel_control_background: none;
+$carousel_control_text_align: center;
+
+
+
+
+
+

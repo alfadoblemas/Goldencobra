@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/anaconda/header_meta" %>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <%= render partial: "/layouts/anaconda/header" %>
+
+  <!-- Article -->    
+  <div class="stage-wrapper">
+    <% if params[:stage] == "show" %>
+      <%= render partial: "/layouts/anaconda/header_stage" %>
+    <% elsif params[:slider] == "show" %>
+      <%= render partial: "/layouts/anaconda/header_slider" %>
+    <% else %>
+      <%= render partial: "/layouts/anaconda/header_skeleton" %>
+    <% end %>
+  </div>
+
+  <!-- Footer -->
+  <%= render partial: "/layouts/anaconda/footer" %>
+
+  
+  </body>
+</html>

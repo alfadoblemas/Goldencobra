@@ -1,33 +1,47 @@
-.pagination {
-  @include border-radius($pagination_border_radius);
-  margin: 30px auto 50px;
+/* Navigation Mainmenü */
+/*********************************************************************************/
+nav {
+  background-color: $navbar_default_background;
 
-  > li > a, 
-  > li > span {
-    border-color: $pagination_border_color;
+  &.navbar-inverse {
+    background-color: $navbar_inverse_background;
   }
+}
 
-  > li:first-child > a, 
-  > li:first-child > span {
-    @include border-radius($pagination_border_radius_lc);
-  }
+@media (max-width: 768px) {
+	.navbar-header {
+		border-bottom: 1px solid $border-color;
+	}
 
-  > li:last-child > a, 
-  > li:last-child > span {
-    @include border-radius($pagination_border_radius_fc);
-  }
+	.navbar-nav {
+		margin: 0;
+	}
 
-  > li > a:hover {
-    background-color: $pagination_hover_background;
-  }
+	.navbar-form {
+		padding: 15px 15px;
+		margin: 0;
+	}
 
-  > .active > a,
-  > .active > span, 
-  > .active > a:hover, 
-  > .active > span:hover, 
-  > .active > a:focus, 
-  > .active > span:focus {
-      background-color: $pagination_active_background;
-      border-color: $pagination_active_border_color;
-  }
+	.container > .navbar-collapse {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		float: none;
+		max-height: 1000px;
+
+		ul > li {
+			border-top: 1px solid $border-color;
+			a { padding: 15px;}
+		}
+	}
+
+	.dropdown-menu {
+		padding: 0;
+		> li { 
+			padding: 0;
+			> a { 
+				padding: 10px 30px !important;
+			}
+		}
+	}
 }

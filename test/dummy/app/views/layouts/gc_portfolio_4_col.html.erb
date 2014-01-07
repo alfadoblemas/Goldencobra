@@ -7,7 +7,7 @@
 <body>
 
   <!-- HEADER -->
-  <%= render partial: "/layouts/header" %>
+  <%= render partial: "/layouts/partials/header" %>
 
 
   <!-- 
@@ -34,12 +34,11 @@
           <% if yield(:article_content).present? %>
             <p><%= yield(:article_content) %></p>
           <% end %>
-        </div>
-      </div>          
-      
+        </div>    
+      </div>     
       <div class="row">
-
-        <div class="col-md-3 portfolio-item">
+        <% 12.times do %>
+        <div class="col-sm-6 col-md-4 col-lg-3 portfolio-item">
           <a href="portfolio-item.html">
             <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
             <div class="portfolio-inner">
@@ -48,76 +47,7 @@
             </div>
           </a>
         </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 portfolio-item">
-          <a href="portfolio-item.html">
-            <img class="img-responsive" src="http://www.placehold.it/700x400/C1CFD9/E9F0F4">
-            <div class="portfolio-inner">
-              <h3>Project Name</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-          </a>
-        </div>
+        <% end %>
       </div>
 
      
@@ -143,6 +73,6 @@
     <div class="container">
   </div><!-- /#wrapper -->
 
-  <%= render partial: "/layouts/footer" %>
+  <%= render partial: "/layouts/partials/footer" %>
 </body>
 </html>

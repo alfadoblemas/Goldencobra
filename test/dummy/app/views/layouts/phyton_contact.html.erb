@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/python/header_meta" %>
+</head>
+<%= render partial: "/layouts/python/header_meta" %>
+
+<body>
+  <!-- HEADER -->
+  <%= render partial: "/layouts/python/header" %>
+
+  <!-- Article -->    
+  <div class="content-txt">
+    <div class="container">
+      <div class="row">
+        <!-- Article -->    
+        <div class="article col-sm-6 col-md-8">
+          <h1 class="title"><%= yield(:article_title) %></h1>
+          <% if yield(:article_summary).present? %>
+            <p class="teaser"><%= yield(:article_summary) %></p>
+          <% end %>
+          <% if yield(:article_content).present? %>
+            <p><%= yield(:article_content) %></p>
+          <% end %>  
+          <!-- Form -->    
+          <form role="form">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Check me out
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="aside col-sm-offset-1 col-sm-5 col-md-offset-1 col-md-3">
+          <%= render partial: "/layouts/python/aside" %>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <%= render partial: "/layouts/python/footer" %>
+  <!-- Script to Activate the Carousel -->
+
+  </body>
+</html>

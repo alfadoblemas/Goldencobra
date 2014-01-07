@@ -1,0 +1,319 @@
+/* BOA TEMPLATE */
+
+/* Imports */
+/*********************************/
+@import "../../application";
+@import "share/config";
+
+
+
+/* DEFAULTS */
+/*********************************/
+html, body {
+	color: $color_5;
+	background: $body-background;
+}
+
+h1, h2,h3,h4,h5 {
+	color: $color_3;
+}
+
+p {
+	font-weight: $font_weight_default;
+}
+
+label {
+	color: $color_3;
+}
+
+
+/* Content */
+/*********************************/
+.content-txt {
+	background: $content_txt_background;
+	padding: $content_txt_padding;
+	border-top: $content_txt_border_top;
+	margin-top: $content_txt_margin_top;
+
+	h1.title {
+		margin-top: 0;
+	}
+
+	figure {
+		margin: $content_figure_margin;
+
+		figcaption {
+			color: $content_figcaption_color;
+			font-size: $content_figcaption_font_size;
+		}
+	}
+}
+
+
+.article {
+	margin-bottom: $article_margin_bottom;
+
+	.summary,
+	.teaser {
+		font-weight: $summary_font_weight;
+	}
+}
+
+/* Aside */
+/*********************************/
+.aside section {
+	padding-bottom: $aside_section_padding_bottom;
+	border-bottom: $aside_section_border_bottom;
+	margin-bottom: $aside_section_margin_bottom;
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	h3, h4 {
+		font-size: $aside_h_font_size;
+		font-weight: $aside_h_font_weight;
+		margin-top: $aside_h_margin_top;
+	}	
+}
+
+/* Navigation */
+/*********************************/
+.navbar {
+	border: none;
+	margin-bottom: $nav_margin_bottom;
+	@include border-radius($nav_border_radius);
+}
+
+.navbar-brand {
+	color: $brand_color;
+	font-size: $brand_font_size;
+	font-weight: $brand_font_weight;
+	text-transform: $brand_txt_tranform;
+}
+
+.navbar-collapse {
+	float: $nav_link_float;
+
+	ul > li > a {
+    color: $nav_link_color;
+    text-transform: $nav_txt_tranform;
+    font-size: $nav_link_font_size;
+    letter-spacing: $nav_link_letterspacing;
+	}
+}
+
+.nav .caret {
+  border-bottom-color: $color_3;
+  border-top-color: $color_3;
+  margin-top: -3px;
+}
+
+
+/* Thumbnail */
+/*********************************/
+.thumbnail {
+	border: $thumb_border;
+	padding: $thumb_padding;
+	@include border-radius($thumb_border_radius);
+	margin-bottom: $thumb_margin_bottom;
+	cursor: pointer;
+	
+	&:hover {
+		@include box-shadow($thumb_hover_box_shadow);
+	}
+
+	a { cursor: $thumb_cursor;}
+	img { width: $thumb_img_width;}
+
+	h3 {
+		margin: $thumb_h_margin;
+		text-transform: $thumb_txt_transform;
+		text-align: $thumb_txt_align;
+		font-size: $thumb_h_font_size;
+		letter-spacing: $thumb_h_letter_spacing;
+	}
+}
+
+/* Footer */
+/*********************************/
+footer {
+	background: $footer_background;
+	font-size: $footer_font_size;
+	height: 10%;
+	background-color: $color_0;
+
+	p {margin: $footer_p_margin;}
+}
+
+
+/* Slider */
+/*********************************/
+
+.stage-wrapper {
+	height: $stage_wrapper_height;
+}
+
+.carousel {
+	height: $carousel_height;
+	@media (max-width: 768px) {
+		height: $carousel_response_height;
+	}
+}
+
+.item,
+.active,
+.carousel-inner {
+	height: $carousel_inner_height;
+}
+
+.fill {
+	width: $carousel_background_width;
+	height: $carousel_background_height;
+	background-position: $carousel_background_position;
+	background-size: $carousel_background_size;
+}
+
+.carousel-caption {
+	margin: $carousel_caption_margin;
+	padding: $carousel_caption_padding;
+	top: $carousel_caption_top;
+	left: $carousel_caption_left;
+	right: $carousel_caption_right;
+
+	h1 { 
+		color: $carousel_caption_h_color; 
+		text-shadow: $carousel_caption_h_text_shadow;
+		text-transform: $carousel_caption_h_text_transform;
+		font-size: $carousel_caption_h_font_size;
+
+		@media (max-width: 1200px) {
+			font-size: $carousel_desk_caption_h_font_size;
+		}
+
+		@media (max-width: 768px) {
+			font-size: $carousel_tablet_caption_h_font_size;
+		}
+	}
+}
+
+.carousel-control  { 
+
+  &.left, 
+  &.right {
+    @include background($carousel_control_background);
+    text-align: $carousel_control_text_align;
+  }
+
+  .icon-arrow-left2,
+  .icon-arrow-right2 {
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    margin-top: -10px;
+    font-size: 3em;
+    z-index: 5;
+    @include text-shadow(none);
+  }
+}// end .carousel-control
+
+
+/* MoreImageSlider */
+/*********************************/
+
+.jcarousel-wrapper {
+	height: $jcarousel_height;
+	width: $jcarousel_width;
+	background: $jcarousel_background_color;
+}
+
+.jcarousel {
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+}
+
+.jcarousel ul {
+	width: 20000em;
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.jcarousel li {
+	height: 100%;
+	float: left;
+	
+	img {
+		height: 100%;
+	}
+}
+
+.jcarousel-control-prev,
+.jcarousel-control-next {
+	position: absolute;
+	top: 50%;
+	width: $jcarousel_control_width;
+  height: $jcarousel_control_height;
+  margin-top: $jcarousel_control_margin_top;
+
+  background-color: $jcarousel_control_background;
+	text-align: center;
+  color: $jcarousel_control_color;
+  font-size: $jcarousel_control_font_size;
+  text-shadow: $jcarousel_control_text_shadow;
+  text-decoration: none;
+  @include border-radius($jcarousel_control_border_radius);
+
+  &.inactive {
+  	opacity: $jcarousel_control_inactive_opacity;
+  }
+
+  &:hover,
+  &:focus {
+  	text-decoration: none;
+  	outline: none;
+  	color: $jcarousel_control_hover_color;
+  }
+
+  [class*="icon-"] {
+  	font-size: $jcarousel_control_icon_font_size;
+  	width: $jcarousel_control_icon_width;
+  	height: $jcarousel_control_icon_height;
+  	line-height: $jcarousel_control_icon_line_height;
+  }
+}
+
+.jcarousel-control-prev{
+	left: $jcarousel_control_prev_left;
+}
+
+.jcarousel-control-next{
+	right: $jcarousel_control_next_right;
+}
+
+.jcarousel-pagination {
+	text-align: center;
+	margin-top: -50px;
+	position: relative;
+	z-index: 100;
+}
+.jcarousel-pagination a{
+	display: inline-block;
+	margin: $jcarousel_pag_a_margin;
+	width: $jcarousel_pag_a_width;
+	height: $jcarousel_pag_a_height;
+	font-size: 0 !important;
+	background-color: $jcarousel_pag_a_background;
+	@include border-radius($jcarousel_pag_a_border_radius);
+
+	&.active {
+		background-color: $jcarousel_pag_a_background_active;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}

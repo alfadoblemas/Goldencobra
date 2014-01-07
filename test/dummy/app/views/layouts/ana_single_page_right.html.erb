@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= (@article.metatag("Title Tag") || @article.title) if @article%> | Startpage</title>
+  <%= render partial: "/layouts/anaconda/header_meta" %>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <%= render partial: "/layouts/anaconda/header" %>
+
+  <!-- Article -->    
+  <div class="content-txt">
+    <div class="container">
+      <div class="row">
+        <!-- Article -->    
+        <div class="article col-sm-6 col-md-8 col-md-push-4">
+          <h1 class="title"><%= yield(:article_title) %></h1>
+          <% if yield(:article_summary).present? %>
+            <p class="teaser"><%= yield(:article_summary) %></p>
+          <% end %>
+          <figure>
+            <img class="img-responsive" src="../assets/web/examples/IMG_8595_Fotor2.jpeg">
+            <figcaption>
+              This photo is taken by Linda Radkau
+            </figcaption>
+          </figure>
+          <% if yield(:article_content).present? %>
+            <p><%= yield(:article_content) %></p>
+          <% end %>  
+        </div>
+        <div class="aside col-sm-6 col-md-3 col-md-pull-8">
+          <%= render partial: "/layouts/anaconda/aside" %>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <%= render partial: "/layouts/anaconda/footer" %>
+  </body>
+</html>

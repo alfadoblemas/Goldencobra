@@ -1,0 +1,406 @@
+
+$lightgreen: #f6f6f4 ;
+
+$green: #8CC9AD;
+
+$white:#fff;
+
+$superlightgrey: #c3c3c3;
+$lightgrey: #C1CFD9;
+$grey: #676B77;
+$darkgrey: #262D35; // 38,45,53
+$red: #262D35 ;//#F7505A;
+$darkblue: #0082ad;
+$blue: #8CBECF;
+$black: #1B2026;
+$bodycolor: #F3F7F9;
+$yellow: #fabf28;
+
+
+/* Colors */
+/*********************************************************************************/
+$color_0: #FFF; 	 // white
+$color_1: #F7505A; // primarycolor red
+$color_2: #0082ad; // secondary color bluegreen
+$color_3: #262D35; // darkgrey // rgba(38,45,53)
+$color_4: #F3F7F9; // bodycolor lightgrey
+$color_5: #676B77; // grey
+$color_6: #C1CFD9; // lightgrey
+
+$color_shadow: rgba(38,45,53,0.3); // darkgrey rgba
+
+/* Colors Alerts an Buttons */
+/*********************************************************************************/
+$color_default:		$color_6; // lightgrey
+$color_primary: 	$color_1;
+$color_secondary: $color_2; // bluegreen
+$color_sucess: 		$color_2; // bluegreen
+$color_info:			#8CBECF; 	// lightblue
+$color_warning: 	#fabf28; 	// yellow
+$color_danger:		darken($color_1, 25%); // black
+
+
+/* BoodyBackgrounds */
+/*********************************************************************************/
+$body_background: $color_4;
+
+
+/* Borders */
+/*********************************************************************************/
+$border_color_default: $color_6;
+$hr_border: 1px solid $border_color_default;
+
+
+/* Shadow */
+/*********************************************************************************/
+$shadow_default: 0 8px 5px -5px $color_shadow;
+
+
+/* Transition */
+/*********************************************************************************/
+$transition_default_time: 0.5s;
+
+
+/* Text and Fonts */
+/*********************************************************************************/
+$font_text_default: 'Source Sans Pro', Arial, sans-serif;
+$font_size_default: 16px;
+$line_height_default: 1.5em;
+$letter_spacing_default: normal; 
+$letter_spacing_headline: normal;
+$text_transform: uppercase;
+$text_weight_default: 400;
+$text_weight_bold: 600;
+
+/* Texts */
+$txt_color_default: $color_5;
+$txt_color_aside: $txt_color_default;
+$txt_color_footer: $txt_color_default;
+$txt_color_slider: $txt_color_default;
+
+/* Headlines */
+$h_color_content: $color_1;
+$h_color_aside: $color_1;
+$h_color_footer: $color_1;
+$h_page_header_margin: 0 0 10px;
+
+/* p */
+$article_color_default: $txt_color_default;
+
+/* Links */
+$link_color_default: $color_1;
+$link_color_active: $color_2;
+$link_color_hover: $color_2;
+$link_color_footer: $txt_color_default;
+
+
+/* Alerts */
+/*********************************************************************************/
+$alert_default_bg: $white;
+
+
+/* Buttons */
+/*********************************************************************************/
+$btn_color: $color_0;
+$btn_font_weight: $text_weight_bold;
+$btn_text_transform: $text_transform;
+$btn_transition: all 0.3s;
+$btn_shadow: 0 8px 5px -5px $color_shadow;
+$btn_border_radius: 0;
+$btn_default_background: $color_default;
+$btn_default_color: $color_0;
+$btn_letter_spacing: 0.05em;
+
+/* Button Color */
+$btn_primary_background: $color_primary;
+$btn_primary_color: $color_0;
+
+$btn_secondary_background: $color_secondary;
+$btn_secondary_color: $color_0;
+
+$btn_success_background: $color_sucess;
+$btn_success_color: $color_0;
+
+$btn_info_background: $color_info;
+$btn_info_color: $color_0;
+
+$btn_warning_background: $color_warning;
+$btn_warning_color: $color_0;
+
+$btn_danger_background: $color_danger;
+$btn_danger_color: $color_0;
+
+/* Button Size */
+$btn_huge_padding: 10px 16px 8px;
+$btn_default_padding: 10px 16px 8px;
+$btn_large_padding: 10px 16px 9px;
+$btn_small_padding: 7px 10px 5px;
+
+
+/* Forms */
+/*********************************************************************************/
+$btn_color: $color_0;
+$input_border_radius: 0;
+$input_border: none;
+$input_font_size: 1em;
+$input_transition: background-color $transition_default_time;
+
+
+/* Wrapper */
+/*********************************************************************************/
+$wrapper_max_width: 100%;
+$wrapper_min_width: 320px;
+$wrapper_margin: 0 auto;
+
+
+/* Breakpoints */
+/*********************************************************************************/
+$breakpoint_pad: 992px; // break sidebar under content
+$breakpoint_phone: 768px; // all content get width 100%
+
+
+
+
+
+/* Page Modul Settings */
+/*********************************************************************************/
+/*********************************************************************************/
+/*********************************************************************************/
+
+/* Logo or Brand */
+/*********************************************************************************/
+$brand_padding: 0;
+$brand_margin: 0 0 -20px -10px;
+
+
+/* Navigation */
+/*********************************************************************************/
+$nav_background: $color_0;
+$nav_background_i: $color_3;
+$nav_height: 80px;
+$nav_line_height: 85px;
+$nav-border: none !important;
+$nav_box_shadow: none; //0 5px 8px -8px rgba(0,0,0,0.5);
+$nav_border_radius: 0 !important;
+$nav_margin_bottom: 0;
+
+$nav_a_color: lighten($color_3, 15%);
+$nav_a_text_transform: $text_transform;
+$nav_a_font_weight: 400;
+$nav_a_letter_spacing: 0.05em;
+$nav_a_font_size: 1em;
+$nav_a_padding: 0 30px;
+$nav_a_transition: all 0.5s;
+$nav_a_hover_background: $color_1;
+$nav_a_focus_background: darken($color_3, 5%);
+$nav_a_hover_color: $color_0;
+
+/* Nav Mobile */
+$navbar_toggle_background: $color_1;
+$navbar_toggle_background_hover: darken($color_3, 5%);
+$navbar_toggle_radius: 0;
+$icon-bar_background: $color_0;
+$navbar_toggle_margin: 17px 15px 0 0;
+
+$navbar_mobile_margin: 0 15px;
+$navbar_mobile_border-top: 1px solid darken($color_3, 3%);
+$navbar_mobile_shadow: inset 0 1px 0 lighten($color_3, 3%);
+$navbar_mobile_li_border: $navbar_mobile_border-top;
+$navbar_mobile_li_shadow: $navbar_mobile_shadow;
+
+$dropdown_menu_left: 0;
+$dropdown_menu_padding: 0;
+$dropdown_menu_border: none;
+$dropdown_menu_border_radius: 0;
+$dropdown_menu_bg: $color_3;
+$dropdown_menu_box_shadow: 0 6px 12px $color_shadow;
+$dropdown_menu_a_padding: 7px 10px;
+$dropdown_menu_a_color: lighten($color_3, 15%);
+$dropdown_menu_a_bg_hover: $color_1;
+$dropdown_mobile_a_padding: 10px 30px;
+$dropdown_mobile_a_color: $nav_a_color;
+
+/* Breadcrumb */
+/*********************************************************************************/
+$breadcrumb_bg: transparent;
+$breadcrumb_border_radius: 0;
+$breadcrumb_margin: -10px 0 20px 0;
+$breadcrumb_padding: 8px 15px;
+$breadcrumb_font-size: 0.9em;
+$breadcrumb_a_color: $link_color_default;
+$breadcrumb_color: $txt_color_default;
+$breadcrumb_seperator: "/ ";
+
+
+
+
+/* Claim */
+/*********************************************************************************/
+$claim_display: inline-block;
+$claim_height: $nav_height;
+$claim_line_height: 87px;
+$claim_margin: 0 0 0 15px;
+$claim_color: $color_1;
+$claim_letter_spacing: 0.05em;
+$claim_text_transform: $text_transform;
+
+
+/* Slider */
+/*********************************************************************************/
+$slider_background: $color_3;
+$slider_height: 65%;
+$slider_pad_height: 50%;
+$slider_phone_height: 100%;
+$slider_max_height: 350px;
+$slider_box_shadow: none;
+$slider_margin: 0 auto;
+$slider_max_width: $wrapper_max_width;
+$slider_min_width: $wrapper_min_width;
+
+/* Background image */
+$slider_img_fill_width: 100%;
+$slider_img_fill_height: 100%;
+$slider_img_fill_bg_position: center;
+$slider_img_fill_bg_size: cover;
+
+/* Indicators */
+$slider_indicators_bottom: 0px; //( pos. is absolute )
+$slider_indicators_border: 1px solid $color_1;
+$slider_indicators_ative: $color_1;
+$slider_indicators_size: 15px;
+$slider_indicators_phone_size: 30px;
+
+
+/* Slider control */
+$slider_control_opacity: 0.5;
+$slider_control_color: $color_1;
+$slider_control_hover_color: $color_1;
+$slider_control_transition: all $transition_default_time;
+$slider_control_size: 50px;
+$slider_control_offset: -$slider_control_size/2;
+
+/* Slider text position */
+$slider_caption_left: 0; //( pos. is absolute )
+$slider_caption_right: 0; //( pos. is absolute )
+$slider_caption_top: auto; //( pos. is absolute )
+$slider_caption_bottom: 30px; //( pos. is absolute )
+$slider_caption_align: center;
+$slider_caption_padding: 0 15px;
+$slider_caption_background: transparent;
+
+/* Slider Headline */
+$slider_caption_h_color: $color_1;
+$slider_caption_h_size: 2em;
+$slider_caption_h_txt_shadow: none;
+$slider_caption_h_txt_transform: $text_transform;
+$slider_caption_h_margin: 15px 0 100px;
+
+/* Slider text */
+$slider_caption_p: $txt_color_default;
+
+
+/* Teaser */
+/*********************************************************************************/
+$teaser_padding: 0;
+$teaser_margin_bottom: 30px;
+$teaser_radius: 0;
+$teaser_border: none;
+$teaser_box_shadow: 0 13px 8px -10px $shadow_default;
+$teaser_caption_padding: 15px;
+$teaser_caption_color: $txt_color_default;
+$teaser_caption_h_margin_top: 0;
+$teaser_caption_h_color: $color_3;
+$teaser_caption_h_text_tranform: $text_transform;
+$teaser_caption_h_font_size: 1.133em;
+$teaser_caption_h_font_weight: $text_weight_bold;
+$teaser_caption_p_font_size: 1em;
+$teaser_caption_p_margin: 0;
+$teaser_caption_p_line_height: 1.2em;
+$teaser_caption_p_letter_spacing: normal; //0.01em;
+
+
+/* Timeline */
+/*********************************************************************************/
+
+
+/* Startseite */
+/*********************************************************************************/
+$start-article_background: $color_0;
+$start-article_padding: 50px 0 40px;
+$start-article_h_margin: 20px 0 10px;
+
+
+/* Aside */
+/*********************************************************************************/
+$aside_section_margin: 0 0 30px 0;
+$aside_list_shadow: none; //0 13px 8px -10px rgba(0, 0, 0, 0.1);
+
+$aside_list_h_margin: 0;
+$aside_list_h_height: 35px;
+$aside_list_h_font_size: 1em;
+$aside_list_h_font_weight: $text_weight_bold;
+$aside_list_h_text_transform: $text-transform;
+$aside_list_h_letter_spacing: 0.05em;
+$aside_list_h_a_padding: 0 15px 0;
+$aside_list_h_a_background: #fff;
+$aside_list_h_a_background_hover: $color_1;
+$aside_list_h_a_color: $txt_color_default;
+$aside_list_h_a_hover_color: $color_0;
+$aside_list_h_a_transition: background-color $transition_default_time;
+$aside_list_li_h_font_size: 1em;
+$aside_list_li_h_margin: 0;
+
+$aside_search_height: 60px;
+$aside_search_btn: $aside_search_height;
+$aside_search_btn_arrow_size: 10px;
+
+
+/* Footer */
+/*********************************************************************************/
+$footer_background: darken($color_3, 5%);
+$footer_first_background: $red;
+$footer_second_background: transparent;
+$footer_margin: 30px 0 0;
+$footer_padding: 10px 0;
+
+
+/* List */
+/*********************************************************************************/
+$list_background_default: $color_0;
+$list_margin_default: 0;
+$list_padding_default: 0;
+$list_style_default: none;
+$list_separator_default: 1px solid $color_0;
+$list_link_color: $txt_color_default;
+$list_link_padding: 15px;
+$list_link_transition: background-color $transition_default_time;
+$list_h_color_default: $color_1;
+$list_h_font_weight: $text_weight_bold;
+
+
+/* Pagination */
+/*********************************************************************************/
+$pagination_margin: 30px auto 50px;
+$pagination_border_radius: 0 0 0 0;
+/* Pagination erstes Element und letztes */
+/* fc = first-child, lc = last-child */
+$pagination_border_radius_fc: 0 0 0 0;
+$pagination_border_radius_lc: 0 0 0 0;
+/* Pagination Active Focus und co */
+$pagination_active_border_color: $red;
+$pagination_active_background: $red;
+$pagination_hover_background: darken($bodycolor,4%);
+$pagination_border_color: $border_color_default;
+
+
+/* Thumbnail ans Portfolio/TeaserItems */
+/*********************************************************************************/
+$portfolio_item_margin_bottom: 30px;
+$portfolio_item_inner_background: $color_0;
+$portfolio_item_inner_padding: 15px;
+$portfolio_item_h_color: $color_1;
+$portfolio_item_h_margin: 0 0 15px;
+$portfolio_item_p_margin: 0 0 0 0;
+
+
+

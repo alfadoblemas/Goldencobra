@@ -1,0 +1,30 @@
+/* Logo */
+/*********************************************************************************/
+.navbar > .container .navbar-brand {
+  padding: $brand_padding;
+  margin: $brand_margin;
+
+  @media (max-width: $breakpoint_phone) {
+  	margin: 0 0 0 15px;
+  	position: absolute;
+  	z-index: 100;
+  }
+}
+
+.claim {
+	display: $claim_display;
+	margin: $claim_margin;
+	height: $claim_height;
+	line-height: $claim_line_height;
+	color: $claim_color;
+	text-transform: $claim_text_transform;
+	letter-spacing: $claim_letter_spacing;
+
+	@media (max-width: $breakpoint_phone) {
+  	display: none;
+  }
+}
+
+
+
+
