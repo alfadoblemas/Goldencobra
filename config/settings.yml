@@ -1,4 +1,26 @@
 goldencobra:
+    string:
+      type: "string"
+      value: "Text here"
+    
+    date:
+      type: "date"
+      value: "Text here"
+
+    datetime:
+      type: "datetime"
+      value: "Text here"
+
+    boolean:    
+      type: "boolean"
+      value: "Yes"
+
+    array:
+      type: "array"
+      value: "Yes"
+      
+
+
     locations:
         geocoding: "true"
     live-support:

@@ -11,6 +11,7 @@ gem "jquery-rails"
 
 gem 'multi_json', "~> 1.3"
 gem 'devise', "~> 2.2.4"#, :git => "http://github.com/plataformatec/devise.git"
+
 gem 'activeadmin', :git => "http://github.com/ikusei/active_admin.git", :require => "activeadmin"
 gem 'acts-as-taggable-on', :git => 'http://github.com/mbleigh/acts-as-taggable-on.git'
 gem 'i18n-active_record', :git => 'http://github.com/svenfuchs/i18n-active_record.git', :require => 'i18n/active_record'
@@ -51,6 +52,8 @@ gem 'wkhtmltopdf-binary'
 
 gem "better_errors", :group => "development"
 gem "binding_of_caller", :group => "development"
+
+
 
 group :development do
   gem 'thin'

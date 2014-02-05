@@ -9,3 +9,13 @@ describe Goldencobra::Setting do
     end
   end
 end
+
+# describe Goldencobra::Setting do
+#   describe "changing a data_type" do
+#     it "succesfully changes data_type" do
+#       Goldencobra::Setting.change_data_types(data_type: "boolean")
+#       Goldencobra::Setting.save
+#       Goldencobra:Setting.where(value: "true").data_type.should == "boolean"
+#     end
+#   end
+# end

@@ -4,15 +4,29 @@ ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
   controller.authorize_resource :class => Goldencobra::Setting
   scope "Alle Settings", :with_values, :default => true
   if ActiveRecord::Base.connection.table_exists?("goldencobra_settings") && Goldencobra::Setting.all.count > 0
-    Goldencobra::Setting.roots.each do |rs|
-      scope(rs.title){ |t| t.parent_ids_in(rs.id).with_values }
-    end
+    # Goldencobra::Setting.roots.each do |rs|
+    #   scope(rs.title){ |t| t.parent_ids_in(rs.id).with_values }
+    # end
   end
 
   form :html => { :enctype => "multipart/form-data" }  do |f|
     f.inputs "Allgemein" do
       f.input :title, :input_html => {:disabled => "disabled"}
-      f.input :value
+      if f.object.data_type == "date"  
+        f.input :date_type, :as => f.object.data_values 
+      elsif f.object.data_type == "datetime"
+        f.input :datetime_type, :as => f.object.data_values 
+      elsif f.object.data_type == "integer" ##
+        f.input :integer_type, :as => f.object.data_values ##
+      elsif f.object.data_type == "array"
+        f.has_many :setting_array_values do |arr|
+          arr.input :value, :as => f.object.data_values
+        end
+      elsif f.object.data_type == "boolean"
+        f.input :set_value, :as => f.object.data_values, :input_html => {:checked => f.object.value == "true" ? true : false}
+      else
+        f.input :set_value, :as => f.object.data_values
+      end
       f.input :data_type, :as => :select, :collection => Goldencobra::Setting::SettingsDataTypes, :include_blank => false
       f.input :parent_id, :as => :select, :collection => Goldencobra::Setting.all.map{|c| [c.title, c.id]}, :include_blank => true
     end
@@ -33,6 +47,7 @@ ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
       raw(result)
     end
   end
+
 
   sidebar :overview, only: [:index]  do
     render :partial => "/goldencobra/admin/shared/overview", :object => Goldencobra::Setting.roots, :locals => {:link_name => "title", :url_path => "setting" }

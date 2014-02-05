@@ -16,8 +16,20 @@
 module Goldencobra
   class Setting < ActiveRecord::Base
     @@key_value = {}
-    attr_accessible :title, :value, :ancestry, :parent_id, :data_type
-    SettingsDataTypes = ["string","date","datetime","boolean","array"]
+    attr_accessible :title, :value, :ancestry, :parent_id, :data_type, :set_value, :date_type, :datetime_type, :integer_type, :array_type, :setting_array_values_attributes
+    attr_writer :set_value
+    attr_accessor :set_value
+    has_many :setting_array_values, :class_name => Goldencobra::SettingArrayValue
+
+    accepts_nested_attributes_for :setting_array_values, :allow_destroy => true
+
+    #composed_of :value, converter: Proc.new { |stringdate| stringdate.strptime("%Y-%d-%m")}
+
+    #serialize :value   # does saving to database in the right data type (but for now save as string)
+    #before_save :convert_value2  #figure out how to do that
+    before_save :form_value_to_string  #figure out how to do that
+    SettingsDataTypes = ["string","date","datetime","boolean","array", "integer"]
+    SettingsDataTypesH = {"string" => "string","date" => "date_select","datetime"=> "datetime_select", "integer" => "number", "boolean"=> "boolean","array"=> "string"}
     has_ancestry :orphan_strategy => :restrict
     if ActiveRecord::Base.connection.table_exists?("versions")
       has_paper_trail
@@ -32,6 +44,87 @@ module Goldencobra
     search_methods :parent_ids_in
 
     scope :with_values, where("value IS NOT NULL")
+
+#### ---->
+
+#      logger.warn("---"*20)
+
+    def form_value_to_string  
+      if Goldencobra::Setting.new.respond_to?(:date_type) 
+        if self.data_type == "boolean" 
+          if self.set_value == "0" 
+            self.value = "false" 
+          elsif self.set_value == "1"
+            self.value = "true"
+          end
+        elsif self.data_type == "date" && self.date_type.present?
+          self.value = self.date_type.strftime("%Y-%m-%d")
+        elsif self.data_type == "datetime" && self.datetime_type.present?
+          self.value = self.datetime_type.strftime("%Y-%m-%d %H:%M")
+        elsif self.data_type == "array"
+          self.value = self.setting_array_values.map{|a|a.value}.join(",")
+        elsif self.data_type == "integer"
+          self.value = self.integer_type.to_s
+        else
+          self.value = self.set_value
+        end
+      end
+    end
+
+    def self.update_data_types
+      Goldencobra::Setting.scoped.each do |s|
+        s.change_data_types
+      end
+    end
+
+    def change_data_types
+
+      if self.value == "false" || self.value == "0"
+        self.value = "false"
+        self.data_type = "boolean"
+        self.save
+      elsif self.value == "true" || self.value == "1" 
+        self.value = "true"
+        self.data_type = "boolean"
+        self.save
+      end
+
+      if self.value.to_i.to_s == self.value && self.value.to_i > 1
+        self.integer_type = self.value.to_i          
+        self.data_type = "integer"
+        self.save
+      end
+
+      begin
+        Date.parse(self.value).strftime("%Y-%m-%d") != self.value
+      rescue
+        puts "Oops, not a date."
+      else 
+        if Date.parse(self.value).strftime("%Y-%m-%d") == self.value
+        self.date_type = Date.parse(self.value)
+        self.data_type = "date"
+        self.save
+        end
+      end
+
+      begin
+        DateTime.parse(self.value).strftime("%Y-%m-%d %H:%M") != self.value
+      rescue
+        puts "Oops, not a datetime."
+      else 
+        if DateTime.parse(self.value).strftime("%Y-%m-%d %H:%M") == self.value
+        self.datetime_type = DateTime.parse(self.value)
+        self.data_type = "datetime"
+        self.save
+        end
+      end
+    end
+
+    def data_values
+      SettingsDataTypesH[self.data_type]
+    end
+      
+#### ----> 
 
 
     def self.absolute_base_url
