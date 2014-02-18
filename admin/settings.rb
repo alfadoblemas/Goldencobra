@@ -15,7 +15,9 @@ ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
       if f.object.data_type == "date"  
         f.input :date_type, :as => f.object.data_values 
       elsif f.object.data_type == "datetime"
-        f.input :datetime_type, :as => f.object.data_values 
+        f.input :datetime_type, :as => f.object.data_values
+      elsif f.object.data_type == "string"
+      f.input :value, :as => f.object.data_values 
       elsif f.object.data_type == "integer" ##
         f.input :integer_type, :as => f.object.data_values ##
       elsif f.object.data_type == "array"

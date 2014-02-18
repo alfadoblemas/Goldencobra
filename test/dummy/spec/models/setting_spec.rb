@@ -8,14 +8,25 @@ describe Goldencobra::Setting do
       Goldencobra::Setting.where(title: "url").first.value.should =="http://www.goldencobra.de"
     end
   end
-end
+end  
 
-# describe Goldencobra::Setting do
-#   describe "changing a data_type" do
-#     it "succesfully changes data_type" do
-#       Goldencobra::Setting.change_data_types(data_type: "boolean")
-#       Goldencobra::Setting.save
-#       Goldencobra:Setting.where(value: "true").data_type.should == "boolean"
-#     end
-#   end
-# end
+
+describe Goldencobra::Setting do
+  it "is changed to the right data type" do
+    a = Goldencobra::Setting.new
+    a.value = "2012-03-05"
+    a.change_data_types
+    a.date_type.should == Date.parse(a.value)
+  end
+end
+  
+
+
+
+
+
+
+
+
+
+ 
