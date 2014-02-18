@@ -46,17 +46,6 @@ module Goldencobra
 
     scope :with_values, where("value IS NOT NULL")
 
-#### ---->
-
-#      logger.warn("---"*20)
-      #   #check if your dattype is convertible if datatype changed
-      #   #if changes exist
-      #   #check what changed
-      #   #check is change possible
-      #   #if not prevent from saving
-      #   # self.errors.add(:data_type, "Doof das")
- 
-
   ## string
 
     def string_value_changed
@@ -234,7 +223,7 @@ module Goldencobra
       end
     end
 
-
+   ##
     def form_data_types_and_values
       if Goldencobra::Setting.new.respond_to?(:date_type) 
         if self.data_type == "boolean" 
@@ -261,42 +250,59 @@ module Goldencobra
       end
     end
 
-    def change_data_types
+  ##
 
-      if self.value == "false" || self.value == "0" #|| self.value == "no"
-        self.value = "false"
-        self.data_type = "boolean"
-        self.save
-      elsif self.value == "true" || self.value == "1" #|| self.value == "yes"
-        self.value = "true"
-        self.data_type = "boolean"
-        self.save
+    def convert_to_boolean
+      self.data_type = "boolean"
+      self.save
+    end
+
+    def convert_to_integer
+      self.data_type = "integer"
+      self.save
+    end
+
+    def convert_to_date
+      self.data_type = "date"
+      self.save
+    end
+
+    def convert_to_datetime
+      self.data_type = "datetime"
+      self.save
+    end
+
+
+    def change_data_types
+      if self.value == "false" || self.value == "0" 
+        self.boolean_type = "false"
+        self.convert_to_boolean
+      elsif self.value == "true" || self.value == "1" 
+        self.boolean_type = "true"
+        self.convert_to_boolean
       end
       if self.value.to_i.to_s == self.value && self.value.to_i > 1  ## --> if 0 or 1 --> boolean, not integer!! ##
         self.integer_type = self.value.to_i      
-        self.data_type = "integer"
-        self.save
+        self.convert_to_integer
       end
       begin
-        !self.is_date
+        self.value.to_date.class != Date
       rescue
         puts "Oops, not a date."
       else 
         if self.is_date
         self.date_type = self.value.to_date
-        self.data_type = "date"
-        self.save
+        self.convert_to_date
         end
       end
       begin
-        !self.is_datetime
+        self.value.to_datetime.class != DateTime
       rescue
         puts "Oops, not a datetime."
       else 
         if self.is_datetime
         self.datetime_type = self.value.to_datetime
-        self.data_type = "datetime"
-        self.save
+        self.convert_to_datetime
         end
       end
     end
