@@ -52,8 +52,7 @@ gem 'wkhtmltopdf-binary'
 
 gem "better_errors", :group => "development"
 gem "binding_of_caller", :group => "development"
-
-
+gem 'mysql2', "0.3.15"
 
 group :development do
   gem 'thin'
@@ -66,7 +65,6 @@ group :development do
 end
 
 group :test do
-  gem 'mysql2'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'factory_girl'

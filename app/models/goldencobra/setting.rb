@@ -100,7 +100,11 @@ module Goldencobra
   ##date
 
     def is_date
-      self.value.to_date.class == Date
+      begin
+        self.value.to_date.class == Date
+      rescue
+        false
+      end
     end
       
     def date_value_changed
@@ -131,8 +135,12 @@ module Goldencobra
     end
 
   ##datetime
-   def is_datetime
-      self.value.to_datetime.class == DateTime
+    def is_datetime
+      begin
+        self.value.to_datetime.class == DateTime
+      rescue
+        false
+      end
     end
 
    def datetime_value_changed
@@ -168,14 +176,18 @@ module Goldencobra
     end 
     
     def data_type_change_to_array
-      if self.setting_array_values == []
-        until self.setting_array_values.length == self.value.split(",").length
-          self.setting_array_values << Goldencobra::SettingArrayValue.create
-        end
-        i = 0
-        while i < self.value.split(",").length
-          self.setting_array_values[i].value = self.value.split(",")[i]
-          i = i+1
+      # if self.setting_array_values == []
+      #   until self.setting_array_values.length == self.value.split(",").length
+      #     self.setting_array_values << Goldencobra::SettingArrayValue.create
+      #   end
+      #   i = 0
+      #   while i < self.value.split(",").length
+      #     self.setting_array_values[i].value = self.value.split(",")[i]
+      #     i = i+1
+      #   end
+      self.value.split(",").each do |v|
+        unless self.setting_array_values.where(:value => v).any? 
+          self.setting_array_values << Goldencobra::SettingArrayValue.create(:value => v)
         end
       end
     end
@@ -271,7 +283,7 @@ module Goldencobra
       self.data_type = "datetime"
       self.save
     end
-
+    
 
     def change_data_types
       if self.value == "false" || self.value == "0" 
@@ -281,31 +293,23 @@ module Goldencobra
         self.boolean_type = "true"
         self.convert_to_boolean
       end
+
       if self.value.to_i.to_s == self.value && self.value.to_i > 1  ## --> if 0 or 1 --> boolean, not integer!! ##
         self.integer_type = self.value.to_i      
         self.convert_to_integer
       end
-      begin
-        self.value.to_date.class != Date
-      rescue
-        puts "Oops, not a date."
-      else 
-        if self.is_date
+
+      if self.is_date
         self.date_type = self.value.to_date
         self.convert_to_date
-        end
       end
-      begin
-        self.value.to_datetime.class != DateTime
-      rescue
-        puts "Oops, not a datetime."
-      else 
-        if self.is_datetime
+  
+      if self.is_datetime
         self.datetime_type = self.value.to_datetime
         self.convert_to_datetime
-        end
       end
     end
+
 
     def data_values
       SettingsDataTypesH[self.data_type]

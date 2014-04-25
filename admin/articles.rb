@@ -1,9 +1,8 @@
 #Encoding: UTF-8
-
-ActiveAdmin.register Goldencobra::Article, :as => "Article" do
-  menu :priority => 1, :parent => "Content-Management", :if => proc{can?(:update, Goldencobra::Article)}
+ActiveAdmin.register Goldencobra::Article, :as => "Article" do 
+  menu :priority => 1, :parent => "Content-Management", :if => proc{can?(:update, Goldencobra::Article)} 
   controller.authorize_resource :class => Goldencobra::Article
-  unless Rails.env == "test"
+  unless Rails.env == "test" 
     I18n.locale = :de
     I18n.default_locale = :de
   end
@@ -21,6 +20,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   filter :created_at, :label =>  I18n.t("filter_created", :scope => [:goldencobra, :filter], :default => "Erstellt")
   filter :updated_at, :label =>  I18n.t("filter_updated", :scope => [:goldencobra, :filter], :default => "Bearbeitet")
 
+
   scope "Alle", :scoped, :default => true
   scope "Online", :active
   scope "Offline", :inactive
@@ -35,19 +35,19 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
       render :partial => "/goldencobra/admin/articles/select_article_type", :locals => {:f => f}
     else
       f.actions
-      f.inputs "Allgemein", :class => "foldable inputs" do
-        f.input :title, :label => "Titel", :hint => "Der Titel/die Überschrift des Artikels/der Seite, hier können Leerzeichen und Sonderzeichen verwendet werden"
-        f.input :content, :label => "Haupt-Textfeld", :input_html => { :class => "tinymce" }
-        f.input :teaser, :hint => "Dieser Text beschreibt den Artikel auf Übersichtsseiten kurz, außerdem wird er für die Beschreibung bei Google & Facebook genutzt", :input_html => { :rows => 5 }
-        f.input :tag_list, :label => "Liste von internen Tags", :hint => "Tags sind komma-getrennte Werte, mit denen sich ein Artikel intern gruppiern l&auml;sst", :wrapper_html => { class: 'expert' }
-        f.input :frontend_tag_list, label: "Filterkriterium", hint: "Hier eingetragene Begriffe werden auf &Uuml;bersichtsseiten als Filteroptionen angeboten.", :wrapper_html => { class: 'expert' }
-        f.input :active, :label => "Aktiv?", :hint => "Soll dieser Artikel im System aktiv und online sichtbar sein?", :wrapper_html => { class: 'expert' }
+      f.inputs I18n.t('active_admin.articles.form.general'), :class => "foldable inputs" do
+        f.input :title, :label => I18n.t('active_admin.articles.form.title_label'), :hint => I18n.t('active_admin.articles.form.label_hint')
+        f.input :content, :label => I18n.t('active_admin.articles.form.content_title'), :input_html => { :class => "tinymce" }
+        f.input :teaser, :hint => I18n.t('active_admin.articles.form.teaser_hint') , :input_html => { :rows => 5 }
+        f.input :tag_list, :label => I18n.t('active_admin.articles.form.tag_list_label'), :hint => I18n.t('active_admin.articles.form.tag_list_hint'), :wrapper_html => { class: 'expert' }
+        f.input :frontend_tag_list, label: I18n.t('active_admin.articles.form.frontent_tag_list_label'), hint: I18n.t('active_admin.articles.form.frontent_tag_list_hint') , :wrapper_html => { class: 'expert' }
+        f.input :active, :label => I18n.t('active_admin.articles.form.active_label') , :hint => I18n.t('active_admin.articles.form.active_hint'), :wrapper_html => { class: 'expert' }
       end
       if f.object.article_type.present? && f.object.kind_of_article_type.downcase == "show"
         if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/_edit_show.html.erb")
           render :partial => "articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_show", :locals => {:f => f}
         else
-          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_show" do
+          f.inputs I18n.t('active_admin.articles.error.partial_missing') do
           end
         end
       elsif f.object.kind_of_article_type.downcase == "index"
@@ -55,19 +55,19 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
         if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/_edit_index.html.erb")
           render :partial => "articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index", :locals => {:f => f}
         else
-          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index" do
+          f.inputs I18n.t('active_admin.articles.error.partial_missing2') do
           end
         end
         #render :partial => "goldencobra/admin/articles/sort_articles_index", :locals => {:f => f}
       else
         #error
       end
-      f.inputs "Weiterer Inhalt", :class => "foldable closed inputs" do
-        f.input :subtitle, :label => "Untertitel"
-        f.input :context_info, :label => "Weiterer Inhalt", :input_html => { :class => "tinymce" }, :hint => "Dieser Text ist f&uuml;r eine Sidebar gedacht"
-        f.input :summary, :label => "Zusammenfassung", hint: "Dient einer zusammenfassenden Einleitung in den Haupttext und wird hervorgehoben dargestellt", :input_html => { :rows => 5 }
+      f.inputs I18n.t('active_admin.articles.form.weiterer_inhalt'), :class => "foldable closed inputs" do
+        f.input :subtitle, :label => I18n.t('active_admin.articles.form.subtitle_label')
+        f.input :context_info, :label => I18n.t('active_admin.articles.form.weiterer_inhalt'), :input_html => { :class => "tinymce" }, :hint => I18n.t('active_admin.articles.form.context_info_hint')
+        f.input :summary, :label => I18n.t('active_admin.articles.form.summary_label'), hint: I18n.t('active_admin.articles.form.summary_hint'), :input_html => { :rows => 5 }
       end
-      f.inputs "Metadescriptions", :class => "foldable closed inputs expert" do
+      f.inputs I18n.t('active_admin.articles.form.metadescriptions'), :class => "foldable closed inputs expert" do
         # f.input :hint_label, :as => :text, :label => "Metatags fuer Suchmaschinenoptimierung", :input_html => {:disabled => true,
           # :resize => false,
           # :value => "<b>Metatags k&ouml;nnen genutzt werden, um den Artikel f&uuml;r Suchmaschinen besser sichtbar zu machen.</b><br />
@@ -83,35 +83,36 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
           # <li><strong>OpenGraph Image:</strong> Muss als URL &uuml;bergeben werden (http://www.mein.de/bild.jpg). Erscheint dann bei Facebook als Bild des Artikels.</li>
           # </ul>", :class => "metadescription_hint", :id => "metadescription-tinymce"}
         f.has_many :metatags do |m|
-          m.input :name, :label => "Art", :as => :select, :collection => Goldencobra::Article::MetatagNames, :input_html => { :class => 'metatag_names'}, :hint => "Hier k&ouml;nnen Sie die verschiedenen Metatags definieren, sowie alle Einstellungen f&uuml;r den OpenGraph vonehmen"
-          m.input :value, :label => "Wert", :input_html => { :class => 'metatag_values'}
-          m.input :_destroy, :label => "entfernen/zurücksetzen", :hint => "hiermit werden die Werte entfernt bzw. auf ihren Ursprung zurückgesetzt", :as => :boolean
+          m.input :name, :label => I18n.t('active_admin.articles.form.name_label'), :as => :select, :collection => Goldencobra::Article::MetatagNames, :input_html => { :class => 'metatag_names'}, :hint => I18n.t('active_admin.articles.form.name_hint')
+          m.input :value, :label => I18n.t('active_admin.articles.form.value_label'), :input_html => { :class => 'metatag_values'}
+          m.input :_destroy, :label => I18n.t('active_admin.articles.form.destroy_label'), :hint => I18n.t('active_admin.articles.form.destroy_hint'), :as => :boolean
         end
       end
-      f.inputs "Einstellungen", :class => "foldable closed inputs expert" do
-        f.input :breadcrumb, :label => "Breadcrumb-Titel", :hint => "Kurzer Titel f&uuml;r die Breadcrumb-Navigation"
-        f.input :url_name, :label => "Website-Adresse des Artikels", :hint => "Nicht mehr als 64 Zeichen, sollte keine Umlaute, Sonderzeichen oder Leerzeichen enthalten. Wenn die Seite unter 'http://meine-seite.de/mein-artikel' erreichbar sein soll, tragen Sie hier 'mein-artikel' ein.", required: false
-        f.input :parent_id, :label => "Übergeordneter Artikel", :hint => "Auswahl des Artikels, der in der Seitenstruktur _oberhalb_ liegen soll. Beispiel: http://www.meine-seite.de/der-oberartikel/mein-artikel", :as => :select, :collection => Goldencobra::Article.all.map{|c| ["#{c.path.map(&:title).join(" / ")}", c.id]}.sort{|a,b| a[0] <=> b[0]}, :include_blank => true, :input_html => { :class => 'chzn-select-deselect', :style => 'width: 70%;', 'data-placeholder' => 'Elternelement auswählen' }
-        f.input :canonical_url, :label => "Canonical URL", :hint => "Falls auf dieser Seite Inhalte erscheinen, die vorher schon auf einer anderen Seite erschienen sind, sollte hier die URL der Quellseite eingetragen werden, um von Google nicht f&uuml;r doppelten Inhalt abgestraft zu werden"
-        f.input :active_since, :label => "Online seit", :hint => "Wenn der Artikel online ist, seit wann ist er online? Bsp: 02.10.2011 15:35", as: :string, :input_html => { class: "", :size => "20", value: "#{f.object.active_since.strftime('%d.%m.%Y %H:%M') if f.object.active_since}" }, :wrapper_html => { class: 'expert' }
-        f.input :enable_social_sharing, :label => "'Social Sharing'-Aktionen anzeigen", :hint => "Sollen Besucher Aktionen angezeigt bekommen, um diesen Artikel in den sozialen Netzwerken zu verbreiten?"
-        f.input :robots_no_index, :label => "Artikel nicht durch Suchmaschinen finden lassen", :hint => "Um bei Google nicht in Konkurrenz zu anderen wichtigen Einzelseiten der eigenen Webseite zu treten, kann hier Google mitgeteilt werden, diese Seite nicht zu indizieren"
-        f.input :cacheable, :label => "Artikel cachebar", :as => :boolean, :hint => "Dieser Artikel darf im Cache liegen"
-        f.input :commentable, :label => "Artikel kommentierbar", :as => :boolean, :hint => "Kommentarfunktion für diesen Artikel aktivieren?"
-        f.input :dynamic_redirection, :label => "Automatische Weiterleitung", :as => :select, :collection => Goldencobra::Article::DynamicRedirectOptions.map{|a| [a[1], a[0]]}, :include_blank => false
-        f.input :external_url_redirect, :label => "Weiterleitung zu externer URL"
-        f.input :redirect_link_title, :label => "Name des externen Links"
-        f.input :redirection_target_in_new_window, :label => "Weiterleitung in neuem Fenster öffnen?"
-        f.input :author, :label => "Autor", :hint => "Wer ist der Verfasser dieses Artikels?"
+      f.inputs I18n.t('active_admin.articles.form.settings'), :class => "foldable closed inputs expert" do
+        f.input :breadcrumb, :label => I18n.t('active_admin.articles.form.breadcrump_label'), :hint => I18n.t('active_admin.articles.form.breadcrump_hint')
+        f.input :url_name, :label => I18n.t('active_admin.articles.form.url_name_label'), :hint => I18n.t('active_admin.articles.form.url_name_hint'), required: false
+        f.input :parent_id, :label => I18n.t('active_admin.articles.form.parent_id_label'), :hint => I18n.t('active_admin.articles.form.parent_id_hint'), :as => :select, :collection => Goldencobra::Article.all.map{|c| ["#{c.path.map(&:title).join(" / ")}", c.id]}.sort{|a,b| a[0] <=> b[0]}, :include_blank => true, :input_html => { :class => 'chzn-select-deselect', :style => 'width: 70%;', 'data-placeholder' => 'Elternelement auswählen' }
+        f.input :canonical_url, :label => I18n.t('active_admin.articles.form.canonical_url_label'), :hint => I18n.t('active_admin.articles.form.canonical_url_hint')
+
+        f.input :active_since, :label => I18n.t('active_admin.articles.form.active_since_label'), :hint => I18n.t('active_admin.articles.form.active_since_hint'), as: :string, :input_html => { class: "", :size => "20", value: "#{f.object.active_since.strftime('%d.%m.%Y %H:%M') if f.object.active_since}" }, :wrapper_html => { class: 'expert' }
+        f.input :enable_social_sharing, :label => I18n.t('active_admin.articles.form.enable_social_sharing_label'), :hint => I18n.t('active_admin.articles.form.enable_social_sharing_hint')
+        f.input :robots_no_index, :label => I18n.t('active_admin.articles.form.robots_no_index_label'), :hint => I18n.t('active_admin.articles.form.robots_no_index_hint')
+        f.input :cacheable, :label => I18n.t('active_admin.articles.form.cacheable_label'), :as => :boolean, :hint => I18n.t('active_admin.articles.form.cacheable_hint')
+        f.input :commentable, :label => I18n.t('active_admin.articles.form.commentable_label'), :as => :boolean, :hint => I18n.t('active_admin.articles.form.commentable_hint')
+        f.input :dynamic_redirection, :label => I18n.t('active_admin.articles.form.dynamic_redirection_label'), :as => :select, :collection => Goldencobra::Article::DynamicRedirectOptions.map{|a| [a[1], a[0]]}, :include_blank => false
+        f.input :external_url_redirect, :label => I18n.t('active_admin.articles.form.external_url_redirect_label')
+        f.input :redirect_link_title, :label => I18n.t('active_admin.articles.form.redirect_link_title_label')
+        f.input :redirection_target_in_new_window, :label => I18n.t('active_admin.articles.form.redirection_target_in_new_window_label')
+        f.input :author, :label => I18n.t('active_admin.articles.form.author_label'), :hint => I18n.t('active_admin.articles.form.author_hint')
       end
-      f.inputs "Zugriffsrechte", :class => "foldable closed inputs expert" do
+      f.inputs I18n.t('active_admin.articles.form.access_rights'), :class => "foldable closed inputs expert" do
         f.has_many :permissions do |p|
-          p.input :role, :include_blank => "Alle"
+          p.input :role, :include_blank => I18n.t('active_admin.articles.form.role')
           p.input :action, :as => :select, :collection => Goldencobra::Permission::PossibleActions, :include_blank => false
           p.input :_destroy, :as => :boolean
         end
       end
-      f.inputs "Medien", :class => "foldable closed inputs" do
+      f.inputs I18n.t('active_admin.articles.form.media'), :class => "foldable closed inputs" do
         f.has_many :article_images do |ai|
           ai.input :image, :as => :select, :collection => Goldencobra::Upload.order("updated_at DESC").map{|c| [c.complete_list_name, c.id]}, :input_html => { :class => 'article_image_file chzn-select', :style => 'width: 70%;', 'data-placeholder' => 'Medium auswählen' }, :label => "Medium wählen"
           ai.input :position, :as => :select, :collection => Goldencobra::Setting.for_key("goldencobra.article.image_positions").split(",").map(&:strip), :include_blank => false
@@ -119,7 +120,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
         end
       end
     end
-    f.inputs "JS-Scripts", :style => "display:none"  do
+    f.inputs I18n.t('active_admin.articles.form.JS_scripts'), :style => "display:none"  do
       if current_user && current_user.enable_expert_mode == true
         render partial: '/goldencobra/admin/articles/toggle_expert_mode'
       end
@@ -168,7 +169,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   end
 
   action_item :only => [:index] do
-    link_to('SEO-Ansicht', admin_seo_articles_path())
+    link_to(I18n.t('active_admin.articles.sidebar.seo_link'), admin_seo_articles_path())
   end
 
   sidebar :overview, only: [:index] do
@@ -201,13 +202,13 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
 
   sidebar :menue_options, :only => [:show, :edit] do
     if resource.linked_menues.count > 0
-      h5 "Es existieren bereits passende Menüpunkte zu diesem Artikel"
-      div link_to("Sie können diese hier auflisten", admin_menues_path("q[target_contains]" => resource.public_url))
+      h5 I18n.t('active_admin.articles.sidebar.h5')
+      div link_to(I18n.t('active_admin.articles.sidebar.div_link'), admin_menues_path("q[target_contains]" => resource.public_url))
       div "oder"
-      div link_to("einen weiteren Menüpunkt erstellen", new_admin_menue_path(:menue => {:title => resource.title, :target => resource.public_url}))
+      div link_to(I18n.t('active_admin.articles.sidebar.div_link1'), new_admin_menue_path(:menue => {:title => resource.title, :target => resource.public_url}))
     else
-      h5 "Es existiert noch kein Menüpunkt zu diesem Artikel"
-      div link_to("Einen passenden Menüpunkt erstellen", new_admin_menue_path(:menue => {:title => resource.title, :target => resource.public_url}))
+      h5 'active_admin.articles.sidebar.h5'
+      div link_to(I18n.t('active_admin.articles.sidebar.div_link2'), new_admin_menue_path(:menue => {:title => resource.title, :target => resource.public_url}))
     end
 
     articles = Goldencobra::Article.active.where(:url_name => resource.url_name)
@@ -216,7 +217,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
     end
 
     if results && results.count > 1
-      h5 "ACHTUNG!!! Es gibt #{pluralize(results.count - 1 , "anderen Artikel", "andere Artikel")  } mit dieser URL:", :class => "warning"
+      h5 I18n.t('active_admin.articles.sidebar.h5_achtung'), :class => "warning"
       ul do
         results.each do |r|
           next if r == resource
@@ -260,10 +261,10 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
     article = Goldencobra::Article.find(params[:id])
     if article.active
       article.active = false
-      flash[:notice] = "Dieser Artikel ist nun online"
+      flash[:notice] = I18n.t('active_admin.articles.member_action.flash.article_online')
     else
       article.active = true
-      flash[:notice] = "Dieser Artikel ist nun offline"
+      flash[:notice] = I18n.t('active_admin.articles.member_action.flash.article_offline')
     end
     article.save
 
@@ -273,40 +274,40 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   member_action :update_widgets, :method => :post do
     article = Goldencobra::Article.find(params[:id])
     article.update_attributes(:widget_ids => params[:widget_ids])
-    redirect_to :action => :edit, :notice => "Widgets added"
+    redirect_to :action => :edit, :notice => I18n.t('active_admin.articles.member_action.flash.widgets')
   end
 
   member_action :run_link_checker do
     article = Goldencobra::Article.find(params[:id])
     system("cd #{::Rails.root} && RAILS_ENV=#{::Rails.env} bundle exec rake link_checker:article ID=#{article.id} &")
-    flash[:notice] = "Die Links dieses Artikels werden überprüft. Bitte warten Sie, dies kann wenige Minuten in Anspruch nehmen."
+    flash[:notice] = I18n.t('active_admin.articles.member_action.flash.link_checker')
     redirect_to :action => :edit
   end
 
-  batch_action :reset_cache, :confirm => "Cache leeren: sind Sie sicher?" do |selection|
+  batch_action :reset_cache, :confirm => I18n.t('active_admin.articles.batch_action.cache') do |selection|
     Goldencobra::Article.find(selection).each do |article|
       article.updated_at = Time.now
       article.without_versioning :save
     end
-    flash[:notice] = "Cache wurde erneuert"
+    flash[:notice] = I18n.t('active_admin.articles.batch_action.flash.cache')
     redirect_to :action => :index
   end
 
-  batch_action :set_article_online, :confirm => "Artikel online stellen: sind Sie sicher?" do |selection|
+  batch_action :set_article_online, :confirm => I18n.t('active_admin.articles.batch_action.confirm_online') do |selection|
     Goldencobra::Article.find(selection).each do |article|
       article.active = true
       article.save
     end
-    flash[:notice] = "Artikel wurden online gestellt"
+    flash[:notice] = I18n.t('active_admin.articles.batch_action.flash.set_article_online')
     redirect_to :action => :index
   end
 
-  batch_action :set_article_offline, :confirm => "Artikel offline stellen: sind Sie sicher?" do |selection|
+  batch_action :set_article_offline, :confirm => I18n.t('active_admin.articles.batch_action.confirm_offline')  do |selection|
     Goldencobra::Article.find(selection).each do |article|
       article.active = false
       article.save
     end
-    flash[:notice] = "Artikel wurden offline gestellt"
+    flash[:notice] = I18n.t('active_admin.articles.batch_action.flash.set_article_offline')
     redirect_to :action => :index
   end
 
@@ -343,7 +344,7 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
     else
       @version.item.destroy
     end
-    redirect_to :back, :notice => "Undid #{@version.event}"
+    redirect_to :back, :notice => I18n.t('active_admin.settings.notice.undid_event')
   end
 
 
@@ -352,21 +353,21 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   end
 
   action_item :only => :edit do
-    link_to('Vorschau zu diesem Artikel anzeigen', resource.public_url, :target => "_blank")
+    link_to(I18n.t('active_admin.articles.action_item.link_to.article_preview'), resource.public_url, :target => "_blank")
   end
 
   action_item :only => :edit, :inner_html => {:class => "expert"} do
-    link_to("Expert-Modus #{current_user.enable_expert_mode ? 'deaktivieren' : 'aktivieren'}", toggle_expert_mode_admin_article_path, remote: true, id: "expert-mode")
+    link_to(I18n.t('active_admin.articles.action_item.link_to.expert_modus'), toggle_expert_mode_admin_article_path, remote: true, id: "expert-mode")
   end
 
   action_item :only => :index do
-    link_to("Import", new_admin_import_path(:target_model => "Goldencobra::Article"), :class => "importer")
+    link_to(I18n.t('active_admin.articles.action_item.link_to.import'), new_admin_import_path(:target_model => "Goldencobra::Article"), :class => "importer")
   end
 
 
   action_item :only => :edit do
     if resource.versions.last
-      link_to("Undo", revert_admin_article_path(:id => resource.versions.last), :class => "undo")
+      link_to(I18n.t('active_admin.articles.action_item.link_to.undo'), revert_admin_article_path(:id => resource.versions.last), :class => "undo")
     end
   end
 
