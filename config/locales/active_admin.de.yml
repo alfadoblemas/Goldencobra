@@ -114,11 +114,21 @@ de:
       tag-select-placeholder: "Tag wählen"
     #-------------- Nina
     settings:
+      as: "Setting"
+      scope: "Alle Settings"
+      action_item:
+        link: "Undo"
+        class: "undo"
       form:
         general: "Allgemein"
       notice:
         undid_event: "Undid %{@version.event}"
     articles:
+      as: "Article"
+      parent: "Content-Management"
+      scope1: "Alle"
+      scope2: "Online"
+      scope3: "Offline"
       form:
         general: "Allgemein"
         title_label: "Titel"
@@ -361,7 +371,7 @@ de:
       action_link1: "Run LinkChecker"
 
 
-
+#left to be internationalised:
     supports:
 
     trackings:
@@ -377,8 +387,6 @@ de:
     widgets:
 
 
-
-    #I18n.t('active_admin.seo_articles.')
 
          
 

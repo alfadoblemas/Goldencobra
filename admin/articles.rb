@@ -1,6 +1,6 @@
 #Encoding: UTF-8
-ActiveAdmin.register Goldencobra::Article, :as => "Article" do 
-  menu :priority => 1, :parent => "Content-Management", :if => proc{can?(:update, Goldencobra::Article)} 
+ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.as') do 
+  menu :priority => 1, :parent => I18n.t('active_admin.articles.parent'), :if => proc{can?(:update, Goldencobra::Article)} 
   controller.authorize_resource :class => Goldencobra::Article
   unless Rails.env == "test" 
     I18n.locale = :de
@@ -21,9 +21,9 @@ ActiveAdmin.register Goldencobra::Article, :as => "Article" do
   filter :updated_at, :label =>  I18n.t("filter_updated", :scope => [:goldencobra, :filter], :default => "Bearbeitet")
 
 
-  scope "Alle", :scoped, :default => true
-  scope "Online", :active
-  scope "Offline", :inactive
+  scope I18n.t('active_admin.articles.scope1'), :scoped, :default => true
+  scope I18n.t('active_admin.articles.scope2'), :active
+  scope I18n.t('active_admin.articles.scope3'), :inactive
 
   Goldencobra::Article.article_types_for_select.each do |article_type|
     next if article_type.include?("index")
