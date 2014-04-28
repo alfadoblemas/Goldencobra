@@ -332,14 +332,35 @@ de:
       confirm: "Kommentar löschen?"
       class: "member_link delete_link delete"
       title_delete: "loeschen"
-    form:
+     form:
       include_blank: 'Alle'
-    sidebar:
+     sidebar:
       sidebar: "Sortierung / Gewichtung"
-    
     roles: 
-
+      as: "Role"
     seo_articles:
+      as: "SEO-Article"
+      scope1: "Alle"
+      scope2: "online"
+      scope3: "offline"
+      scope4: "keine Title-Tags"
+      scope5: "keine Meta-Description"
+      index:
+        title_column: "Titel"
+        tag_column: "Title-Tag"
+        meta_column: "Meta Description"
+        search_column: "Suchmaschinen gesperrt"
+        links_column: "Links"
+      column: 
+        title1: "Vorschau"
+        title2: "bearbeiten"
+        title3: "Neuer Unterartikel"
+        title4: "loeschen"
+      collection_flash: "All Link will be checked. This could take a while"
+      action_link: "Link-Checker Index"
+      action_link1: "Run LinkChecker"
+
+
 
     supports:
 
@@ -357,7 +378,7 @@ de:
 
 
 
-    #I18n.t('active_admin.menues.form')
+    #I18n.t('active_admin.seo_articles.')
 
          
 
