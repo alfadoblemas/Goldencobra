@@ -117,7 +117,7 @@ de:
       form:
         general: "Allgemein"
       notice:
-        undid_event: " Undid %{@version.event}"
+        undid_event: "Undid %{@version.event}"
     articles:
       form:
         general: "Allgemein"
@@ -239,6 +239,8 @@ de:
       link_to:
         run: "Run LinkChecker"
     menues:
+      menue: "Menues"
+      parent: "Content-Management"
       labels:
         title: "Titel"
         target: "Ziel"
@@ -254,6 +256,7 @@ de:
           parent_id: "Übergeordneter Menüpunkt"
           parent_id_hint: "Unter welchem Menüpunkt soll der aktuelle Punkt erscheinen?"
         options:
+          class: "foldable closed inputs"
           option: "Optionen"
           sorter_label: "Sortiernummer"
           sorter_hint: "Nach dieser Nummer wird innerhalb des Menüs sortiert, je höher, desto weiter unten in der Reihenfolge"
@@ -265,11 +268,66 @@ de:
           active_hint: "Soll dieser Menüpunkt im System aktiv und online sichtbar sein?"
           remote_label: "Remote?"
           remote_hint: "Soll dieser Menüpunkt per Ajax abgesendet werden?"
+        access:
+          access_rights: "Zugriffsrechte"
+          access_class: "foldable closed inputs"
+          include_blank: "Alle"
+        details: "Details für ein erweitertes Menü"
+          details_class: "foldable closed inputs"
+          image_label: "Bild"
+          image_hint: "Bereits hochgeladenes Bild aus der Medienliste wählen"
+          details_description_title: "Titel"
+          details_decription_label: "Beschreibung"
+          details_description_call_to_action: "Call-to-action Text"
+        index:
+          column: "Titel"
+          title: "Menüpunkt bearbeiten"
+          column1: "Ziel"
+          column2: "Aktiv?"
+          column3: "Sortieren"
+          column4: "Zugriff"
+          column5: "Artikel"
+          search_link: "search"
+          search_class: "list"
+          search_title: "Artikel auflisten"
+          search_link1: "create one"
+          search_class1: "create"
+          search_title1: "Artikel passend zum Menüpunkt erzeugen"
+        column:
+          edit: "Edit"
+          edit_class: "member_link edit_link edit"
+          edit_title: "Menüpunkt bearbeiten"
+          submenu: "New Submenu"
+          submenu_class: "member_link edit_link"
+          submenu_class1: "new_subarticle"
+          submenu_title: "Neuen Untermenüpunkt erzeugen"
+          delete: "Delete"
+          delete_confirm: "Realy want to delete this Menuitem?"
+          delete_class: "member_link delete_link delete"
+          delete_title: "Menüpunkt löschen"
+        sidebar:
+          link_name: "title"
+          url_path: "menue"
+          order_by: "title"
+        batch_action:
+          confirm: "Menüpunkt offline stellen: sind Sie sicher?"
+          flash: "Menüpunkte wurden offline gestellt"
+          confirm1: "Menüpunkt online stellen: sind Sie sicher?"
+          flash1: "Menüpunkte wurden online gestellt"
+          confirm_clone: "Do you want to clone this menue"
+          title_clone: "clone of: #{menue.title}"
+          flash_clone: "Menue has been cloned"
+        member_action:
+          notice: "Undid #{@version.event}"
+        action_item:
+          link_to: "Undo"
+          class: "undo"
 
 
-        access_rights: "Zugriffsrechte"
 
-        details:
+
+
+
 
 
     permissions:
