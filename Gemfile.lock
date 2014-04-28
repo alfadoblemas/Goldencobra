@@ -23,7 +23,9 @@ GIT
 
 GIT
   remote: http://github.com/mbleigh/acts-as-taggable-on.git
+
   revision: 9436ecbd2ddc856317d4492a8b5b7c4cd3f9eee9
+
   specs:
     acts-as-taggable-on (3.1.0.rc1)
       actionpack (>= 3, < 5)
@@ -40,7 +42,7 @@ GIT
 PATH
   remote: .
   specs:
-    goldencobra (1.3.4)
+    goldencobra (1.4.1)
       activeadmin
       activeadmin-cancan
       acts-as-taggable-on
@@ -59,6 +61,7 @@ PATH
       geocoder
       geokit (= 1.7.1)
       i18n-active_record
+      iconv
       inherited_resources
       jquery-rails (= 2.1.4)
       liquid
@@ -73,6 +76,7 @@ PATH
       pdfkit
       progress_bar
       rails (~> 3.2.11)
+      rmagick
       rubyzip
       rvm-capistrano
       sass
@@ -140,7 +144,11 @@ GEM
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
+<<<<<<< HEAD
     brakeman (2.4.3)
+=======
+    brakeman (2.4.0)
+>>>>>>> translations3
       erubis (~> 2.6)
       fastercsv (~> 1.5)
       haml (>= 3.0, < 5.0)
@@ -167,11 +175,19 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.1.0)
+      capybara (~> 2.0, >= 2.0.2)
+      json
     celluloid (0.15.2)
       timers (~> 1.1.0)
     celluloid-io (0.15.0)
       celluloid (>= 0.15.0)
       nio4r (>= 0.5.0)
+<<<<<<< HEAD
+=======
+    childprocess (0.4.0)
+      ffi (~> 1.0, >= 1.0.11)
+>>>>>>> translations3
     chronic (0.10.2)
     chunky_png (1.3.0)
     climate_control (0.0.3)
@@ -186,7 +202,12 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+<<<<<<< HEAD
     compass (0.12.4)
+=======
+    columnize (0.3.6)
+    compass (0.12.2)
+>>>>>>> translations3
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.2.17)
@@ -209,6 +230,12 @@ GEM
     daemons (1.1.9)
     database_cleaner (1.2.0)
     debug_inspector (0.0.2)
+    debugger (1.6.5)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.3.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.3.1)
     devise (2.2.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -226,7 +253,11 @@ GEM
     execjs (2.0.2)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
+<<<<<<< HEAD
     factory_girl_rails (4.4.1)
+=======
+    factory_girl_rails (4.4.0)
+>>>>>>> translations3
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     faker (1.3.0)
@@ -247,7 +278,11 @@ GEM
     gherkin (2.12.2)
       multi_json (~> 1.3)
     growl (1.0.3)
+<<<<<<< HEAD
     guard (2.6.0)
+=======
+    guard (2.4.0)
+>>>>>>> translations3
       formatador (>= 0.2.4)
       listen (~> 2.7)
       lumberjack (~> 1.0)
@@ -263,7 +298,11 @@ GEM
       em-websocket (>= 0.2.0)
       guard (>= 1.5.0)
       multi_json (~> 1.0)
+<<<<<<< HEAD
     guard-rspec (4.2.8)
+=======
+    guard-rspec (4.2.6)
+>>>>>>> translations3
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
     haml (4.0.5)
@@ -278,6 +317,7 @@ GEM
     http_parser.rb (0.5.3)
     httpauth (0.2.1)
     i18n (0.6.9)
+    iconv (1.0.4)
     inherited_resources (1.4.1)
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0.0.rc)
@@ -295,7 +335,11 @@ GEM
       addressable (~> 2.3)
     libv8 (3.16.14.3)
     liquid (2.6.1)
+<<<<<<< HEAD
     listen (2.7.1)
+=======
+    listen (2.5.0)
+>>>>>>> translations3
       celluloid (>= 0.15.2)
       celluloid-io (>= 0.15.0)
       rb-fsevent (>= 0.9.3)
@@ -350,7 +394,11 @@ GEM
     omniauth-openid (1.0.1)
       omniauth (~> 1.0)
       rack-openid (~> 1.3.1)
+<<<<<<< HEAD
     options (2.3.2)
+=======
+    options (2.3.1)
+>>>>>>> translations3
     orm_adapter (0.5.0)
     paper_trail (3.0.1)
       activerecord (>= 3.0, < 5.0)
@@ -364,7 +412,11 @@ GEM
     pdfkit (0.6.2)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
+<<<<<<< HEAD
     polyglot (0.3.4)
+=======
+    polyglot (0.3.3)
+>>>>>>> translations3
     powder (0.2.1)
       thor (>= 0.11.5)
     pr_geohash (1.0.0)
@@ -416,17 +468,30 @@ GEM
     ref (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
+<<<<<<< HEAD
     rsolr (1.0.10)
+=======
+    rmagick (2.13.2)
+    rsolr (1.0.9)
+>>>>>>> translations3
       builder (>= 2.1.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+<<<<<<< HEAD
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
     rspec-rails (2.14.2)
+=======
+    rspec-core (2.14.7)
+    rspec-expectations (2.14.5)
+      diff-lcs (>= 1.1.3, < 2.0)
+    rspec-mocks (2.14.5)
+    rspec-rails (2.14.1)
+>>>>>>> translations3
       actionpack (>= 3.0)
       activemodel (>= 3.0)
       activesupport (>= 3.0)
@@ -435,23 +500,46 @@ GEM
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
     ruby-openid (2.5.0)
+<<<<<<< HEAD
     ruby2ruby (2.0.8)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
     ruby_parser (3.4.1)
+=======
+    ruby2ruby (2.0.7)
+      ruby_parser (~> 3.1)
+      sexp_processor (~> 4.0)
+    ruby_parser (3.4.0)
+>>>>>>> translations3
       sexp_processor (~> 4.1)
     rubyzip (1.1.2)
     rvm-capistrano (1.5.1)
       capistrano (~> 2.15.4)
+<<<<<<< HEAD
     sass (3.2.18)
+=======
+    sass (3.2.14)
+>>>>>>> translations3
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+<<<<<<< HEAD
     sexp_processor (4.4.3)
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     sidekiq (2.17.7)
+=======
+    selenium-webdriver (2.39.0)
+      childprocess (>= 0.2.5)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0.4)
+    sexp_processor (4.4.1)
+    shoulda-matchers (2.5.0)
+      activesupport (>= 3.0.0)
+    sidekiq (2.17.4)
+>>>>>>> translations3
       celluloid (>= 0.15.2)
       connection_pool (>= 1.0.0)
       json
@@ -498,7 +586,12 @@ GEM
       json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
+<<<<<<< HEAD
     whenever (0.9.2)
+=======
+    websocket (1.0.7)
+    whenever (0.9.0)
+>>>>>>> translations3
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
     wkhtmltopdf-binary (0.9.9.1)
@@ -517,11 +610,13 @@ DEPENDENCIES
   brakeman
   cancan
   capybara
+  capybara-webkit
   coffee-rails (~> 3.2.0)
   compass-rails
   cucumber
   cucumber-rails
   database_cleaner
+  debugger
   devise (~> 2.2.4)
   execjs
   factory_girl
@@ -556,8 +651,10 @@ DEPENDENCIES
   pry
   pry-nav
   rb-fsevent (~> 0.9.1)
+  rmagick
   rspec-rails
   sass-rails
+  selenium-webdriver
   shoulda-matchers
   sidekiq
   sinatra

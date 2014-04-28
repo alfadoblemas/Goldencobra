@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "friendly_id"
 require 'ancestry'
 require 'devise'
@@ -29,10 +31,14 @@ module Goldencobra
     isolate_namespace Goldencobra
     initializer "goldencobra.load_app_instance_data" do |app|
       #app.class.configure do
-      #  #Pull in all the migrations from goldencobra to the application
-      #  config.paths['db/migrate'] += Goldencobra::Engine.paths['db/migrate'].existent
+        #call some action
       #end
     end
+
+    initializer("goldencobra.locales") do |app|
+      Goldencobra::Engine.config.i18n.load_path += Dir[root.join('config', 'locales', '*.{rb,yml}').to_s]
+    end
+
     config.to_prepare do
       #ActionController::Base.send :include, Goldencobra::ArticlesController
       ApplicationController.helper(Goldencobra::ApplicationHelper)

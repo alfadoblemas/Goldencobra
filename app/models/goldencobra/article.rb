@@ -72,6 +72,7 @@ module Goldencobra
     has_many :vita_steps, :as => :loggable, :class_name => Goldencobra::Vita
     has_many :comments, :class_name => Goldencobra::Comment
     has_many :permissions, :class_name => Goldencobra::Permission, :foreign_key => "subject_id", :conditions => {:subject_class => "Goldencobra::Article"}
+    belongs_to :articletype, :class_name => Goldencobra::Articletype, :foreign_key => "article_type", :primary_key => "name"
 
     belongs_to :author
 
@@ -151,6 +152,10 @@ module Goldencobra
     # **************************
     # **************************
 
+    def parent_path
+      self.path.map(&:title).join(" / ")
+    end
+
     #scope for index articles, display show articles, index articless or both articles of an current type
     def self.articletype_for_index(current_article)
       if current_article.display_index_types == "show"
@@ -168,63 +173,12 @@ module Goldencobra
       av.request["format"] = "text/html"
       av.controller = Goldencobra::ArticlesController.new
       av.controller.request = av.request
-      av.params.merge!(localparams[:params])
+      if localparams.present? && localparams[:params].present?
+        av.params.merge!(localparams[:params])
+      end
       av.assign({:article => self})
       html_to_render = av.render(template: "/goldencobra/articles/show.html.erb", :layout => "layouts/#{layoutfile}", :locals => localparams, :content_type => "text/html" )
       return html_to_render
-    end
-
-
-    #get all links of a page and make a check for response status and time
-    def set_link_checker
-      links_to_check = []
-      status_for_links = {}
-      doc = Nokogiri::HTML(open(self.absolute_public_url))
-      #find all links and stylesheets
-      doc.css('a,link').each do |link|
-        if add_link_to_checklist(link, "href").present?
-          links_to_check << {"link" => add_link_to_checklist(link, "href"), "pos" => link.path}
-        end
-      end
-      #find all images and javascripts
-      doc.css('img,script').each do |link|
-        if add_link_to_checklist(link,"src").present?
-          links_to_check << {"link" => add_link_to_checklist(link,"src"), "pos" => link.path}
-        end
-      end
-      links_to_check = links_to_check.compact.delete_if{|a| a.blank?}
-      links_to_check.each_with_index do |linkpos|
-        status_for_links[linkpos["link"]] = {"position" => linkpos["pos"]}
-        begin
-          start = Time.now
-          response = open(linkpos["link"])
-          status_for_links[linkpos["link"]]["response_code"] = response.status[0]
-          status_for_links[linkpos["link"]]["response_time"] = Time.now - start
-        rescue Exception  => e
-          status_for_links[linkpos["link"]]["response_code"] = "404"
-          status_for_links[linkpos["link"]]["response_error"] = e.to_s
-        end
-      end
-      self.link_checker = status_for_links
-    end
-
-    #helper method for finding links in html document
-    def add_link_to_checklist(link, src_type)
-      begin
-        if link.blank? || link[src_type].blank?
-          return nil
-        elsif link[src_type][0 .. 6] == "http://" || link[src_type][0 .. 6] == "https:/"
-          return "#{link[src_type]}"
-        elsif link[src_type] && link[src_type][0 .. 1] == "//"
-          return "http:/#{link[src_type][/.(.*)/m,1]}"
-        elsif link[src_type] && link[src_type][0] == "/"
-          return "#{Goldencobra::Setting.absolute_base_url}/#{link[src_type][/.(.*)/m,1]}"
-        elsif link[src_type] && !link[src_type].include?("mailto:")
-          return "#{self.absolute_public_url}/#{link[src_type]}"
-        end
-      rescue
-        return nil
-      end
     end
 
     def comments_of_subarticles
@@ -420,6 +374,7 @@ module Goldencobra
           return a_url
         end
       end
+      #Goldencobra::UrlBuilder.new(self, with_prefix).article_path
     end
 
     def date_of_last_modified_child
@@ -440,6 +395,7 @@ module Goldencobra
       else
         "http://#{Goldencobra::Setting.for_key('goldencobra.url')}"
       end
+      #Goldencobra::UrlBuilder.new(self).absolute_base_url
     end
 
     def absolute_public_url
@@ -448,6 +404,7 @@ module Goldencobra
       else
         "http://#{Goldencobra::Setting.for_key('goldencobra.url')}#{self.public_url}"
       end
+      #Goldencobra::UrlBuilder.new(self).absolute_public_url
     end
 
     def for_friendly_name
@@ -483,7 +440,11 @@ module Goldencobra
 
     def selected_layout
       if self.template_file.blank?
-        "application"
+        if self.articletype.present? && self.articletype.default_template_file.present?
+          self.articletype.default_template_file
+        else
+          "application"
+        end
       else
         self.template_file
       end
@@ -651,8 +612,14 @@ module Goldencobra
     end
 
     def set_standard_application_template
-      if self.template_file.blank?
-        self.template_file = "application"
+      if ActiveRecord::Base.connection.table_exists?("goldencobra_articles") && ActiveRecord::Base.connection.table_exists?("goldencobra_articletypes")
+        if self.template_file.blank?
+          if self.articletype.present? && self.articletype.default_template_file.present?
+            self.template_file = self.articletype.default_template_file
+          else
+            self.template_file = "application"
+          end
+        end
       end
     end
 
@@ -730,6 +697,23 @@ module Goldencobra
     def self.templates_for_select
       Dir.glob(File.join(::Rails.root, "app", "views", "layouts", "*.html.erb")).map{|a| File.basename(a, ".html.erb")}.delete_if{|a| a =~ /^_/ }
     end
+
+    def self.simple_search(q)
+      self.active.search(:title_or_subtitle_or_url_name_or_content_or_summary_or_teaser_contains => q).relation.map {
+          |article|
+        {
+            :id => article.id,
+            :absolute_public_url => article.absolute_public_url,
+            :title => article ? article.title : '',
+            :teaser => article ? article.teaser : '',
+            :article_type => article.article_type,
+            :updated_at => article.updated_at,
+            :parent_title => article.parent ? article.parent.title ? article.parent.title : '' : '',
+            :ancestry => article.ancestry ? article.ancestry : ''
+        }
+      }
+    end
+
   end
 end
 

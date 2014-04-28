@@ -2,7 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/ikusei/Goldencobra.png)](http://travis-ci.org/ikusei/Goldencobra)
 
-This Project is under development
+This Project is still under development.
+This repository is now in sync with http://git.ikusei.de/projects/GC/repos/basis-modul/browse and now always up to date!
 
 #Powered by
 - ActiveAdmin
@@ -11,7 +12,7 @@ Installation of Goldencobra into a fresh Ruby on Rails project:
 
 #Requirements
 * Ruby 1.9.2-p180+ (recommended 1.9.3-p286)
-* Rails 3.2.8
+* Rails 3.2.16
 * Mysql 5.5.x (tested with e.g. 5.5.19)
 
 

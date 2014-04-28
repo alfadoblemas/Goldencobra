@@ -9,9 +9,9 @@ module Goldencobra
     def read_on(article)
       target_window = article.redirection_target_in_new_window ? "_blank" : "_top"
       if article.redirect_link_title.present?
-        link_to article.redirect_link_title, article.external_url_redirect, :class => 'more', :target => target_window
+        link_to article.redirect_link_title, article.external_url_redirect, :class => "more", :target => target_window
       else
-        link_to t(:read_on, scope: [:articles]), article.public_url, :class => 'more', :target => target_window
+        link_to t(:read_on, scope: [:articles]), article.public_url, :class => "more", :target => target_window, :title => article.title
       end
     end
 
@@ -90,8 +90,12 @@ module Goldencobra
         #Wenn format email, dann gibt es keinen realen webseit besucher
         ability = Ability.new()
       else
-        operator = current_user || current_visitor
-        ability = Ability.new(operator)
+        if !defined?(current_user).nil? || !defined?(current_visitor).nil?
+          operator = current_user || current_visitor
+          ability = Ability.new(operator)
+        else
+          ability = Ability.new()
+        end
       end
       if @article
         widgets = @article.widgets.active

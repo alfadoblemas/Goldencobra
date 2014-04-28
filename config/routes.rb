@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 if RUBY_VERSION.include?("1.9.")
   require 'sidekiq/web'
 end
@@ -16,10 +18,15 @@ Goldencobra::Engine.routes.draw do
     mount Sidekiq::Web => '/admin/background'
   end
 
-  # post '/goldencobra/api/v1/tokens' => 'goldencobra/api/v1/tokens_controller#create'
+  # post '/api/v1/tokens' => 'goldencobra/api/v1/tokens_controller#create'
   namespace "api" do
     namespace "v1" do
       resources :tokens, only: [:create]
+    end
+
+    namespace "v2" do
+      get '/articles/search' => 'articles#search'
+      get '/locale_string' => 'locales#get_string'
     end
   end
 

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 if RUBY_VERSION =~ /1.9/
   Encoding.default_external = Encoding::UTF_8
   Encoding.default_internal = Encoding::UTF_8
@@ -36,6 +38,7 @@ gem 'cancan'
 #gem 'cobweb' #https://github.com/stewartmckee/cobweb
 #gem 'link-checker'
 #gem 'linkchecker', :git => "http://github.com/seb/linkchecker.git"
+gem 'rmagick'
 
 gem "rspec-rails", :group => [:test, :development] # rspec in dev so the rake tasks run properly
 gem "faker", :group => [:test, :development] # rspec in dev so the rake tasks run properly
@@ -62,6 +65,7 @@ group :development do
   gem 'brakeman'
   gem 'hirb'
   gem "powder"
+  gem 'debugger'
 end
 
 group :test do
@@ -71,7 +75,8 @@ group :test do
   gem "factory_girl_rails"
   gem 'database_cleaner'
   gem 'capybara'
-  #gem 'capybara-webkit', "0.14.2"
+  gem 'capybara-webkit'#, "0.14.2"
+  gem 'selenium-webdriver'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-cucumber'
@@ -81,4 +86,5 @@ group :test do
   gem 'launchy'
   gem 'faker'
   gem 'shoulda-matchers'
+  gem 'debugger'
 end

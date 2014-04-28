@@ -3,6 +3,8 @@
 //= require goldencobra/notifications
 //= require goldencobra/countable
 // require goldencobra/togetherjs  besser in actve_admin_js über url einbinden
+//= require goldencobra/jquery.color
+//= require goldencobra/jquery.Jcrop.min
 
 
 //Live Support Settings
@@ -33,6 +35,25 @@ $(function() {
   if (typeof tinyMCESetting_theme_advanced_blockformats === 'undefined') {
     var tinyMCESetting_theme_advanced_blockformats = "p,h1,h2,h3,div"
   }
+
+  $('textarea.tinymce-no-buttons').tinymce({
+    script_url: "/assets/goldencobra/tiny_mce.js",
+      mode : "textareas",
+      theme : "advanced",
+      theme_advanced_buttons1 : "",
+      theme_advanced_buttons2 : "",
+      theme_advanced_buttons3 : "",
+      theme_advanced_toolbar_location : "top",
+      theme_advanced_toolbar_align : "center",
+      theme_advanced_resizing : false,
+    relative_urls : true,
+    convert_urls : false,
+    theme_advanced_blockformats : tinyMCESetting_theme_advanced_blockformats,
+    plugins : "autolink,paste",
+    dialog_type : "modal",
+    paste_auto_cleanup_on_paste : true
+  });
+
 
 	$('textarea.tinymce').tinymce({
 		script_url: "/assets/goldencobra/tiny_mce.js",
@@ -90,7 +111,7 @@ $(function() {
   $("div.overview-sidebar div.folder").trigger("click");
 
   //Add Button Background Jobs zu Settings
-	$('#einstellungen ul').append("<li><a href='/admin/background'>Background Jobs</a></li>")
+	//$('#einstellungen ul').append("<li><a href='/admin/background'>Background Jobs</a></li>")
 
 	$('.metadescription_hint').tinymce({
 		script_url: "/assets/goldencobra/tiny_mce.js",
@@ -160,7 +181,7 @@ $(function() {
 
   $('div#overview_sidebar div.title a').trigger("click");
 
-  $("#main_content form input:submit").attr("value", $("#main_content form input:submit").attr("value") + " (⌘-S)");
+  $("#main_content form:not(.without_short_key) input:submit").attr("value", $("#main_content form input:submit").attr("value") + " (⌘-S)");
   key('⌘+s, ctrl+s', function() {
   	$("#main_content form input:submit").trigger("click");
   	return false;

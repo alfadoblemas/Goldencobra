@@ -26,7 +26,6 @@ module Goldencobra
 
 
     def show
-      #flash[:confirmation] = "test"
       ActiveSupport::Notifications.instrument("goldencobra.article.show", :params => params)  #Possible Callbacks on start
       before_init() #Possible Callbacks on start
       if serve_iframe?
@@ -35,6 +34,8 @@ module Goldencobra
         end
       elsif serve_basic_article?
         initialize_article(@article)
+        # TODO fix session_params like url_params mit liquid method ####### <<<<<<< #######
+        params[:session] = session.except(:user_location)
         Goldencobra::Article.load_liquid_methods(location: session[:user_location], article: @article, params: params)
         Goldencobra::Article::LiquidParser["url_params"] = params
         load_associated_model_into_liquid() if can_load_associated_model?
@@ -47,8 +48,8 @@ module Goldencobra
         end
 
         if serve_fresh_page?
-          set_expires_in()
-          ActiveSupport::Notifications.instrument("goldencobra.article.render", :params => params)
+         set_expires_in()
+         ActiveSupport::Notifications.instrument("goldencobra.article.render", :params => params)
           before_render()
           respond_to do |format|
             format.html { render layout: choose_layout() }
@@ -73,8 +74,12 @@ module Goldencobra
     end
 
     def switch_language
-      I18n.locale = params[:locale] || session[:locale]
-      session[:locale] = I18n.locale
+      if params[:locale].present?
+        I18n.locale = params[:locale]
+        session[:locale] = I18n.locale.to_s
+      else
+        I18n.locale = session[:locale]
+      end
       if params[:redirect_to].present?
         redirect_to params[:redirect_to]
       else
@@ -108,7 +113,7 @@ module Goldencobra
 
     def get_article
       if is_startpage?
-        I18n.locale = :de
+        I18n.locale = I18n.default_locale
         @article = Goldencobra::Article.active.startpage.first
       else
         begin
@@ -254,7 +259,7 @@ module Goldencobra
         @article = Goldencobra::Article.search_by_url(params[:article_id])
       else
         article = Goldencobra::Article.active.search_by_url(params[:article_id])
-        if article
+        if article.present?
           operator = current_user || current_visitor
           a = Ability.new(operator)
           if a.can?(:read, article)
@@ -262,6 +267,13 @@ module Goldencobra
           else
             @unauthorized = true
           end
+        # elsif current_visitor.present?
+        #   ap = Goldencobra::Permission.where(:subject_class => "Goldencobra::Article", :operator_id => current_visitor.id, :action => "read").pluck(:subject_id)
+        #   if ap.any?
+        #     @article = Goldencobra::Article.where("id in (?)", ap).search_by_url(params[:article_id])
+        #   else
+        #     @unauthorized = true
+        #   end
         end
       end
     end
@@ -285,11 +297,9 @@ module Goldencobra
           if session[:user_location].blank?
             #Geokit::Geocoders::MultiGeocoder.geocode("194.39.218.11") schlägt fehl (Completed 500 Internal Server Error) daher...
             begin
-                @ip_result = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
-                session[:user_location] = @ip_result
+              @ip_result = Geokit::Geocoders::MultiGeocoder.geocode(request.remote_ip)
+              session[:user_location] = @ip_result
             rescue Exception => e
-              logger.error("***********")
-              logger.error(e)
               @ip_result = nil
             end
             if @ip_result.present? && @ip_result.city.present?
@@ -324,7 +334,6 @@ module Goldencobra
     def analytics
       Goldencobra::Tracking.analytics(request, session[:user_location])
     end
-
 
   end
 end

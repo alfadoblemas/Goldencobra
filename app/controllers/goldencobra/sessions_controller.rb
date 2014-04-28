@@ -4,6 +4,7 @@ module Goldencobra
   class SessionsController < Goldencobra::ApplicationController
     layout "application"
 
+
     def login
       @errors = []
       if params[:usermodel] && params[:usermodel].constantize && params[:usermodel].constantize.present? && params[:usermodel].constantize.attribute_method?(:email)
@@ -20,6 +21,7 @@ module Goldencobra
           @usermodel.sign_in_count = @usermodel.sign_in_count.to_i + 1
           @usermodel.last_sign_in_at = Time.now
           @usermodel.save
+          flash[:notice] = I18n.translate("signed_in", :scope => ["devise", "sessions"])
           @redirect_to = @usermodel.roles.try(:first).try(:redirect_after_login)
         else
           @usermodel.failed_attempts = @usermodel.failed_attempts.to_i + 1
@@ -36,8 +38,13 @@ module Goldencobra
       if params[:usermodel] && params[:usermodel].constantize && params[:usermodel].constantize.present? && params[:usermodel].constantize.attribute_method?(:email)
         sign_out
         reset_session
+        flash[:notice] = I18n.translate("signed_out", :scope => ["devise", "sessions"])
       end
-      render :js => "window.location.href = '/';"
+      if request.format == "html"
+        redirect_to "/"
+      else
+        render :js => "window.location.href = '/';"
+      end
     end
 
 

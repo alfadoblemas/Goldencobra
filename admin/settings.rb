@@ -1,6 +1,8 @@
-ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
+# encoding: utf-8
 
-  menu :parent => "Einstellungen", :if => proc{can?(:update, Goldencobra::Setting)}
+ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
+  menu :parent => I18n.t("settings", :scope => ["active_admin","menue"]), :if => proc{can?(:update, Goldencobra::Setting)}
+
   controller.authorize_resource :class => Goldencobra::Setting
   scope "Alle Settings", :with_values, :default => true
   if ActiveRecord::Base.connection.table_exists?("goldencobra_settings") && Goldencobra::Setting.all.count > 0
@@ -58,7 +60,7 @@ ActiveAdmin.register Goldencobra::Setting, :as => "Setting"  do
   batch_action :destroy, false
 
   member_action :revert do
-    @version = Version.find(params[:id])
+    @version = PaperTrail::Version.find(params[:id])
     if @version.reify
       @version.reify.save!
     else
