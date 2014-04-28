@@ -322,17 +322,22 @@ de:
         action_item:
           link_to: "Undo"
           class: "undo"
-
-
-
-
-
-
-
-
     permissions:
-
-    roles:
+     as: "Permission"
+     scope: "Alle"
+     index:
+      column: "Role"
+      class: "member_link edit_link edit"
+      title_edit: "bearbeiten"
+      confirm: "Kommentar löschen?"
+      class: "member_link delete_link delete"
+      title_delete: "loeschen"
+    form:
+      include_blank: 'Alle'
+    sidebar:
+      sidebar: "Sortierung / Gewichtung"
+    
+    roles: 
 
     seo_articles:
 
