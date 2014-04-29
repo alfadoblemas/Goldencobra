@@ -76,100 +76,34 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
           f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index" do
           end
         end
+
+        Rails::Application::Railties.engines.select{|a| a.engine_name.include?("goldencobra")}.each do |engine|
+          if File.exists?("#{engine.root}/app/views/layouts/#{engine.engine_name}/_edit_index.html.erb")
+            render :partial => "layouts/#{engine.engine_name}/edit_index ", :locals => {:f => f, :engine => engine}
+          end
+        end
         #render :partial => "goldencobra/admin/articles/sort_articles_index", :locals => {:f => f}
       
       else
         
         #error
-      end
 
-      f.inputs I18n.t('active_admin.articles.form.weiterer_inhalt'), :class => "foldable closed inputs" do
-        f.input :subtitle, :label => I18n.t('active_admin.articles.form.subtitle_label')
-        f.input :context_info, :label => I18n.t('active_admin.articles.form.weiterer_inhalt'), :input_html => { :class => "tinymce" }, :hint => I18n.t('active_admin.articles.form.context_info_hint')
-        f.input :summary, :label => I18n.t('active_admin.articles.form.summary_label'), hint: I18n.t('active_admin.articles.form.summary_hint'), :input_html => { :rows => 5 }
       end
-
-      f.inputs I18n.t('active_admin.articles.form.metadescriptions'), :class => "foldable closed inputs expert" do
-        # f.input :hint_label, :as => :text, :label => "Metatags fuer Suchmaschinenoptimierung", :input_html => {:disabled => true,
-          # :resize => false,
-          # :value => "<b>Metatags k&ouml;nnen genutzt werden, um den Artikel f&uuml;r Suchmaschinen besser sichtbar zu machen.</b><br />
-          # Sie haben folgende Werte zur Wahl:<br />
-          # <ul>
-          # <li><strong>Title Tag:</strong> Der Title der Seite. Wird nicht als Titel angezeigt. Ist nur f&uuml;r Google & Co. gedacht. </li>
-          # <li><strong>Metadescription:</strong> Wird als Beschreibung des Artikels angezeigt, wenn Google ihn gefunden hat. <strong>Wichtig!</strong></li>
-          # <li><strong>Keywords:</strong></li>
-          # <li><strong>OpenGraph Title:</strong> Title, der bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
-          # <li><strong>OpenGraph Description:</strong> Description, die bei Facebook angezeigt werden soll, wenn der Artikel geteilt wird.</li>
-          # <li><strong>OpenGraph Type:</strong> Sie haben die Wahl zwischen Blog, Article oder Website</li>
-          # <li><strong>OpenGraph URL:</strong> Die URL der Website. Standardm&auml;&szlig; wird die URL des Artikels genutzt. Muss nur ver&auml;ndert werden, wenn dort etwas anderes stehen soll.</li>
-          # <li><strong>OpenGraph Image:</strong> Muss als URL &uuml;bergeben werden (http://www.mein.de/bild.jpg). Erscheint dann bei Facebook als Bild des Artikels.</li>
-          # </ul>", :class => "metadescription_hint", :id => "metadescription-tinymce"}
-        f.has_many :metatags do |m|
-          m.input :name, :label => I18n.t('active_admin.articles.form.name_label'), :as => :select, :collection => Goldencobra::Article::MetatagNames, :input_html => { :class => 'metatag_names'}, :hint => I18n.t('active_admin.articles.form.name_hint')
-          m.input :value, :label => I18n.t('active_admin.articles.form.value_label'), :input_html => { :class => 'metatag_values'}
-          m.input :_destroy, :label => I18n.t('active_admin.articles.form.destroy_label'), :hint => I18n.t('active_admin.articles.form.destroy_hint'), :as => :boolean
-        end
-      end
-
-      f.inputs I18n.t('active_admin.articles.form.settings'), :class => "foldable closed inputs expert" do
-        f.input :breadcrumb, :label => I18n.t('active_admin.articles.form.breadcrump_label'), :hint => I18n.t('active_admin.articles.form.breadcrump_hint')
-        f.input :url_name, :label => I18n.t('active_admin.articles.form.url_name_label'), :hint => I18n.t('active_admin.articles.form.url_name_hint'), required: false
-        f.input :parent_id, :label => I18n.t('active_admin.articles.form.parent_id_label'), :hint => I18n.t('active_admin.articles.form.parent_id_hint'), :as => :select, :collection => Goldencobra::Article.all.map{|c| ["#{c.path.map(&:title).join(" / ")}", c.id]}.sort{|a,b| a[0] <=> b[0]}, :include_blank => true, :input_html => { :class => 'chzn-select-deselect', :style => 'width: 70%;', 'data-placeholder' => 'Elternelement auswählen' }
-        f.input :canonical_url, :label => I18n.t('active_admin.articles.form.canonical_url_label'), :hint => I18n.t('active_admin.articles.form.canonical_url_hint')
-
-        f.input :active_since, :label => I18n.t('active_admin.articles.form.active_since_label'), :hint => I18n.t('active_admin.articles.form.active_since_hint'), as: :string, :input_html => { class: "", :size => "20", value: "#{f.object.active_since.strftime('%d.%m.%Y %H:%M') if f.object.active_since}" }, :wrapper_html => { class: 'expert' }
-        f.input :enable_social_sharing, :label => I18n.t('active_admin.articles.form.enable_social_sharing_label'), :hint => I18n.t('active_admin.articles.form.enable_social_sharing_hint')
-        f.input :robots_no_index, :label => I18n.t('active_admin.articles.form.robots_no_index_label'), :hint => I18n.t('active_admin.articles.form.robots_no_index_hint')
-        f.input :cacheable, :label => I18n.t('active_admin.articles.form.cacheable_label'), :as => :boolean, :hint => I18n.t('active_admin.articles.form.cacheable_hint')
-        f.input :commentable, :label => I18n.t('active_admin.articles.form.commentable_label'), :as => :boolean, :hint => I18n.t('active_admin.articles.form.commentable_hint')
-        f.input :dynamic_redirection, :label => I18n.t('active_admin.articles.form.dynamic_redirection_label'), :as => :select, :collection => Goldencobra::Article::DynamicRedirectOptions.map{|a| [a[1], a[0]]}, :include_blank => false
-        f.input :external_url_redirect, :label => I18n.t('active_admin.articles.form.external_url_redirect_label')
-        f.input :redirect_link_title, :label => I18n.t('active_admin.articles.form.redirect_link_title_label')
-        f.input :redirection_target_in_new_window, :label => I18n.t('active_admin.articles.form.redirection_target_in_new_window_label')
-        f.input :author, :label => I18n.t('active_admin.articles.form.author_label'), :hint => I18n.t('active_admin.articles.form.author_hint')
-      end
-
-      f.inputs I18n.t('active_admin.articles.form.access_rights'), :class => "foldable closed inputs expert" do
-        f.has_many :permissions do |p|
-          p.input :role, :include_blank => I18n.t('active_admin.articles.form.role')
-          p.input :action, :as => :select, :collection => Goldencobra::Permission::PossibleActions, :include_blank => false
-          p.input :_destroy, :as => :boolean
-=======
-        Rails::Application::Railties.engines.select{|a| a.engine_name.include?("goldencobra")}.each do |engine|
-          if File.exists?("#{engine.root}/app/views/layouts/#{engine.engine_name}/_edit_index.html.erb")
-            render :partial => "layouts/#{engine.engine_name}/edit_index ", :locals => {:f => f, :engine => engine}
-          end
->>>>>>> translations3
-        end
-        #render :partial => "goldencobra/admin/articles/sort_articles_index", :locals => {:f => f}
-      end
-<<<<<<< HEAD
-      f.inputs I18n.t('active_admin.articles.form.media'), :class => "foldable closed inputs" do
-        f.has_many :article_images do |ai|
-          ai.input :image, :as => :select, :collection => Goldencobra::Upload.order("updated_at DESC").map{|c| [c.complete_list_name, c.id]}, :input_html => { :class => 'article_image_file chzn-select', :style => 'width: 70%;', 'data-placeholder' => 'Medium auswählen' }, :label => "Medium wählen"
-          ai.input :position, :as => :select, :collection => Goldencobra::Setting.for_key("goldencobra.article.image_positions").split(",").map(&:strip), :include_blank => false
-          ai.input :_destroy, :as => :boolean
-        end
-      end
-    end
-    f.inputs I18n.t('active_admin.articles.form.JS_scripts'), :style => "display:none"  do
-=======
 
       #Render alle Feldgruppen und Felder mit Position "last"
       if f.object.articletype.present?
-       f.object.articletype.fieldgroups.where(:position => "last_block").each do |atg|
-         f.inputs atg.title, :class => "#{atg.foldable ? 'foldable' : ''} #{atg.expert ? 'expert' : ''} #{atg.closed ? 'closed' : ''} inputs" do
-           atg.fields.each do |atgf|
-             render(:inline => Goldencobra::Articletype::ArticleFieldOptions[atgf.fieldname.to_sym], :locals => { :f => f })
-           end
-           f.input :id, :as => :hidden
-         end
-       end
+        f.object.articletype.fieldgroups.where(:position => "last_block").each do |atg|
+          f.inputs atg.title, :class => "#{atg.foldable ? 'foldable' : ''} #{atg.expert ? 'expert' : ''} #{atg.closed ? 'closed' : ''} inputs" do
+            atg.fields.each do |atgf|
+              render(:inline => Goldencobra::Articletype::ArticleFieldOptions[atgf.fieldname.to_sym], :locals => { :f => f })
+            end
+            f.input :id, :as => :hidden
+          end
+        end
       end
     end
 
-    f.inputs "JS-Scripts", :style => "display:none"  do
->>>>>>> translations3
+    f.inputs I18n.t('active_admin.articles.form.JS_scripts'), :style => "display:none"  do
       if current_user && current_user.enable_expert_mode == true
         render partial: '/goldencobra/admin/articles/toggle_expert_mode'
       end
