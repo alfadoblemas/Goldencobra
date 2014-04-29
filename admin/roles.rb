@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-ActiveAdmin.register Goldencobra::Role, :as => "Role" do
+ActiveAdmin.register Goldencobra::Role, :as => I18n.t('active_admin.roles.as') do
   menu :parent => I18n.t("settings", :scope => ["active_admin","menue"]), :if => proc{can?(:update, Goldencobra::Role)}
 
   controller.authorize_resource :class => Goldencobra::Role

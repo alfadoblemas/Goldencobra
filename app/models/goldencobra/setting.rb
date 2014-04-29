@@ -16,8 +16,21 @@
 module Goldencobra
   class Setting < ActiveRecord::Base
     @@key_value = {}
-    attr_accessible :title, :value, :ancestry, :parent_id, :data_type
-    SettingsDataTypes = ["string","date","datetime","boolean","array"]
+    attr_accessible :title, :value, :ancestry, :parent_id, :data_type, :set_value, :date_type, :datetime_type, :integer_type, :array_type, :setting_array_values_attributes
+    attr_writer :set_value
+    attr_accessor :set_value
+    has_many :setting_array_values, :class_name => Goldencobra::SettingArrayValue
+
+    accepts_nested_attributes_for :setting_array_values, :allow_destroy => true
+
+    #composed_of :value, converter: Proc.new { |stringdate| stringdate.strptime("%Y-%d-%m")}
+
+    #serialize :value   # does saving to database in the right data type (but for now save as string)
+    #before_save :convert_value2  #figure out how to do that
+    before_save :form_data_types_and_values  
+    #before_save :conversion_with_keeping_value
+    SettingsDataTypes = ["string","date","datetime","boolean","array", "integer"]
+    SettingsDataTypesH = {"string" => "string","date" => "date_select","datetime"=> "datetime_select", "integer" => "number", "boolean"=> "boolean","array"=> "string"}
     has_ancestry :orphan_strategy => :restrict
     if ActiveRecord::Base.connection.table_exists?("versions")
       has_paper_trail
@@ -32,6 +45,277 @@ module Goldencobra
     search_methods :parent_ids_in
 
     scope :with_values, where("value IS NOT NULL")
+
+  ## string
+
+    def string_value_changed
+      if self.set_value != nil
+      self.value = self.set_value
+      else
+        self.value = self.value
+      end
+    end
+
+    def data_type_change_to_string
+      self.value = self.value
+    end
+
+    def when_string
+      if self.data_type_changed? == true
+        self.data_type_change_to_string
+      else
+        self.string_value_changed
+      end
+    end
+
+  ##boolean
+
+    
+    def boolean_value_changed
+      if self.set_value == "0" 
+        self.value = "false"
+      elsif self.set_value == "1" 
+        self.value = "true"
+      end
+    end
+    
+    def data_type_change_to_boolean
+      if self.value == "0" || self.value == "false"
+        self.value = "false"
+      elsif self.value == "1" || self.value == "true"
+        self.value = "true"
+      else self.errors.add(:data_type, "This data type can't be converted to boolean")
+        self.data_type != "boolean"
+      end
+    end
+
+    def when_boolean
+      if self.data_type_changed? == true
+        self.data_type_change_to_boolean
+      elsif 
+        self.boolean_value_changed
+      end
+    end
+
+  ##date
+
+    def is_date
+      begin
+        self.value.to_date.class == Date
+      rescue
+        false
+      end
+    end
+      
+    def date_value_changed
+      self.value = self.date_type.to_s
+    end
+
+
+    def data_type_change_to_date
+      begin 
+        !self.is_date
+      rescue 
+        self.errors.add(:data_type, "This data type can't be converted to date")
+        self.data_type != "date"
+      else 
+        if self.is_date
+          self.value = self.value.to_date.to_s
+          self.date_type = self.value.to_date
+        end
+      end
+    end
+
+    def when_date
+      if self.data_type_changed? == true
+        self.data_type_change_to_date
+      elsif
+        self.date_value_changed
+      end
+    end
+
+  ##datetime
+    def is_datetime
+      begin
+        self.value.to_datetime.class == DateTime
+      rescue
+        false
+      end
+    end
+
+   def datetime_value_changed
+     self.value = self.datetime_type.to_s
+   end
+
+   def data_type_change_to_datetime
+      begin 
+        self.value.to_datetime.class != DateTime 
+      rescue 
+        self.errors.add(:data_type, "This data type can't be converted to datetime")
+        self.data_type != "datetime"
+      else 
+        if self.is_datetime
+          self.value = self.value.to_datetime.to_s
+          self.datetime_type = self.value.to_datetime
+        end
+      end
+    end
+
+    def when_datetime
+      if self.data_type_changed? == true
+        self.data_type_change_to_datetime
+      elsif
+        self.datetime_value_changed
+      end
+    end
+
+
+    #array
+    def array_value_changed
+      self.value = self.setting_array_values.map{|a|a.value}.join(",")
+    end 
+    
+    def data_type_change_to_array
+      # if self.setting_array_values == []
+      #   until self.setting_array_values.length == self.value.split(",").length
+      #     self.setting_array_values << Goldencobra::SettingArrayValue.create
+      #   end
+      #   i = 0
+      #   while i < self.value.split(",").length
+      #     self.setting_array_values[i].value = self.value.split(",")[i]
+      #     i = i+1
+      #   end
+      self.value.split(",").each do |v|
+        unless self.setting_array_values.where(:value => v).any? 
+          self.setting_array_values << Goldencobra::SettingArrayValue.create(:value => v)
+        end
+      end
+    end
+
+    def when_array
+      if self.data_type_changed? == true
+        self.data_type_change_to_array
+      elsif 
+        self.array_value_changed
+      end
+    end
+
+  #integer
+    def integer_value_changed
+      self.value = self.integer_type.to_s
+    end
+
+
+    def data_type_change_to_integer
+      begin 
+        self.value.to_i.class != Fixnum 
+      rescue 
+        self.errors.add(:data_type, "This data type can't be converted to integer")
+        self.data_type != "integer"
+      else 
+        if self.value.to_i.class == Fixnum 
+          if self.value ==  "true"
+            self.value = "1"
+            self.integer_type = self.value.to_i
+          elsif self.value == "false"
+            self.value = "0"
+            self.integer_type = self.value.to_i
+          else  self.value = self.value
+                self.integer_type = self.value.to_i
+          end
+        end
+      end
+    end
+
+    def when_integer
+      if self.data_type_changed? == true
+        self.data_type_change_to_integer
+      elsif
+        self.integer_value_changed
+      end
+    end
+
+   ##
+    def form_data_types_and_values
+      if Goldencobra::Setting.new.respond_to?(:date_type) 
+        if self.data_type == "boolean" 
+          self.when_boolean
+        elsif self.data_type == "string"
+          self.when_string
+        elsif self.data_type == "date" 
+          self.when_date
+        elsif self.data_type == "datetime" 
+          self.when_datetime
+        elsif self.data_type == "array"
+          self.when_array
+        elsif self.data_type == "integer"
+          self.when_integer
+        else
+          self.value = self.set_value
+        end
+      end
+    end
+
+    def self.update_data_types
+      Goldencobra::Setting.scoped.each do |s|
+        s.change_data_types
+      end
+    end
+
+  ##
+
+    def convert_to_boolean
+      self.data_type = "boolean"
+      self.save
+    end
+
+    def convert_to_integer
+      self.data_type = "integer"
+      self.save
+    end
+
+    def convert_to_date
+      self.data_type = "date"
+      self.save
+    end
+
+    def convert_to_datetime
+      self.data_type = "datetime"
+      self.save
+    end
+    
+
+    def change_data_types
+      if self.value == "false" || self.value == "0" 
+        self.boolean_type = "false"
+        self.convert_to_boolean
+      elsif self.value == "true" || self.value == "1" 
+        self.boolean_type = "true"
+        self.convert_to_boolean
+      end
+
+      if self.value.to_i.to_s == self.value && self.value.to_i > 1  ## --> if 0 or 1 --> boolean, not integer!! ##
+        self.integer_type = self.value.to_i      
+        self.convert_to_integer
+      end
+
+      if self.is_date
+        self.date_type = self.value.to_date
+        self.convert_to_date
+      end
+  
+      if self.is_datetime
+        self.datetime_type = self.value.to_datetime
+        self.convert_to_datetime
+      end
+    end
+
+
+    def data_values
+      SettingsDataTypesH[self.data_type]
+    end
+      
+#### ----> 
 
 
     def self.absolute_base_url

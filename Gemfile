@@ -13,6 +13,7 @@ gem "jquery-rails"
 
 gem 'multi_json', "~> 1.3"
 gem 'devise', "~> 2.2.4"#, :git => "http://github.com/plataformatec/devise.git"
+
 gem 'activeadmin', :git => "http://github.com/ikusei/active_admin.git", :require => "activeadmin"
 gem 'acts-as-taggable-on', :git => 'http://github.com/mbleigh/acts-as-taggable-on.git'
 gem 'i18n-active_record', :git => 'http://github.com/svenfuchs/i18n-active_record.git', :require => 'i18n/active_record'
@@ -54,6 +55,7 @@ gem 'wkhtmltopdf-binary'
 
 gem "better_errors", :group => "development"
 gem "binding_of_caller", :group => "development"
+gem 'mysql2', "0.3.15"
 
 group :development do
   gem 'thin'
@@ -67,7 +69,6 @@ group :development do
 end
 
 group :test do
-  gem 'mysql2'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'factory_girl'
