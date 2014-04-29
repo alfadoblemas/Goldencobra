@@ -1,8 +1,9 @@
 #Encoding: UTF-8
+
 ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.as') do 
   menu :priority => 1, :parent => I18n.t('active_admin.articles.parent'), :if => proc{can?(:update, Goldencobra::Article)} 
   controller.authorize_resource :class => Goldencobra::Article
-  unless Rails.env == "test" 
+  unless Rails.env == "test"
     I18n.locale = :de
     I18n.default_locale = :de
   end
@@ -20,7 +21,6 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
   filter :created_at, :label =>  I18n.t("filter_created", :scope => [:goldencobra, :filter], :default => "Erstellt")
   filter :updated_at, :label =>  I18n.t("filter_updated", :scope => [:goldencobra, :filter], :default => "Bearbeitet")
 
-
   scope I18n.t('active_admin.articles.scope1'), :scoped, :default => true
   scope I18n.t('active_admin.articles.scope2'), :active
   scope I18n.t('active_admin.articles.scope3'), :inactive
@@ -35,38 +35,27 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
       render :partial => "/goldencobra/admin/articles/select_article_type", :locals => {:f => f}
     else
       f.actions
-<<<<<<< HEAD
-      f.inputs I18n.t('active_admin.articles.form.general'), :class => "foldable inputs" do
-        f.input :title, :label => I18n.t('active_admin.articles.form.title_label'), :hint => I18n.t('active_admin.articles.form.label_hint')
-        f.input :content, :label => I18n.t('active_admin.articles.form.content_title'), :input_html => { :class => "tinymce" }
-        f.input :teaser, :hint => I18n.t('active_admin.articles.form.teaser_hint') , :input_html => { :rows => 5 }
-        f.input :tag_list, :label => I18n.t('active_admin.articles.form.tag_list_label'), :hint => I18n.t('active_admin.articles.form.tag_list_hint'), :wrapper_html => { class: 'expert' }
-        f.input :frontend_tag_list, label: I18n.t('active_admin.articles.form.frontent_tag_list_label'), hint: I18n.t('active_admin.articles.form.frontent_tag_list_hint') , :wrapper_html => { class: 'expert' }
-        f.input :active, :label => I18n.t('active_admin.articles.form.active_label') , :hint => I18n.t('active_admin.articles.form.active_hint'), :wrapper_html => { class: 'expert' }
-=======
+
       #Render alle Feldgruppen und Felder mit Position "first"
       if f.object.articletype.present?
-       f.object.articletype.fieldgroups.where(:position => "first_block").each do |atg|
-         f.inputs atg.title, :class => "#{atg.foldable ? 'foldable' : ''} #{atg.expert ? 'expert' : ''} #{atg.closed ? 'closed' : ''} inputs" do
-           atg.fields.each do |atgf|
-             render(:inline => Goldencobra::Articletype::ArticleFieldOptions[atgf.fieldname.to_sym], :locals => { :f => f })
-           end
-           f.input :id, :as => :hidden
-         end
-       end
->>>>>>> translations3
+        f.object.articletype.fieldgroups.where(:position => "first_block").each do |atg|
+          f.inputs atg.title, :class => "#{atg.foldable ? 'foldable' : ''} #{atg.expert ? 'expert' : ''} #{atg.closed ? 'closed' : ''} inputs" do
+            atg.fields.each do |atgf|
+              render(:inline => Goldencobra::Articletype::ArticleFieldOptions[atgf.fieldname.to_sym], :locals => { :f => f })
+            end
+            f.input :id, :as => :hidden
+          end
+        end
       end
 
       #render Show Options if articletype == Show
       if f.object.article_type.present? && f.object.kind_of_article_type.downcase == "show"
-
+        
         #render Article_type Options
         if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/_edit_show.html.erb")
           render :partial => "articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_show", :locals => {:f => f}
         else
-          f.inputs I18n.t('active_admin.articles.error.partial_missing') do
-<<<<<<< HEAD
-=======
+          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_show" do
           end
         end
 
@@ -74,29 +63,32 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
         Rails::Application::Railties.engines.select{|a| a.engine_name.include?("goldencobra")}.each do |engine|
           if File.exists?("#{engine.root}/app/views/layouts/#{engine.engine_name}/_edit_show.html.erb")
             render :partial => "layouts/#{engine.engine_name}/edit_show", :locals => {:f => f, :engine => engine}
->>>>>>> translations3
           end
         end
 
       #render Index Options if articletype == Index
       elsif f.object.kind_of_article_type.downcase == "index"
+        
         render :partial => "goldencobra/admin/articles/articles_index", :locals => {:f => f}
         if File.exists?("#{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/_edit_index.html.erb")
           render :partial => "articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index", :locals => {:f => f}
         else
-          f.inputs I18n.t('active_admin.articles.error.partial_missing2') do
+          f.inputs "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index" do
           end
         end
-<<<<<<< HEAD
         #render :partial => "goldencobra/admin/articles/sort_articles_index", :locals => {:f => f}
+      
       else
+        
         #error
       end
+
       f.inputs I18n.t('active_admin.articles.form.weiterer_inhalt'), :class => "foldable closed inputs" do
         f.input :subtitle, :label => I18n.t('active_admin.articles.form.subtitle_label')
         f.input :context_info, :label => I18n.t('active_admin.articles.form.weiterer_inhalt'), :input_html => { :class => "tinymce" }, :hint => I18n.t('active_admin.articles.form.context_info_hint')
         f.input :summary, :label => I18n.t('active_admin.articles.form.summary_label'), hint: I18n.t('active_admin.articles.form.summary_hint'), :input_html => { :rows => 5 }
       end
+
       f.inputs I18n.t('active_admin.articles.form.metadescriptions'), :class => "foldable closed inputs expert" do
         # f.input :hint_label, :as => :text, :label => "Metatags fuer Suchmaschinenoptimierung", :input_html => {:disabled => true,
           # :resize => false,
@@ -118,6 +110,7 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
           m.input :_destroy, :label => I18n.t('active_admin.articles.form.destroy_label'), :hint => I18n.t('active_admin.articles.form.destroy_hint'), :as => :boolean
         end
       end
+
       f.inputs I18n.t('active_admin.articles.form.settings'), :class => "foldable closed inputs expert" do
         f.input :breadcrumb, :label => I18n.t('active_admin.articles.form.breadcrump_label'), :hint => I18n.t('active_admin.articles.form.breadcrump_hint')
         f.input :url_name, :label => I18n.t('active_admin.articles.form.url_name_label'), :hint => I18n.t('active_admin.articles.form.url_name_hint'), required: false
@@ -135,6 +128,7 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
         f.input :redirection_target_in_new_window, :label => I18n.t('active_admin.articles.form.redirection_target_in_new_window_label')
         f.input :author, :label => I18n.t('active_admin.articles.form.author_label'), :hint => I18n.t('active_admin.articles.form.author_hint')
       end
+
       f.inputs I18n.t('active_admin.articles.form.access_rights'), :class => "foldable closed inputs expert" do
         f.has_many :permissions do |p|
           p.input :role, :include_blank => I18n.t('active_admin.articles.form.role')
@@ -316,17 +310,10 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
     article = Goldencobra::Article.find(params[:id])
     if article.active
       article.active = false
-<<<<<<< HEAD
       flash[:notice] = I18n.t('active_admin.articles.member_action.flash.article_online')
     else
       article.active = true
       flash[:notice] = I18n.t('active_admin.articles.member_action.flash.article_offline')
-=======
-      flash[:notice] = t("now_offline", :scope => ["active_admin", "articles"])
-    else
-      article.active = true
-      flash[:notice] = t("now_online", :scope => ["active_admin", "articles"])
->>>>>>> translations3
     end
     article.save
 
@@ -360,11 +347,7 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
       article.active = true
       article.save
     end
-<<<<<<< HEAD
     flash[:notice] = I18n.t('active_admin.articles.batch_action.flash.set_article_online')
-=======
-    flash[:notice] = I18n.t("now_online", :scope => ["active_admin", "articles"])
->>>>>>> translations3
     redirect_to :action => :index
   end
 
@@ -373,14 +356,9 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
       article.active = false
       article.save
     end
-<<<<<<< HEAD
     flash[:notice] = I18n.t('active_admin.articles.batch_action.flash.set_article_offline')
-=======
-    flash[:notice] = I18n.t("now_offline", :scope => ["active_admin", "articles"])
->>>>>>> translations3
     redirect_to :action => :index
   end
-
 
   batch_action :destroy, false
 
@@ -417,17 +395,12 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
     redirect_to :back, :notice => I18n.t('active_admin.settings.notice.undid_event')
   end
 
-
   action_item only: [:edit, :show] do
     render partial: '/goldencobra/admin/shared/prev_item'
   end
 
   action_item :only => :edit do
-<<<<<<< HEAD
     link_to(I18n.t('active_admin.articles.action_item.link_to.article_preview'), resource.public_url, :target => "_blank")
-=======
-    link_to(I18n.t("goldencobra.menue.preview_article"), resource.public_url, :target => "_blank")
->>>>>>> translations3
   end
 
   action_item :only => :edit, :inner_html => {:class => "expert"} do
@@ -437,7 +410,6 @@ ActiveAdmin.register Goldencobra::Article, :as => I18n.t('active_admin.articles.
   action_item :only => :index do
     link_to(I18n.t('active_admin.articles.action_item.link_to.import'), new_admin_import_path(:target_model => "Goldencobra::Article"), :class => "importer")
   end
-
 
   action_item :only => :edit do
     if resource.versions.last

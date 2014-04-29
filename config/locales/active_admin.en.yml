@@ -209,9 +209,6 @@ de:
           expert_modus: "Expert-Modus #{current_user.enable_expert_mode ? 'deaktivieren' : 'aktivieren'}"
           import: "Import"
           undo: "Undo"
-      error:
-        partial_missing: "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_show"
-        partial_missing2: "ERROR: Partial missing! #{::Rails.root}/app/views/articletypes/#{f.object.article_type_form_file.underscore.parameterize.downcase}/edit_index"
     comments:
         title: "bearbeiten"
         title0: "loeschen"

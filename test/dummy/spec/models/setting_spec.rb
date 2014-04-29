@@ -10,7 +10,6 @@ describe Goldencobra::Setting do
   end
 end  
 
-
 describe Goldencobra::Setting do
   it "is changed to the right data type" do
     a = Goldencobra::Setting.new
@@ -19,14 +18,3 @@ describe Goldencobra::Setting do
     a.date_type.should == Date.parse(a.value)
   end
 end
-  
-
-
-
-
-
-
-
-
-
- 
