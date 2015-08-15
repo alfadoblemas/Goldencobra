@@ -8,43 +8,45 @@ ActiveAdmin.register Visitor do
   filter :lastname
   filter :email
 
-  index do
+  index :download_links => proc{ Goldencobra::Setting.for_key("goldencobra.backend.index.download_links") == "true" }.call do
     selectable_column
     column :first_name
     column :last_name
     column :username
     column :email
     column :last_sign_in_at
-    column :created_at
     column :sign_in_count
     column :agb, sortable: :agb do |v|
-      v.agb ? 'Ja' : 'Nein'
+      v.agb ? I18n.t('active_admin.visitors.yes_check') : I18n.t('active_admin.visitors.no_check')
     end
-    column "status" do |visitor|
-      "gesperrt" if visitor.locked_at?
+    column I18n.t('active_admin.visitors.status') do |visitor|
+      I18n.t('active_admin.visitors.status2') if visitor.locked_at?
     end
     column :newsletter, sortable: :newsletter do |v|
-      v.newsletter ? 'Ja' : 'Nein'
+      v.newsletter ? I18n.t('active_admin.visitors.yes_check') : I18n.t('active_admin.visitors.no_check')
     end
     default_actions
   end
 
   form :html => { :enctype => "multipart/form-data" }  do |f|
     f.actions
-    f.inputs "Allgemein" do
+    f.inputs I18n.t('active_admin.visitors.general') do
       f.input :first_name
       f.input :last_name
       f.input :username
       f.input :email
-      f.input :password, hint: "Freilassen, wenn das Passwort nicht geaendert werden soll."
-      f.input :password_confirmation, hint: "Passwort bei Aenderung hier erneut eingeben"
+      f.input :password, hint: I18n.t('active_admin.visitors.hint1')
+      f.input :password_confirmation, hint: I18n.t('active_admin.visitors.hint2')
       f.input :provider
-      f.input :uid
+      f.input :uid, hint: I18n.t('active_admin.visitors.hint3')
       f.input :agb
       f.input :newsletter
       if current_user.has_role?('admin')
         f.input :roles, :as => :check_boxes, :collection => Goldencobra::Role.all
+      else
+        f.input :id, :as => :hidden
       end
+      f.input :id, :as => :hidden
     end
     f.actions
   end
@@ -62,13 +64,13 @@ ActiveAdmin.register Visitor do
     visitor = Visitor.find(params[:id])
     if visitor.locked_at?
       visitor.locked_at = nil
-      status = "entsperrt"
+      status = I18n.t('active_admin.visitors.status1')
     else
       visitor.locked_at = Time.now
-      status = "gesperrt"
+      status = I18n.t('active_admin.visitors.status2')
     end
     visitor.save
-    flash[:notice] = "Dieser Account wurde #{status}"
+    flash[:notice] = "#{I18n.t('active_admin.visitors.flash')} #{status}"
     redirect_to :action => :edit
   end
 

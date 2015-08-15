@@ -15,6 +15,10 @@
 
 module Goldencobra
   class Setting < ActiveRecord::Base
+
+    # TODO cache invalidate über touch /temp/settings_updated.txt
+
+
     @@key_value = {}
     attr_accessible :title, :value, :ancestry, :parent_id, :data_type
     SettingsDataTypes = ["string","date","datetime","boolean","array"]
@@ -35,10 +39,12 @@ module Goldencobra
 
 
     def self.absolute_base_url
+      golden_url = Goldencobra::Setting.for_key('goldencobra.url').gsub(/(http|https):\/\//,'')
+
       if Goldencobra::Setting.for_key("goldencobra.use_ssl") == "true"
-        "https://#{Goldencobra::Setting.for_key('goldencobra.url')}"
+        "https://#{golden_url}"
       else
-        "http://#{Goldencobra::Setting.for_key('goldencobra.url')}"
+        "http://#{golden_url}"
       end
     end
 
@@ -50,14 +56,19 @@ module Goldencobra
       end
     end
 
-
+    # Goldencobra::Setting.for_key("test.foo.bar")
     def self.for_key(name, cacheable=true)
-      if cacheable
+      @@mtime_setting ||= {}
+      mtime = get_cache_modification_time(name)
+
+      if cacheable && @@mtime_setting[name].present? && @@mtime_setting[name] >= mtime
         @@key_value ||= {}
         @@key_value[name] ||= for_key_helper(name)
       else
+        @@mtime_setting[name] = mtime
         for_key_helper(name)
       end
+
     end
 
     def self.for_key_helper(name)
@@ -114,8 +125,16 @@ module Goldencobra
       self.ancestors.map(&:title).join(".")
     end
 
+    def path_name
+      self.path.map(&:title).join(".")
+    end
+
+    def has_children
+      self.has_children?
+    end
 
     private
+    
     def self.generate_default_setting(key, yml_data, parent_id=nil)
       if yml_data[key].class == Hash
         #check if childen keys are value and type or not
@@ -162,7 +181,20 @@ module Goldencobra
     end
 
     def update_cache
-      @@key_value = nil
+      @@key_value ||= {}
+      @@key_value[self.path_name] = nil
+      FileUtils.mkdir_p("tmp/settings")
+      FileUtils.touch("tmp/settings/updated_#{self.path_name}.txt")
+    end
+
+    def self.get_cache_modification_time(name)
+      if File.exists?("tmp/settings/updated_#{name}.txt")
+        File.mtime("tmp/settings/updated_#{name}.txt")
+      else
+        FileUtils.mkdir_p("tmp/settings")
+        FileUtils.touch("tmp/settings/updated_#{name}.txt")
+        return Time.now
+      end
     end
 
   end

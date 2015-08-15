@@ -2,8 +2,10 @@
 
 module Goldencobra
   class ArticlesController < Goldencobra::ApplicationController
+
     layout "application"
     before_filter :check_format
+    before_filter :get_redirectors, :only => [:show]
     before_filter :get_article, :only => [:show, :convert_to_pdf]
     before_filter :verify_token, :only => [:show]
     before_filter :geocode_ip_address, only: [:show]
@@ -21,38 +23,41 @@ module Goldencobra
       user_cache = current_user.present? ? current_user.id : "no_user"
       flash_message = session.present? && session['flash'].present? ? Time.now.to_i : ""
       auth_code = params[:auth_token].present? ? 'with_auth' : ''
-      "c-#{current_client_id}/g/#{I18n.locale.to_s}/#{geo_cache}/#{user_cache}/#{date_cache}/#{params[:article_id]}/#{art_cache}_#{params[:pdf]}_#{params[:frontend_tags]}__#{params[:iframe]}#{flash_message}_#{auth_code}"
+      offset = params[:start].present? ? "offset_#{params[:start].to_i}" : ""
+      limit = params[:limit].present? ? "limit_#{params[:limit].to_i}" : ""
+      generated_cache_key = "c-#{current_client_id}/g/#{I18n.locale.to_s}/#{geo_cache}/#{user_cache}/#{date_cache}/#{params[:article_id]}/#{art_cache}_#{params[:pdf]}_#{params[:frontend_tags]}__#{params[:iframe]}#{flash_message}_#{auth_code}#{offset}#{limit}"
+      return Zlib.crc32(generated_cache_key).to_s
     end
 
 
     def show
       ActiveSupport::Notifications.instrument("goldencobra.article.show", :params => params)  #Possible Callbacks on start
-      before_init() #Possible Callbacks on start
+      before_init #Possible Callbacks on start
+      params[:session] = session.except(:user_location)
+      Goldencobra::Article::LiquidParser["url_params"] = params
       if serve_iframe?
         respond_to do |format|
           format.html { render layout: "/goldencobra/bare_layout" }
         end
       elsif serve_basic_article?
         initialize_article(@article)
-        # TODO fix session_params like url_params mit liquid method ####### <<<<<<< #######
-        params[:session] = session.except(:user_location)
+        # TODO fix session_params like url_params mit liquid method
         Goldencobra::Article.load_liquid_methods(location: session[:user_location], article: @article, params: params)
-        Goldencobra::Article::LiquidParser["url_params"] = params
-        load_associated_model_into_liquid() if can_load_associated_model?
-        after_init()
+        load_associated_model_into_liquid if can_load_associated_model?
+        after_init
 
         if generate_index_list?
           current_operator = current_user || current_visitor
           @list_of_articles = @article.index_articles(current_operator,params[:frontend_tags])
-          after_index()
+          after_index
         end
 
         if serve_fresh_page?
-         set_expires_in()
+         set_expires_in
          ActiveSupport::Notifications.instrument("goldencobra.article.render", :params => params)
-          before_render()
+          before_render
           respond_to do |format|
-            format.html { render layout: choose_layout() }
+            format.html { render layout: choose_layout }
             format.rss
             format.json do
               @article["list_of_articles"] = @list_of_articles
@@ -63,12 +68,12 @@ module Goldencobra
       elsif should_statically_redirect?
         redirect_to @article.external_url_redirect
       elsif should_dynamically_redirect?
-        redirect_dynamically()
+        redirect_dynamically
       else
         if @unauthorized
-          redirect_to_401()
+          redirect_to_401
         else
-          redirect_to_404()
+          redirect_to_404
         end
       end
     end
@@ -127,7 +132,18 @@ module Goldencobra
     end
 
 
+
     # ------------------ Redirection ------------------------------------------
+    def get_redirectors
+      #check if Goldencobra::Redirector has any redirections, with match before rendering this article
+      #request.original_url
+      #base_request_url = request.original_url.to_s.split("?")[0]  # nimmt nur den teil ohne urlparameter
+      redirect_url, redirect_code = Goldencobra::Redirector.get_by_request(request.original_url)
+      if redirect_url.present? && redirect_code.present?
+        redirect_to redirect_url, :status => redirect_code
+      end
+    end
+
     def redirect_dynamically
       target_article = @article.find_related_subarticle
       if target_article.present?
@@ -192,7 +208,7 @@ module Goldencobra
     end
 
     def serve_basic_article?
-      @article && @article.external_url_redirect.blank? && @article.dynamic_redirection == "false"
+      @article.present? && @article.external_url_redirect.blank? && @article.dynamic_redirection == "false"
     end
 
     def serve_fresh_page?
@@ -261,7 +277,9 @@ module Goldencobra
         article = Goldencobra::Article.active.search_by_url(params[:article_id])
         if article.present?
           operator = current_user || current_visitor
-          a = Ability.new(operator)
+          a = Ability.new(operator,@current_client)
+          logger.warn("###"*40)
+          logger.warn(a.can?(:read, article))
           if a.can?(:read, article)
             @article = article
           else
@@ -287,7 +305,10 @@ module Goldencobra
 
     def check_format
       if request.format == "image/jpeg"  || request.format == "image/png"
-        render :text => "404", :status => 404
+        render text: "404", status: 404
+      end
+      if request.format == "php" || params[:format] == "php"
+        render nothing: true, status: 406 and return 
       end
     end
 

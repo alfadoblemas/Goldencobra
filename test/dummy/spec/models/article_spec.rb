@@ -1,25 +1,93 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe Goldencobra::Article do
+
+  describe 'moving article in articles-tree' do
+    before(:each) do
+      @attr = { title: "Testartikel", article_type: "Default Show", breadcrumb: 'bc_testarticle' }
+    end
+
+    it "should have a valid public_url before saving" do
+      a = Goldencobra::Article.new(@attr)
+      a.breadcrumb = "article1"
+      expect(a.public_url).to eql("/")
+      a.save
+    end
+
+    it "should have a valid public_url after saving" do
+      a = Goldencobra::Article.new(@attr)
+      a.breadcrumb = "article1"
+      a.save
+      expect(a.public_url).to eql("/article1")
+    end
+
+    it "should have a valid public_url after saving and reloading from db" do
+      a = Goldencobra::Article.new(@attr)
+      a.breadcrumb = "article1"
+      a.save
+      expect(Goldencobra::Article.find_by_id(a.id).public_url).to eql("/article1")
+    end
+
+    it "should have a valid url_path before saving" do
+      a = Goldencobra::Article.new(@attr)
+      a.breadcrumb = "article1"
+      expect(a.url_path).to eql(nil)
+      a.save
+    end
+
+    it "should have a valid url_path after saving" do
+      a = Goldencobra::Article.new(@attr)
+      a.url_name = "article1"
+      a.save
+      expect(a.url_path).to eql("/article1")
+    end
+
+    it "should have a valid url_path after saving and reloading from db" do
+      a = Goldencobra::Article.new(@attr)
+      a.url_name = "article1"
+      a.save
+      expect(Goldencobra::Article.find_by_id(a.id).url_path).to eql("/article1")
+    end
+
+  end
 
   describe 'creating an article' do
     before(:each) do
       @attr = { :title  => "Testartikel", :url_name  => "testartikel", :article_type => "Default Show", :breadcrumb => 'bc_testarticle' }
     end
 
-    it "should have a valid redirect url by inserting an url without http" do
-      a = Goldencobra::Article.create!(@attr)
-      a.external_url_redirect = "www.google.de"
-      a.save
-      Goldencobra::Article.find_by_id(a.id).external_url_redirect.should == "http://www.google.de"
+    describe "redirection value" do
+      it "should have a valid redirect url by inserting an url without http" do
+        a = Goldencobra::Article.create!(@attr)
+        a.external_url_redirect = "www.google.de"
+        a.save
+        Goldencobra::Article.find_by_id(a.id).external_url_redirect.should == "http://www.google.de"
+      end
+
+      it "should have a valid redirect url by inserting an url with http" do
+        a = Goldencobra::Article.create!(@attr)
+        a.external_url_redirect = "http://www.google.de"
+        a.save
+        expect(Goldencobra::Article.find_by_id(a.id).external_url_redirect).to eq "http://www.google.de"
+      end
+
+      it "should have a valid redirect url by inserting an url with https" do
+        a = Goldencobra::Article.create!(@attr)
+        a.external_url_redirect = "https://www.google.de"
+        a.save
+        expect(Goldencobra::Article.find_by_id(a.id).external_url_redirect).to eq "https://www.google.de"
+      end
+
+      it "should have no redirection if redirect url is empty" do
+        a = Goldencobra::Article.create!(@attr)
+        a.external_url_redirect = ""
+        a.save
+        Goldencobra::Article.find_by_id(a.id).external_url_redirect.should == ""
+      end
     end
 
-    it "should have a valid redirect url by inserting an url with http" do
-      a = Goldencobra::Article.create!(@attr)
-      a.external_url_redirect = "http://www.google.de"
-      a.save
-      Goldencobra::Article.find_by_id(a.id).external_url_redirect.should == "http://www.google.de"
-    end
 
     it "should create a new article given valid attributes" do
       Goldencobra::Article.create!(@attr)
@@ -63,6 +131,35 @@ describe Goldencobra::Article do
         Goldencobra::Article.create!(@attr)
       }
       Goldencobra::Article.recent(5).collect.count.should == 5
+    end
+
+    context "of article_type_kind INDEX" do
+      it "displays its children as index if no value is given" do
+        article = create :article, article_for_index_id: nil, article_type: "Default Index"
+
+        expect(article.id).not_to eq(nil)
+        expect(article.article_for_index_id).not_to eq(nil)
+        expect(article.article_for_index_id).to eq(article.id)
+      end
+
+      it "display children of a specific article if value is given" do
+        article = create :article, article_for_index_id: 42, article_type: "Default Index"
+
+        expect(article.id).not_to eq(nil)
+        expect(article.article_for_index_id).not_to eq(nil)
+        expect(article.article_for_index_id).to eq(42)
+        expect(article.article_for_index_id).not_to eq(article.id)
+      end
+    end
+
+    context "of article_type_kind SHOW" do
+      it "does not get article_for_index_id set" do
+        article = create :article, article_for_index_id: nil, article_type: "Default Show"
+
+        expect(article.id).not_to eq(nil)
+        expect(article.article_for_index_id).to eq(nil)
+        expect(article.article_for_index_id).not_to eq(article.id)
+      end
     end
   end
 
@@ -119,15 +216,24 @@ describe Goldencobra::Article do
       Goldencobra::Metatag.where(name: 'OpenGraph Description',
                                  article_id: article.id).first.value.should == article.title
     end
-
-    # it "should use the articles image as OpenGraph Image" do
-    #   @article = create :article
-    #   upload = Goldencobra::Upload.create(image: File.new(fixture_file("50x50.png"), "rb"))
-    #   ai = Goldencobra::ArticleImage.create(article_id: @article.id, image_id: upload.id)
-    #   @article.save
-    #   puts "...#{@article.article_images}.."
-    #   Goldencobra::Metatag.where(name: 'OpenGraph Image',
-    #                              article_id: @article.id).first.value.should == @article.article_images.first.image.image.url
-    # end
   end
+
+  describe 'updating an article' do
+
+    it "should have a new url_path" do
+      article = create :article, :url_name => "seite1"
+      sub_article = create :article, :url_name => "sub_seite", :parent => article
+
+      expect(article.public_url.include?("seite1")).to eq true
+      expect(sub_article.public_url.include?("seite1/sub_seite")).to eq true
+
+      article.url_name = "seite2"
+      article.save
+
+      expect(article.public_url.include?("seite2")).to eq true
+      expect(sub_article.public_url.include?("seite2/sub_seite")).to eq true
+    end
+
+  end
+
 end

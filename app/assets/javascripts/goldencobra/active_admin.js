@@ -5,7 +5,8 @@
 // require goldencobra/togetherjs  besser in actve_admin_js über url einbinden
 //= require goldencobra/jquery.color
 //= require goldencobra/jquery.Jcrop.min
-
+//= require goldencobra/react_0.13.1.min
+//= require goldencobra/components
 
 //Live Support Settings
 var TogetherJSConfig_siteName = "Ikusei GmbH";
@@ -21,10 +22,81 @@ var TogetherJSConfig_on = {
 };
 
 $(function() {
+
+  //Wenn es get_goldencobra_articles_per_remote im 'Artikel bearbeiten' gibt,
+  // hole alle Goldencobra:Article :id,:title, :ancestry
+  var $select_parent_articles = $(".get_goldencobra_articles_per_remote");
+  if ( $select_parent_articles.length){
+    $.ajax({
+      url: "/api/v2/articles.json?react_select=true"
+    }).done(function(data){
+      var $this             = $select_parent_articles.get(0);
+      var thisId            = $this.id;
+      var thisName          = $this.name;
+      var className         = $this.className;
+      var selectedParentId  = $($this).find('option:selected').val()
+
+      $this.outerHTML = "<div id='react-" + thisId + "'></div>";
+      React.render(
+        React.createElement(SelectList, {id: thisId, value: selectedParentId, options: data, name: thisName, className: className, firstBlank: true}),
+        document.getElementById('react-' + thisId)
+      );
+
+      var $thisEl = $('#' + thisId);
+      // $thisEl.parents('.select.input').find('.chosen-container.chosen-container-single').remove();
+      $thisEl.chosen({ allow_single_deselect: true });
+      $('.chosen-container').css({width: '70%'});
+      return false;
+    });
+  }
+
+  //Wenn es get_goldencobra_uploads_per_remote im 'Artikel bearbeiten' gibt,
+  // hole alle Goldencobra:Uploads :id, :complete_list_name
+  function populateArticleUploads() {
+    var $selectArticleUploads = $(".get_goldencobra_uploads_per_remote").not('.reacted');
+    if ($selectArticleUploads.length) {
+      $.ajax({
+        url: "/api/v2/uploads.json"
+      }).done(function (data) {
+        var thisData = data;
+        $selectArticleUploads.each(function (index, element) {
+          var $this = element;
+          var thisId = element.id;
+          var thisName = element.name;
+          var includeBlank = $(element).hasClass("chzn-select-deselect");
+          var selectedUploadId = $(element).find("option:selected").val();
+
+          $this.outerHTML = "<div id='react-" + thisId + "'></div>";
+          React.render(
+            React.createElement(SelectList, {id: thisId, value: selectedUploadId, options: thisData, name: thisName, firstBlank: includeBlank}),
+            document.getElementById('react-' + thisId)
+          );
+
+          var $thisEl = $('#' + thisId);
+          
+          $thisEl.parents('.select.input').find('.chosen-container.chosen-container-single').remove();
+          if (includeBlank){
+            $thisEl.chosen({ allow_single_deselect: true });
+          } else {
+            $thisEl.chosen();
+          }
+          $('.chosen-container').css({width: '70%'});
+        });
+        return false;
+      });
+    }
+  };
+
+  populateArticleUploads();
+
+  $('.has_many.article_images a.button').on("click", function() {
+    setTimeout(populateArticleUploads(), 500);
+  });
+
   //Importer optionen Ein und Ausblendbar machen
-  $('table.importer_assoziations tr.head td.nested_model_header span.button').bind("click", function(){
-    id_to_class = $(this).closest(".head").attr('id');
-    $('tr.model_group.' + id_to_class).toggle();
+  $("table.importer_assoziations tr.head td.nested_model_header span.button").bind("click", function(){
+    var id_to_class = $(this).closest(".head").attr("id");
+    $("tr.model_group." + id_to_class).toggle();
     if ($(this).html() == "Felder anzeigen"){
       $(this).html("Felder ausblenden");
     }else{
@@ -32,64 +104,64 @@ $(function() {
     }
   });
 
-  if (typeof tinyMCESetting_theme_advanced_blockformats === 'undefined') {
-    var tinyMCESetting_theme_advanced_blockformats = "p,h1,h2,h3,div"
+  if (typeof tinyMCESetting_theme_advanced_blockformats === "undefined") {
+    var tinyMCESetting_theme_advanced_blockformats = "p,h1,h2,h3,div";
   }
 
-  $('textarea.tinymce-no-buttons').tinymce({
+  $("textarea.tinymce-no-buttons").tinymce({
     script_url: "/assets/goldencobra/tiny_mce.js",
-      mode : "textareas",
-      theme : "advanced",
-      theme_advanced_buttons1 : "",
-      theme_advanced_buttons2 : "",
-      theme_advanced_buttons3 : "",
-      theme_advanced_toolbar_location : "top",
-      theme_advanced_toolbar_align : "center",
-      theme_advanced_resizing : false,
-    relative_urls : true,
-    convert_urls : false,
-    theme_advanced_blockformats : tinyMCESetting_theme_advanced_blockformats,
-    plugins : "autolink,paste",
-    dialog_type : "modal",
-    paste_auto_cleanup_on_paste : true
+    mode: "textareas",
+    theme: "advanced",
+    theme_advanced_buttons1: "",
+    theme_advanced_buttons2: "",
+    theme_advanced_buttons3: "",
+    theme_advanced_toolbar_location: "top",
+    theme_advanced_toolbar_align: "center",
+    theme_advanced_resizing: false,
+    relative_urls: true,
+    convert_urls: false,
+    theme_advanced_blockformats: tinyMCESetting_theme_advanced_blockformats,
+    plugins: "autolink,paste",
+    dialog_type: "modal",
+    paste_auto_cleanup_on_paste: true
   });
 
 
 	$('textarea.tinymce').tinymce({
 		script_url: "/assets/goldencobra/tiny_mce.js",
-  		mode : "textareas",
-  		theme : "advanced",
-  		theme_advanced_buttons1 : "formatselect, bold, italic, underline, strikethrough,|, bullist, numlist, blockquote, |, pastetext,pasteword, |, undo, redo, |, link, unlink, code, fullscreen",
-  		theme_advanced_buttons2 : "",
-  		theme_advanced_buttons3 : "",
-  		theme_advanced_toolbar_location : "top",
-  		theme_advanced_toolbar_align : "center",
-  		theme_advanced_resizing : false,
-		relative_urls : true,
-    convert_urls : false,
-		theme_advanced_blockformats : tinyMCESetting_theme_advanced_blockformats,
-		plugins : "fullscreen,autolink,paste",
-		dialog_type : "modal",
-		paste_auto_cleanup_on_paste : true
+    mode: "textareas",
+    theme: "advanced",
+    theme_advanced_buttons1: "formatselect, bold, italic, underline, strikethrough,|, bullist, numlist, blockquote, |, pastetext,pasteword, |, undo, redo, |, link, unlink, code, fullscreen",
+    theme_advanced_buttons2: "",
+    theme_advanced_buttons3: "",
+    theme_advanced_toolbar_location: "top",
+    theme_advanced_toolbar_align: "center",
+    theme_advanced_resizing: false,
+		relative_urls: true,
+    convert_urls: false,
+    theme_advanced_blockformats: tinyMCESetting_theme_advanced_blockformats,
+		plugins: "fullscreen,autolink,paste",
+		dialog_type: "modal",
+		paste_auto_cleanup_on_paste: true
 	});
 
 	$('textarea.tinymce_extended').tinymce({
 		script_url: "/assets/goldencobra/tiny_mce.js",
-  		mode : "textareas",
-  		theme : "advanced",
-  		theme_advanced_buttons1 : "formatselect, bold, italic, underline, strikethrough,|, bullist, numlist, blockquote, |, pastetext,pasteword, |, undo, redo, |, link, unlink, code, fullscreen",
-  		theme_advanced_buttons2 : "removeformat, fontsizeselect, forecolor, backcolor, forecolorpicker, backcolorpicker",
-  		theme_advanced_buttons3 : "tablecontrols",
-  		theme_advanced_toolbar_location : "top",
-  		theme_advanced_toolbar_align : "left",
-  		theme_advanced_resizing : false,
-		relative_urls : true,
-    	convert_urls : false,
-		theme_advanced_blockformats : tinyMCESetting_theme_advanced_blockformats,
-		plugins : "fullscreen,autolink,paste,table",
-		dialog_type : "modal",
-		paste_auto_cleanup_on_paste : true,
-		verify_html : false
+    mode: "textareas",
+    theme: "advanced",
+    theme_advanced_buttons1: "formatselect, bold, italic, underline, strikethrough,|, bullist, numlist, blockquote, |, pastetext,pasteword, |, undo, redo, |, link, unlink, code, fullscreen",
+    theme_advanced_buttons2: "removeformat, fontsizeselect, forecolor, backcolor, forecolorpicker, backcolorpicker",
+    theme_advanced_buttons3: "tablecontrols",
+    theme_advanced_toolbar_location: "top",
+    theme_advanced_toolbar_align: "left",
+    theme_advanced_resizing: false,
+		relative_urls: true,
+    convert_urls: false,
+    theme_advanced_blockformats: tinyMCESetting_theme_advanced_blockformats,
+		plugins: "fullscreen,autolink,paste,table",
+		dialog_type: "modal",
+		paste_auto_cleanup_on_paste: true,
+		verify_html: false
 	});
 
   //TextCounter auf title, subtitle, Teaser, Summary, Breadcrumb, url_name
@@ -105,7 +177,7 @@ $(function() {
   });
 
   //Foldable overview in sidebar
-  $("div.overview-sidebar div.folder").bind("click", function(){
+  $("div.overview-sidebar div.folder").live("click", function(){
     $(this).closest('li').find("ul:first").slideToggle();
   });
   $("div.overview-sidebar div.folder").trigger("click");
@@ -115,18 +187,18 @@ $(function() {
 
 	$('.metadescription_hint').tinymce({
 		script_url: "/assets/goldencobra/tiny_mce.js",
-  		mode : "textareas",
-  		theme : "advanced",
+      mode: "textareas",
+      theme: "advanced",
       readonly: 1,
-      theme_advanced_default_background_color : "#f4f4f4",
-  		theme_advanced_buttons1 : "",
-  		theme_advanced_buttons2 : "",
-  		theme_advanced_buttons3 : "",
-  		theme_advanced_toolbar_location : "bottom",
-  		theme_advanced_toolbar_align : "center",
-  		theme_advanced_resizing : false,
-      body_id : "metadescription-tinymce-body",
-      content_css : "/assets/goldencobra/active_admin.css"
+      theme_advanced_default_background_color: "#f4f4f4",
+      theme_advanced_buttons1: "",
+      theme_advanced_buttons2: "",
+      theme_advanced_buttons3: "",
+      theme_advanced_toolbar_location: "bottom",
+      theme_advanced_toolbar_align: "center",
+      theme_advanced_resizing: false,
+      body_id: "metadescription-tinymce-body",
+      content_css: "/assets/goldencobra/active_admin.css"
   });
 
   function postInitWork() {
@@ -148,10 +220,10 @@ $(function() {
 		$("#goldencobra_image_maganger").fadeOut();
 	});
 
-	$('#footer').html("<p>Goldencobra</p>")
+	$('#footer').html("<p>Goldencobra</p>");
 
 	//die fieldsets bekommen einen button zum auf und zu klappen
-	$('div#main_content > form > fieldset.foldable > legend').prepend("<div class='foldable_icon_wrapper'><div class='foldable_icon'></div></div>")
+	$('div#main_content > form > fieldset.foldable > legend').prepend("<div class='foldable_icon_wrapper'><div class='foldable_icon'></div></div>");
 	$('div#main_content > form > fieldset.foldable > legend').bind("click", function(){
 		$(this).closest("fieldset").find(".foldable_icon").toggleClass("open");
 		$(this).closest("fieldset").find('ol').slideToggle();
@@ -159,13 +231,22 @@ $(function() {
 	$('div#main_content > form > fieldset.foldable.closed legend').trigger("click");
 
   //die sidebar_section bekommen einen button zum auf und zu klappen
-  $('div#sidebar div.sidebar_section h3').prepend("<div class='foldable_icon_wrapper'><div class='foldable_icon'></div></div>")
+  $('div#sidebar div.sidebar_section h3').prepend("<div class='foldable_icon_wrapper'><div class='foldable_icon'></div></div>");
   $('div#sidebar div.sidebar_section h3').bind("click", function(){
     $(this).closest(".sidebar_section").find(".foldable_icon").toggleClass("open");
     $(this).closest(".sidebar_section").find('.panel_contents').slideToggle();
 	});
-	$('div#sidebar div.sidebar_section:not(#overview_sidebar_section, #layout_positions_sidebar_section) h3').trigger("click");
+	$('div#sidebar div.sidebar_section:not(#layout_positions_sidebar_section) h3').trigger("click");
   $('div#sidebar div.sidebar_section .warning').closest("div.sidebar_section").addClass("warning").find("h3").trigger("click");
+
+
+//die Settings sub groups bekommen ein button zum aufklappen
+  $('div#goldencobra_settings_wrapper .foldable').prepend("<div class='foldable_icon_wrapper'><div class='foldable_icon'></div></div>");
+  $('div#goldencobra_settings_wrapper .foldable').bind("click", function(){
+    $(this).closest(".settings_group_title").find(".foldable_icon").toggleClass("open");
+    $(this).closest(".settings_level").children('.settings_sub_group').slideToggle();
+  });
+
 
   $(".chzn-select").chosen();
   $(".chzn-select-deselect").chosen({ allow_single_deselect: true });
@@ -176,28 +257,29 @@ $(function() {
 
   //Menuepunkte bekommen eine funktion zum auf und zu klappen
   $('div#overview_sidebar div.title a').bind("click", function(){
-  	$(this).children("ul").hide();
+    $(this).children("ul").hide();
   });
 
   $('div#overview_sidebar div.title a').trigger("click");
 
   $("#main_content form:not(.without_short_key) input:submit").attr("value", $("#main_content form input:submit").attr("value") + " (⌘-S)");
+  
   key('⌘+s, ctrl+s', function() {
-  	$("#main_content form input:submit").trigger("click");
-  	return false;
+    $("#main_content form input:submit").trigger("click");
+    return false;
   });
 
   $("body.show #title_bar .action_items a[href$='edit']").append(" (⌘-E)");
     key('⌘+e, ctrl+e', function(){
-	 target = $("#title_bar .action_items a[href$='edit']").attr("href");
-	 window.location = target;
-	 return false;
+    target = $("#title_bar .action_items a[href$='edit']").attr("href");
+    window.location = target;
+    return false;
   });
 
   //Short Key for Life support on every Page
-    key('⌘+k, ctrl+k', function(){
-      call_for_help();
-    })
+  key('⌘+k, ctrl+k', function(){
+    call_for_help();
+  });
 
   // $("#title_bar .action_items a[href$='revert']").append(" (⌘-Z)");
   // key('⌘+z, ctrl+z', function(){
@@ -219,13 +301,13 @@ $(function() {
   // für jede checkbox die dazugehörigen input felder holen und anhängen
   checkBoxesDays.each(function(i, el) {
     // checkbox muss neue css styles erhalten
-    var addCssBox = {"float" : "left", "width" : "50px", "margin-top" : "8px"};
+    var addCssBox = {"float": "left", "width": "50px", "margin-top": "8px"};
     $(el).height(50).find("label").css(addCssBox);
     // selektoren für start und end inputs eines tages
     var startInput = $("#widget_offline_time_start_" + engDaysShort[i] + "_input");
     var endInput = $("#widget_offline_time_end_" + engDaysShort[i] + "_input");
     // label der inputs entfernen und benötigten css style ergänzen
-    var addCssInput = {"float" : "left", "width" : "180px"};
+    var addCssInput = {"float": "left", "width": "180px"};
     $(startInput).css(addCssInput).find("label").remove();
     $(endInput).css(addCssInput).find("label").remove();
     // inputs zur checkbox gruppieren
@@ -233,24 +315,43 @@ $(function() {
     $(endInput).appendTo(el);
   });
   /**** END DOM Manipulation *****/
+
+  $("ul.link_checker_ul div.link_checker_label").click(function(){
+    $(this).siblings(".link_checker_sources").toggle();
+  });
+  
+  // optimize header menu bar
+  $('#utility_nav').after('<div style="clear: both;"></div>');
+  $('#wrapper > #header').css('height', 'auto').css('min-width', '890px').css('filter', 'none');
+
+  // own logo per app from settings url
+  changeLogoFromSetting();
 });
 
-function call_for_help (argument) {
+function call_for_help(argument) {
   TogetherJS(this);
   return false;
 }
 
-$(function() {
-  $("ul.link_checker_ul div.link_checker_label").click(function(){
-    $(this).siblings(".link_checker_sources").toggle();
-  });
-});
 
 /**
- * optimize header menu bar
+ *
+ * get ajax logo url for chanigng admin backend logo picture
  *
  */
-$(function() {
-  $('#utility_nav').after('<div style="clear: both;"></div>');
-  $('#wrapper > #header').css('height', 'auto').css('min-width', '890px').css('filter', 'none');
-});
+function changeLogoFromSetting() {
+  $.ajax({
+    type   : 'GET',
+    url    : '/api/v2/setting_string',
+    data   : { 'setting_key': 'goldencobra.random_logo_url' },
+    success: function (data) {
+      if (data && data.indexOf('translation missing') == -1) {
+        // change background image of header logo
+        $('#header h1').css('background', 'url("' + data + '") no-repeat scroll center top / 100px auto rgba(0, 0, 0, 0)');
+      } else {
+        // set standard url of header logo for fallback
+        $('#header h1').css('background', 'url("/assets/goldencobra/cobra.png") no-repeat scroll center top / auto auto rgba(0, 0, 0, 0)');
+      }
+    }
+  });
+}

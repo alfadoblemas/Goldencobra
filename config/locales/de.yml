@@ -12,7 +12,10 @@ de:
     read_on: 'weiterlesen'
     selection: "Artikel"
   goldencobra:
+    article_field_placeholder:
+      author: "Autoren wählen"
     article_field_hints:
+      global_sorting_id: "Diese Zahl wird als globale Sortiernummer auf Artikelübersichtsseiten verwendet"
       title: "Der Titel/die Überschrift des Artikels/der Seite, hier können Leerzeichen und Sonderzeichen verwendet werden"
       teaser: "Dieser Text beschreibt den Artikel auf Übersichtsseiten kurz, außerdem wird er für die Beschreibung bei Google & Facebook genutzt"
       summary: "Dient einer zusammenfassenden Einleitung in den Haupttext und wird hervorgehoben dargestellt"
@@ -90,9 +93,6 @@ de:
       partner_index: "Partner Übersicht"
       partner_show: "Partner Einzelseite"
   active_admin:
-    dashboard_latest_articles: "Neueste Artikel"
-    dashboard_new_article: "Neuen Artikel erstellen"
-    dashboard_latest_widgets: "Neueste Schnipsel"
     articles:
       now_offline: "Dieser Artikel ist nun offline"
       now_online: "Dieser Artikel ist nun online"
@@ -242,6 +242,9 @@ de:
         subject: 'Anleitung um Deinen Account freizuschalten'
   activerecord:
     models:
+      redirector:
+        one: "Weiterleitung"
+        other: "Weiterleitungen"
       articletype:
         one: "Artikeltyp"
         other: "Artikeltypen"
@@ -285,11 +288,11 @@ de:
         one: "Artikel"
         other: "Artikel"
       setting:
-        one: "Einstellung"
-        other: "Einstellungen"
+        one: "Webseiten-Einstellung"
+        other: "Webseiten-Einstellungen"
       goldencobra/setting:
-        one: "Einstellung"
-        other: "Einstellungen"
+        one: "Webseiten-Einstellung"
+        other: "Webseiten-Einstellungen"
       menue:
         one: "Menü"
         other: "Menüpunkte"
@@ -332,9 +335,6 @@ de:
       visitor:
         one: "Besucher"
         other: "Besucher"
-      formular:
-        one: "Formular"
-        other: "Formulare"
     attributes:
       goldencobra/metatag:
         name: "Art"
@@ -387,7 +387,7 @@ de:
         sorter_limit: "Zahl von Artikeln"
         sort_order: "Sortierkriterium"
         reverse_sort: "Sortierung absteigend?"
-        author: "Autor"
+        authors: "Autoren"
         url_name: "Website-Adresse des Artikels"
         slug: "URL-Kurzform"
         content: "Haupt-Textfeld"
@@ -423,6 +423,7 @@ de:
         role: "Rolle"
         action: "Aktion"
       goldencobra/upload:
+        image_remote_url: "Download URL"
         source: "Quellenverweis"
         created_at: "Erstellt am"
         updated_at: "Bearbeitet am"
@@ -461,12 +462,15 @@ de:
         uid: "Einzigartige ID"
         newsletter: "Newsletter-Abo"
         username: "Benutzername"
+        password: "Passwort"
+        password_confirmation: "Passwortbestätigung"
         email: "E-Mail"
         agb: "AGB akz."
         last_sign_in_at: "Zuletzt eingeloggt"
         created_at: "Erstellt am"
         updated_at: "Bearbeitet am"
         sign_in_count: "Wie oft eingeloggt"
+        roles: "Berechtigungen"
       goldencobra/author:
         firstname: "Vorname"
         lastname: "Nachname"

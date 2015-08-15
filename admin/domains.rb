@@ -3,7 +3,7 @@
 ActiveAdmin.register Goldencobra::Domain, :as => "Domain" do
   menu :parent => I18n.t("settings", :scope => ["active_admin","menue"]), :label => "Domains", :if => proc{can?(:update, Goldencobra::Domain)}
 
-  index do
+  index :download_links => proc{ Goldencobra::Setting.for_key("goldencobra.backend.index.download_links") == "true" }.call do
   	selectable_column
     column :id
     column :title
@@ -23,7 +23,7 @@ ActiveAdmin.register Goldencobra::Domain, :as => "Domain" do
         f.input :hostname
         f.input :client
         f.input :url_prefix
-        f.input :main, :hint => "Diese Domain wird als Hauptdomain eingerichtet, alle Canonical URLS haben diesen Prefix", :label => "Main Domain?"
+        f.input :main, :hint => I18n.t('active_admin.domains.form.hint'), :label => "Main Domain?"
       end
     f.actions
   end

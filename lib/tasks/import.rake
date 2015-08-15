@@ -1,17 +1,17 @@
 # encoding: utf-8
 
 namespace :db do
-  desc 'Dump DB to backup.sql'
+  desc 'Dump production DB to backup.sql'
   task :dump => :environment do
     server_config = ActiveRecord::Base.configurations["production"]
     remote_db = server_config["database"]
     user_name = server_config["username"]
     password = server_config["password"]
-    system("mysqldump --opt --add-drop-table -hlocalhost -u#{user_name} -p#{password} #{remote_db} > backup.sql")
+    system("nice -n15 mysqldump --opt --add-drop-table -hlocalhost -u#{user_name} -p#{password} #{remote_db} > backup.sql")
   end
 
 
-  desc 'Import Production Database to local Database'
+  desc 'Import remote production database to local database'
   task :import => :environment do
     puts "Your lokal database will be overwritten by server db! Are you sure? (yes)"
     input = STDIN.gets.strip
@@ -49,6 +49,34 @@ namespace :db do
     else
       puts "Import-Task aborted"
     end
+  end
+
+  namespace :schema do
+  
+    desc 'Regenerates data in table schema_migrations from local files in multiple folders like db/migrate. Usage rake db... PATH=db/migrate,foo/baar,test/dummy/db/migrate'
+    task :regnerate => :environment do
+      migrations_path = ENV["PATH"] || ""
+      raise "PATH=db/migrations missing" if migrations_path.blank? 
+
+      file_list = []
+      migrations_path.split(",").each do |mp|
+        Dir.foreach(mp) do |file|
+          # only files matching "20091231235959_some_name.rb" pattern
+          if match_data = /(\d{14})_(.+)\.rb/.match(file)
+            file_list << match_data[1]
+          end
+        end
+      end
+
+      #Temporäre classe SchemaMigration um die Dtaen bequemer in die DB zu bekommen
+      class SchemaMigration < ActiveRecord::Base; self.primary_key = :version; attr_accessible :version; end
+      SchemaMigration.destroy_all  
+      file_list.sort.each do |fl|
+        SchemaMigration.create(:version => fl)
+      end
+    end
 
   end
+
+
 end

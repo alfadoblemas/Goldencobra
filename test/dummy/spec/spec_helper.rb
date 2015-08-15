@@ -1,3 +1,18 @@
+# encoding: utf-8
+
+require 'simplecov'
+SimpleCov.root(File.expand_path("../../", __FILE__))
+SimpleCov.start :rails do
+  filters.clear # This will remove the :root_filter and :bundler_filter that come via simplecov's defaults
+  add_filter do |src|
+    !(src.filename =~ /^#{SimpleCov.root}/) unless (src.filename =~ /app/ || src.filename =~ /config\/initializers/)
+  end
+  add_filter ".bundle"
+  add_filter ".rbenv"
+  add_filter "/spec/"
+end
+require 'yarjuf'
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
@@ -39,4 +54,5 @@ RSpec.configure do |config|
 
   # Add this line if you use Devise for authentication:
   config.include Devise::TestHelpers, :type => :controller
+  config.include Capybara::DSL
 end

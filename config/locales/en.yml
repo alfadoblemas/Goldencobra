@@ -1,6 +1,7 @@
 en:
   articles:
     read_on: 'read on'
+    selection: "Article"
   formtastic:
     yes: 'yes'
     no: 'no'
@@ -66,6 +67,12 @@ en:
         subject: 'Unlock Instructions'
   activerecord:
     models:
+      redirector:
+        one: "Redirection"
+        other: "Redirections"
+      analytic:
+        one: "Analytic"
+        other: "Analytics"
       domain:
         one: "Domain"
         other: "Domains"
@@ -73,11 +80,11 @@ en:
         one: "Domain"
         other: "Domains"
       articletype:
-        one: "Articletype"
-        other: "Articletypes"
+        one: "Article type"
+        other: "Article types"
       link-checker:
-        one: "Link-Checker"
-        other: "Link-Checker"
+        one: "Link checker"
+        other: "Link checker"
       comment:
         one: "Comment"
         other: "Comments"
@@ -100,11 +107,11 @@ en:
         one: "Article"
         other: "Articles"
       setting:
-        one: "Setting"
-        other: "Settings"
+        one: "Website setting"
+        other: "Website settings"
       goldencobra/setting:
-        one: "Setting"
-        other: "Settings"
+        one: "Website setting"
+        other: "Website settings"
       menue:
         one: "Menu"
         other: "Menus"
@@ -112,11 +119,11 @@ en:
         one: "Menu"
         other: "Menus"
       metag:
-        one: "Metatag"
-        other: "Metatags"
+        one: "Meta tag"
+        other: "Meta tags"
       goldencobra/metag:
-        one: "Metatag"
-        other: "Metatags"
+        one: "Meta tag"
+        other: "Meta tags"
       widget:
         one: "Widget"
         other: "Widgets"
@@ -124,11 +131,11 @@ en:
         one: "Widget"
         other: "Widgets"
       upload:
-        one: "Upload"
-        other: "Uploads"
+        one: "Medium"
+        other: "Media"
       goldencobra/upload:
         one: "Medium"
-        other: "Medien"
+        other: "Media"
       user:
         one: "User"
         other: "Users"
@@ -144,9 +151,6 @@ en:
       goldencobra/role:
         one: "Role"
         other: "Roles"
-      formular:
-        one: "Formular"
-        other: "Formulars"
     attributes:
       goldencobra/metatag:
         name: "Name"
@@ -185,7 +189,7 @@ en:
         sorter_limit: "Number of sorted articles"
         sort_order: "Sort order"
         reverse_sort: "Descending order?"
-        author: "Author"
+        authors: "Authors"
         url_name: "Name of url of article"
         slug: "Url shortform"
         content: "Main content"
@@ -209,6 +213,7 @@ en:
         tag_list: "List of tags"
         frontend_tag_list: "Filters"
       goldencobra/upload:
+        image_remote_url: "Download URL"
         source: "source"
         created_at: "created at"
         updated_at: "updated at"
@@ -232,7 +237,10 @@ en:
         alternative_content: "Content for offline widget"
         alternative_content_hint: "This content will be shown, when widget is offline"
   goldencobra:
+    article_field_placeholder:
+      author: "Choose authors"
     article_field_hints:
+      global_sorting_id: "Global sorting number for relations on article index pages"
       title: "Title/Headline of an article."
       teaser: "Short description of this article. Also used in Goolge and Facebook"
       summary: ""
@@ -310,9 +318,6 @@ en:
       list: "list"
       create: "create"
   active_admin:
-    dashboard_latest_articles: "Latest articles"
-    dashboard_new_article: "Create new article"
-    dashboard_latest_widgets: "Latest widgets"
     articles:
       tag-select-placeholder: "Select tag"
       now_offline: "This article is now offline"
@@ -614,9 +619,6 @@ en:
       long: ! '%B %d, %Y %H:%M'
       short: ! '%d %b %H:%M'
     pm: pm
-  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:
     errors:
       <<: *errors
-
-
